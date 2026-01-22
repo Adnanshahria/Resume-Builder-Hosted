@@ -1,0 +1,5 @@
+{
+  "name": "AI Resume Forge",
+  "description": "A high-performance, AI-powered resume builder using Google Gemini 2.5 Flash. Create, edit, and enhance your resume with real-time preview and smart content generation.",
+  "requestFramePermissions": []
+}
