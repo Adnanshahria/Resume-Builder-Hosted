@@ -12,7 +12,7 @@ export const ResumePreview: React.FC<ResumePreviewProps> = ({ data, scale = 1 })
     <div
       className="bg-white text-black shadow-2xl mx-auto origin-top transition-transform duration-200"
       style={{
-        width: '210mm',
+        width: '8.5in', // US Letter - broader layout
         minHeight: '297mm',
         transform: `scale(${scale})`,
         marginBottom: `-${(1 - scale) * 297}mm`

@@ -4,9 +4,9 @@ import { ResumeForm } from './components/ResumeForm';
 import { ResumeTemplate } from './components/ResumeTemplate';
 import { TemplateSelector } from './components/TemplateSelector';
 import { TemplateType } from './lib/templates';
-import { LayoutTemplate, Printer, Palette, Image, ImageOff, FileText } from 'lucide-react';
+import { LayoutTemplate, Printer, Palette } from 'lucide-react';
 import { Button } from './components/ui/Button';
-import { downloadLatex } from './services/latexService';
+import { ToggleSwitch } from './components/ui/ToggleSwitch';
 
 const INITIAL_DATA: ResumeData = {
   personalInfo: {
@@ -59,7 +59,7 @@ export default function App() {
     const handleResize = () => {
       if (containerRef.current) {
         const width = containerRef.current.clientWidth;
-        // 210mm is approx 794px. We want some padding.
+        // US Letter is 8.5in = 816px. We want some padding.
         const scale = Math.min((width - 40) / 794, 0.8);
         setPreviewScale(Math.max(scale, 0.3));
       }
@@ -144,22 +144,20 @@ export default function App() {
 
           {/* Right: Preview */}
           <div className="relative bg-muted/30 rounded-xl border border-border overflow-hidden flex flex-col">
-            {/* Photo Toggle */}
-            <div className="absolute top-4 right-4 z-10">
-              <button
-                onClick={() => setShowPhoto(!showPhoto)}
-                className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all ${showPhoto
-                  ? 'bg-primary text-white'
-                  : 'bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300'
-                  }`}
-                title={showPhoto ? 'Click to hide photo (ATS-friendly)' : 'Click to show photo'}
-              >
-                {showPhoto ? (
-                  <><Image className="w-3.5 h-3.5" /> With Photo</>
-                ) : (
-                  <><ImageOff className="w-3.5 h-3.5" /> ATS Friendly</>
-                )}
-              </button>
+            {/* Toggle Controls */}
+            <div className="absolute top-4 right-4 z-10 flex flex-col gap-2 bg-card/90 backdrop-blur p-3 rounded-lg shadow-sm border border-border">
+              <ToggleSwitch
+                checked={showPhoto}
+                onChange={setShowPhoto}
+                label="Photo"
+                description={showPhoto ? 'Visible' : 'Hidden'}
+              />
+              <ToggleSwitch
+                checked={!showPhoto}
+                onChange={(val) => setShowPhoto(!val)}
+                label="ATS Mode"
+                description={!showPhoto ? 'Enabled' : 'Disabled'}
+              />
             </div>
             <div
               ref={containerRef}
