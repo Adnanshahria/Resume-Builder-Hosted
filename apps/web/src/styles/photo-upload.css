@@ -1,0 +1,105 @@
+/* Photo Upload Component Styles */
+
+.photo-upload-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.photo-preview {
+    position: relative;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid var(--color-primary, #3b82f6);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.photo-preview-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.photo-remove-btn,
+.photo-change-btn {
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    opacity: 0;
+}
+
+.photo-preview:hover .photo-remove-btn,
+.photo-preview:hover .photo-change-btn {
+    opacity: 1;
+}
+
+.photo-remove-btn {
+    top: 0;
+    right: 0;
+    background: #ef4444;
+    color: white;
+}
+
+.photo-remove-btn:hover {
+    background: #dc2626;
+    transform: scale(1.1);
+}
+
+.photo-change-btn {
+    bottom: 0;
+    right: 0;
+    background: var(--color-primary, #3b82f6);
+    color: white;
+}
+
+.photo-change-btn:hover {
+    background: #2563eb;
+    transform: scale(1.1);
+}
+
+.photo-upload-placeholder {
+    border: 2px dashed var(--color-border, #e5e7eb);
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25rem;
+    cursor: pointer;
+    background: var(--color-bg-secondary, #f9fafb);
+    transition: all 0.2s ease;
+}
+
+.photo-upload-placeholder:hover {
+    border-color: var(--color-primary, #3b82f6);
+    background: rgba(59, 130, 246, 0.05);
+}
+
+.photo-upload-placeholder--dragging {
+    border-color: var(--color-primary, #3b82f6);
+    background: rgba(59, 130, 246, 0.1);
+    transform: scale(1.02);
+}
+
+.photo-upload-text {
+    font-size: 0.6rem;
+    color: var(--color-text-secondary, #6b7280);
+    text-align: center;
+    line-height: 1.2;
+}
+
+/* Dark mode */
+[data-theme="dark"] .photo-upload-placeholder {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+[data-theme="dark"] .photo-upload-placeholder:hover {
+    background: rgba(59, 130, 246, 0.1);
+}

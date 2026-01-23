@@ -1,0 +1,959 @@
+/* ===========================
+   Resume Template Base Styles
+   =========================== */
+
+.resume-template-wrapper {
+    background: white;
+    color: #333;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    width: 210mm;
+    min-height: 297mm;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.resume-template {
+    padding: 2rem;
+}
+
+/* Section Base */
+.rt-section {
+    margin-bottom: 1.5rem;
+}
+
+.rt-section-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.rt-summary {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: #555;
+}
+
+/* Experience & Education Base */
+.rt-experience-item,
+.rt-education-item {
+    margin-bottom: 1rem;
+}
+
+.rt-exp-role,
+.rt-edu-degree {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+.rt-exp-company,
+.rt-edu-institution {
+    font-size: 0.9rem;
+    color: #666;
+    margin: 0.25rem 0;
+}
+
+.rt-exp-dates,
+.rt-edu-year {
+    font-size: 0.8rem;
+    color: #888;
+}
+
+.rt-exp-description {
+    font-size: 0.85rem;
+    color: #555;
+    margin-top: 0.5rem;
+    line-height: 1.5;
+    white-space: pre-line;
+}
+
+/* Skills Base */
+.rt-skills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.rt-skill-tag {
+    padding: 0.25rem 0.75rem;
+    font-size: 0.8rem;
+    border-radius: 4px;
+}
+
+/* ===========================
+   Professional Template
+   =========================== */
+
+.resume-template--professional {
+    padding: 2.5rem;
+}
+
+.rt-header--professional {
+    text-align: center;
+    border-bottom: 2px solid #1e3a5f;
+    padding-bottom: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.resume-template--professional .rt-name {
+    font-size: 2rem;
+    color: #1e3a5f;
+    margin: 0;
+    font-weight: 700;
+}
+
+.resume-template--professional .rt-title {
+    font-size: 1.1rem;
+    color: #2d5a87;
+    margin: 0.5rem 0;
+}
+
+.resume-template--professional .rt-contact {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    font-size: 0.85rem;
+    color: #666;
+    margin-top: 0.75rem;
+}
+
+.rt-section-title--professional {
+    color: #1e3a5f;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 0.25rem;
+}
+
+.rt-skills--professional .rt-skill-tag {
+    background: #e8f0f7;
+    color: #1e3a5f;
+}
+
+/* ===========================
+   Developer Template
+   =========================== */
+
+.resume-template--developer {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    padding: 0;
+    min-height: 297mm;
+}
+
+.rt-sidebar--developer {
+    background: #f8fafc;
+    border-right: 1px solid #e2e8f0;
+    color: #334155;
+    padding: 2rem 1.5rem;
+}
+
+.rt-profile {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.rt-avatar--developer {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0 auto 1rem;
+    color: white;
+}
+
+.rt-name--developer {
+    font-size: 1.25rem;
+    margin: 0;
+    color: #1e293b;
+}
+
+.rt-title--developer {
+    font-size: 0.9rem;
+    color: #3b82f6;
+    margin: 0.5rem 0 0;
+}
+
+.rt-contact--developer {
+    font-size: 0.8rem;
+    color: #64748b;
+}
+
+.rt-contact-item {
+    margin-bottom: 0.5rem;
+    word-break: break-word;
+}
+
+.rt-skills-section {
+    margin-top: 2rem;
+}
+
+.rt-section-title--developer {
+    color: #3b82f6;
+    font-size: 0.85rem;
+    border-bottom: 1px solid #e2e8f0;
+    padding-bottom: 0.5rem;
+}
+
+.rt-skills--developer {
+    gap: 0.4rem;
+}
+
+.rt-skill-tag--developer {
+    background: rgba(34, 197, 94, 0.15);
+    color: #22c55e;
+    font-size: 0.75rem;
+    padding: 0.2rem 0.5rem;
+    border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.rt-main--developer {
+    padding: 2rem;
+}
+
+.rt-main--developer .rt-section-title--developer {
+    color: #0f172a;
+    border-bottom-color: #e2e8f0;
+}
+
+.rt-experience-item--developer {
+    display: flex;
+    gap: 1rem;
+    position: relative;
+    padding-left: 1.5rem;
+    border-left: 2px solid #e2e8f0;
+    margin-left: 0.5rem;
+}
+
+.rt-exp-dot {
+    position: absolute;
+    left: -7px;
+    top: 0;
+    width: 12px;
+    height: 12px;
+    background: #22c55e;
+    border-radius: 50%;
+    border: 2px solid white;
+}
+
+/* ===========================
+   Technical Template
+   =========================== */
+
+.resume-template--technical {
+    padding: 2rem;
+}
+
+.rt-header--technical {
+    background: linear-gradient(135deg, #1f2937 0%, #374151 100%);
+    color: white;
+    padding: 2rem;
+    margin: -2rem -2rem 2rem -2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.resume-template--technical .rt-name {
+    font-size: 1.75rem;
+    margin: 0;
+}
+
+.resume-template--technical .rt-title {
+    color: #f59e0b;
+    margin: 0.25rem 0 0;
+    font-size: 1rem;
+}
+
+.rt-contact--technical {
+    text-align: right;
+    font-size: 0.85rem;
+    color: #d1d5db;
+}
+
+.rt-contact--technical span {
+    display: block;
+    margin-bottom: 0.25rem;
+}
+
+.rt-technical-grid {
+    display: grid;
+    grid-template-columns: 1fr 250px;
+    gap: 2rem;
+}
+
+.rt-section-title--technical {
+    color: #1f2937;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.rt-section-icon {
+    color: #f59e0b;
+    font-weight: bold;
+}
+
+.rt-experience-item--technical {
+    border-left: 3px solid #f59e0b;
+    padding-left: 1rem;
+    margin-bottom: 1rem;
+}
+
+.rt-sidebar--technical {
+    background: #f9fafb;
+    padding: 1rem;
+    border-radius: 8px;
+}
+
+.rt-skills-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.rt-skill-item {
+    padding: 0.5rem 0;
+    border-bottom: 1px dashed #e5e7eb;
+    font-size: 0.9rem;
+}
+
+.rt-skill-item::before {
+    content: "▪";
+    color: #f59e0b;
+    margin-right: 0.5rem;
+}
+
+/* ===========================
+   Medical Template
+   =========================== */
+
+.resume-template--medical {
+    padding: 2rem;
+}
+
+.rt-header--medical {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    background: linear-gradient(135deg, #0d4f4f 0%, #0f766e 100%);
+    color: white;
+    padding: 2rem;
+    margin: -2rem -2rem 2rem -2rem;
+}
+
+.rt-medical-icon {
+    font-size: 3rem;
+    background: rgba(255, 255, 255, 0.1);
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+.rt-header-text {
+    flex: 1;
+}
+
+.resume-template--medical .rt-name {
+    font-size: 1.75rem;
+    margin: 0;
+}
+
+.resume-template--medical .rt-title {
+    color: #5eead4;
+    margin: 0.25rem 0 0;
+}
+
+.rt-contact--medical {
+    text-align: right;
+    font-size: 0.85rem;
+    color: #a7f3d0;
+}
+
+.rt-contact--medical span {
+    display: block;
+    margin-bottom: 0.25rem;
+}
+
+.rt-section--medical-highlight {
+    background: #ecfdf5;
+    padding: 1rem;
+    border-radius: 8px;
+    border-left: 4px solid #14b8a6;
+}
+
+.rt-section-title--medical {
+    color: #0d4f4f;
+}
+
+.rt-medical-columns {
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    gap: 2rem;
+}
+
+.rt-experience-item--medical {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.rt-exp-badge {
+    width: 50px;
+    height: 50px;
+    background: #14b8a6;
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    flex-shrink: 0;
+}
+
+.rt-skill-tag--medical {
+    background: #ccfbf1;
+    color: #0d4f4f;
+    border: 1px solid #99f6e4;
+}
+
+/* ===========================
+   Creative Template
+   =========================== */
+
+.resume-template--creative {
+    padding: 0;
+    overflow: hidden;
+}
+
+.rt-creative-hero {
+    position: relative;
+    background: linear-gradient(135deg, #4c1d95 0%, #7c3aed 50%, #a855f7 100%);
+    padding: 3rem 2rem;
+    text-align: center;
+    overflow: hidden;
+}
+
+.rt-creative-bg-shapes {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+}
+
+.rt-bg-circle {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.1;
+}
+
+.rt-bg-circle--1 {
+    width: 300px;
+    height: 300px;
+    background: white;
+    top: -100px;
+    right: -50px;
+}
+
+.rt-bg-circle--2 {
+    width: 200px;
+    height: 200px;
+    background: white;
+    bottom: -50px;
+    left: -50px;
+}
+
+.rt-creative-profile {
+    position: relative;
+    z-index: 1;
+}
+
+.rt-avatar--creative {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: white;
+    color: #4c1d95;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin: 0 auto 1rem;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+}
+
+.rt-name--creative {
+    color: white;
+    font-size: 2rem;
+    margin: 0;
+}
+
+.rt-title--creative {
+    color: #e9d5ff;
+    font-size: 1.1rem;
+    margin: 0.5rem 0 0;
+}
+
+.rt-creative-contact {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    padding: 1rem 2rem;
+    background: #faf5ff;
+}
+
+.rt-contact-pill {
+    background: white;
+    padding: 0.5rem 1rem;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    color: #4c1d95;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.rt-section--creative {
+    padding: 1.5rem 2rem;
+}
+
+.rt-section-title--creative {
+    color: #4c1d95;
+    position: relative;
+    display: inline-block;
+}
+
+.rt-section-title--creative::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 50px;
+    height: 3px;
+    background: linear-gradient(90deg, #a855f7, #e879f9);
+    border-radius: 2px;
+}
+
+.rt-summary--creative {
+    font-size: 1rem;
+    line-height: 1.8;
+}
+
+.rt-skills--creative {
+    gap: 0.75rem;
+}
+
+.rt-skill-tag--creative {
+    background: linear-gradient(135deg, #4c1d95, #7c3aed);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 50px;
+    font-weight: 500;
+}
+
+.rt-creative-timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.rt-experience-item--creative .rt-creative-card {
+    background: #faf5ff;
+    padding: 1.25rem;
+    border-radius: 12px;
+    border-left: 4px solid #a855f7;
+}
+
+.rt-education-item--creative {
+    background: #faf5ff;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 0.75rem;
+}
+
+/* ===========================
+   Software Engineer Template 
+   (Two-Column with Dark Sidebar)
+   =========================== */
+
+.resume-template--software-engineer {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    padding: 0;
+    min-height: 297mm;
+}
+
+/* Sidebar */
+.rt-sidebar--software-engineer {
+    background: #f8fafc;
+    border-right: 1px solid #e2e8f0;
+    color: #334155;
+    padding: 2rem 1.5rem;
+}
+
+.rt-se-profile {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.rt-name--se {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0;
+    line-height: 1.2;
+    color: #1e293b;
+}
+
+.rt-title--se {
+    font-size: 0.9rem;
+    color: #3b82f6;
+    margin: 0.5rem 0 0;
+    font-weight: 500;
+}
+
+/* Contact */
+.rt-contact--se {
+    margin-bottom: 1.5rem;
+}
+
+.rt-contact-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+    font-size: 0.8rem;
+    color: #64748b;
+    word-break: break-word;
+}
+
+.rt-contact-icon {
+    flex-shrink: 0;
+    width: 16px;
+    color: #3b82f6;
+}
+
+/* Sidebar Sections */
+.rt-section--se {
+    margin-bottom: 1.5rem;
+}
+
+.rt-section-title--se {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #3b82f6;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #3b82f6;
+    letter-spacing: 0.05em;
+}
+
+/* Education in Sidebar */
+.rt-education-item--se {
+    margin-bottom: 1rem;
+}
+
+.rt-edu-degree--se {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #1e293b;
+    margin: 0;
+}
+
+.rt-edu-field {
+    font-size: 0.8rem;
+    color: #3b82f6;
+    margin: 0.15rem 0;
+}
+
+.rt-edu-institution--se {
+    font-size: 0.8rem;
+    color: #64748b;
+    margin: 0.15rem 0;
+    font-weight: 600;
+}
+
+.rt-edu-meta {
+    font-size: 0.75rem;
+    color: #94a3b8;
+    margin-top: 0.25rem;
+}
+
+/* Skills in Sidebar */
+.rt-skills-list--se {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.rt-skill-item--se {
+    padding: 0.35rem 0;
+    font-size: 0.8rem;
+    color: #475569;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.rt-skill-item--se::before {
+    content: "•";
+    color: #3b82f6;
+    margin-right: 0.5rem;
+}
+
+/* Main Content Area */
+.rt-main--software-engineer {
+    padding: 2rem;
+    background: white;
+}
+
+.rt-section-title--se-main {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #3b82f6;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #3b82f6;
+    letter-spacing: 0.05em;
+}
+
+/* Experience Items */
+.rt-experience-item--se {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+}
+
+.rt-exp-header--se {
+    margin-bottom: 0.25rem;
+}
+
+.rt-exp-role--se {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #e67e22;
+    margin: 0;
+}
+
+.rt-exp-company--se {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #333;
+    margin: 0;
+}
+
+.rt-exp-meta {
+    margin: 0.25rem 0 0.5rem;
+}
+
+.rt-exp-dates--se {
+    font-size: 0.8rem;
+    color: #666;
+}
+
+.rt-exp-description--se {
+    margin-top: 0.5rem;
+}
+
+.rt-exp-bullet {
+    font-size: 0.85rem;
+    color: #444;
+    margin: 0.35rem 0;
+    line-height: 1.5;
+    padding-left: 0.5rem;
+}
+
+.rt-summary--se {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: #444;
+}
+
+/* ===========================
+   Projects Styles
+   =========================== */
+
+.rt-project-item {
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.rt-project-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.rt-project-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 0.5rem;
+}
+
+.rt-project-name {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1e293b;
+    margin: 0;
+}
+
+.rt-project-links {
+    display: flex;
+    gap: 0.75rem;
+    font-size: 0.75rem;
+    color: #3b82f6;
+}
+
+.rt-project-tech {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-bottom: 0.5rem;
+}
+
+.rt-tech-tag {
+    padding: 0.15rem 0.5rem;
+    font-size: 0.7rem;
+    background: #e0f2fe;
+    color: #0369a1;
+    border-radius: 4px;
+}
+
+.rt-project-description {
+    font-size: 0.85rem;
+    color: #555;
+    line-height: 1.5;
+    margin: 0;
+}
+
+/* ===========================
+   Photo Styles for Templates
+   =========================== */
+
+/* Professional Template Photo */
+.rt-header-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+}
+
+.rt-photo {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #1e3a5f;
+    flex-shrink: 0;
+}
+
+.rt-photo--professional {
+    border-color: #1e3a5f;
+}
+
+.rt-photo--technical {
+    border-color: #2d3748;
+    border-radius: 8px;
+    width: 70px;
+    height: 70px;
+}
+
+.rt-photo--medical {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    border: 3px solid #319795;
+}
+
+/* Sidebar Avatar Images */
+.rt-avatar-img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin: 0 auto 0.5rem;
+    display: block;
+}
+
+.rt-avatar-img--developer {
+    border: 3px solid rgba(255, 255, 255, 0.3);
+}
+
+.rt-avatar-img--se {
+    width: 90px;
+    height: 90px;
+    border: 3px solid rgba(255, 255, 255, 0.2);
+    margin-bottom: 1rem;
+}
+
+.rt-avatar-img--creative {
+    width: 100px;
+    height: 100px;
+    border: 4px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Keep original header text centered when photo is present */
+.rt-header-text {
+    text-align: center;
+}
+
+/* ===========================
+   Medical Licenses Styles
+   =========================== */
+
+.rt-licenses {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.rt-license-item {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5rem;
+    background: rgba(49, 151, 149, 0.1);
+    border-radius: 6px;
+    border-left: 3px solid #319795;
+}
+
+.rt-license-type {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #319795;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.rt-license-number {
+    font-size: 0.85rem;
+    color: #1e293b;
+    font-weight: 500;
+}
+
+/* ===========================
+   Print Styles
+   =========================== */
+
+@media print {
+    .resume-template-wrapper {
+        box-shadow: none;
+        width: 100%;
+    }
+
+    .resume-template {
+        padding: 1.5rem;
+    }
+
+    .rt-photo,
+    .rt-avatar-img {
+        print-color-adjust: exact;
+        -webkit-print-color-adjust: exact;
+    }
+}

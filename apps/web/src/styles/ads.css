@@ -1,0 +1,123 @@
+/* ===========================
+   Google Ad Container Styles
+   =========================== */
+
+.google-ad-container {
+    margin: 1.5rem 0;
+    padding: 0.75rem;
+    background: var(--color-bg-secondary);
+    border-radius: 8px;
+    text-align: center;
+    min-height: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.google-ad-container::before {
+    content: 'Advertisement';
+    display: block;
+    font-size: 0.65rem;
+    color: var(--color-text-secondary);
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    opacity: 0.7;
+}
+
+/* Header Banner Ad */
+.ad-header {
+    margin: 0 0 2rem 0;
+    min-height: 90px;
+    max-height: 100px;
+}
+
+/* Between Sections Ad */
+.ad-between-sections {
+    margin: 2rem auto;
+    max-width: 728px;
+    min-height: 90px;
+}
+
+/* Sidebar Ad */
+.ad-sidebar {
+    position: sticky;
+    top: 1rem;
+    min-height: 250px;
+    width: 300px;
+    max-width: 100%;
+}
+
+/* In-content Ad */
+.ad-in-content {
+    margin: 1.5rem 0;
+    min-height: 250px;
+}
+
+/* Full-width Responsive Ad */
+.ad-responsive {
+    width: 100%;
+    max-width: 100%;
+}
+
+/* Footer Ad */
+.ad-footer {
+    margin-top: 2rem;
+    padding: 1rem;
+}
+
+/* Mobile Adjustments */
+@media (max-width: 768px) {
+    .google-ad-container {
+        margin: 1rem 0;
+        padding: 0.5rem;
+    }
+
+    .ad-header {
+        min-height: 50px;
+    }
+
+    .ad-sidebar {
+        position: static;
+        width: 100%;
+    }
+
+    .ad-between-sections {
+        min-height: 100px;
+    }
+}
+
+/* Dark Mode */
+[data-theme="dark"] .google-ad-container {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+/* Hide ads during print */
+@media print {
+    .google-ad-container {
+        display: none !important;
+    }
+}
+
+/* Ad placeholder (for development/testing) */
+.ad-placeholder {
+    background: linear-gradient(135deg, #f0f0f0 0%, #e0e0e0 100%);
+    border: 2px dashed #ccc;
+    color: #999;
+    font-size: 0.875rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 90px;
+}
+
+.ad-placeholder::before {
+    content: '📢 Ad Space';
+}
+
+[data-theme="dark"] .ad-placeholder {
+    background: linear-gradient(135deg, #2a2a2a 0%, #333 100%);
+    border-color: #555;
+    color: #777;
+}

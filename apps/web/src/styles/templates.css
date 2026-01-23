@@ -1,0 +1,221 @@
+/* Template Selector Styles */
+.template-selector {
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.template-selector-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: hsl(var(--foreground));
+    margin-bottom: 0.5rem;
+}
+
+.template-selector-subtitle {
+    font-size: 0.875rem;
+    color: hsl(var(--muted-foreground));
+    margin-bottom: 1.5rem;
+}
+
+.template-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.template-card {
+    position: relative;
+    background: hsl(var(--card));
+    border: 2px solid hsl(var(--border));
+    border-radius: 12px;
+    padding: 0;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    overflow: hidden;
+    text-align: left;
+}
+
+.template-card:hover {
+    border-color: var(--template-accent, hsl(var(--primary)));
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+}
+
+.template-card--selected {
+    border-color: var(--template-accent, hsl(var(--primary)));
+    box-shadow: 0 0 0 3px hsl(var(--primary) / 0.2);
+}
+
+/* Template Preview - Two Column Layout */
+.template-card-preview {
+    background: #f8f9fa;
+    aspect-ratio: 3 / 4;
+    overflow: hidden;
+    position: relative;
+}
+
+.template-card-preview--two-column {
+    display: flex;
+}
+
+.preview-sidebar {
+    width: 35%;
+    padding: 12px 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.preview-avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    margin: 0 auto 4px;
+}
+
+.preview-sidebar-lines {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.preview-sidebar-section {
+    margin-top: 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.preview-main {
+    flex: 1;
+    padding: 12px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Template Preview - Single Column Layout */
+.template-card-preview--single {
+    display: flex;
+    flex-direction: column;
+}
+
+.preview-header {
+    padding: 12px;
+    display: flex;
+    justify-content: center;
+}
+
+.preview-header-lines {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+.preview-body {
+    flex: 1;
+    padding: 8px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* Preview Lines */
+.preview-line {
+    height: 5px;
+    background: #d1d5db;
+    border-radius: 3px;
+    width: 100%;
+}
+
+.preview-line--light {
+    background: rgba(255, 255, 255, 0.5);
+}
+
+.preview-line--title {
+    height: 6px;
+    width: 50%;
+    margin-bottom: 2px;
+}
+
+.preview-line--short {
+    width: 60%;
+}
+
+.preview-line--medium {
+    width: 75%;
+}
+
+.preview-line--long {
+    width: 90%;
+}
+
+/* Preview Section */
+.preview-section {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+/* Template Card Info */
+.template-card-info {
+    padding: 1rem;
+    background: hsl(var(--card));
+    border-top: 1px solid hsl(var(--border));
+}
+
+.template-icon {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.template-name {
+    font-size: 1rem;
+    font-weight: 600;
+    color: hsl(var(--foreground));
+    margin: 0 0 0.25rem 0;
+}
+
+.template-description {
+    font-size: 0.75rem;
+    color: hsl(var(--muted-foreground));
+    margin: 0;
+    line-height: 1.4;
+}
+
+/* Selected Badge */
+.template-selected-badge {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 24px;
+    height: 24px;
+    background: var(--template-accent, hsl(var(--primary)));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    z-index: 10;
+}
+
+.template-selected-badge svg {
+    width: 14px;
+    height: 14px;
+}
+
+/* Dark mode adjustments */
+.dark .template-card-preview {
+    background: #1f2937;
+}
+
+.dark .preview-line {
+    background: #4b5563;
+}
+
+.dark .preview-line--light {
+    background: rgba(255, 255, 255, 0.3);
+}
