@@ -952,9 +952,26 @@
         padding: 1.5rem;
     }
 
+    /* Ensure all colors and backgrounds print */
+    .rt-header,
+    .rt-header--professional,
+    .rt-header--technical,
+    .rt-header--medical,
+    .rt-creative-hero,
+    .rt-sidebar--developer,
     .rt-photo,
-    .rt-avatar-img {
-        print-color-adjust: exact;
-        -webkit-print-color-adjust: exact;
+    .rt-avatar-img,
+    .rt-skill-tag,
+    .rt-exp-badge,
+    .rt-section--medical-highlight {
+        print-color-adjust: exact !important;
+        -webkit-print-color-adjust: exact !important;
+        color-adjust: exact !important;
+    }
+
+    /* Ensure gradients print */
+    * {
+        print-color-adjust: exact !important;
+        -webkit-print-color-adjust: exact !important;
     }
 }

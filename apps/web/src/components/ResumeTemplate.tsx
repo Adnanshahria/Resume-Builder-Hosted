@@ -399,14 +399,12 @@ const TechnicalTemplate: React.FC<TemplateProps> = ({ data, showPhoto }) => (
 const MedicalTemplate: React.FC<TemplateProps> = ({ data, showPhoto }) => (
     <div className="resume-template resume-template--medical">
         <header className="rt-header rt-header--medical">
-            {showPhoto && data.personalInfo.photo ? (
+            {showPhoto && data.personalInfo.photo && (
                 <img
                     src={data.personalInfo.photo}
                     alt={data.personalInfo.fullName}
                     className="rt-photo rt-photo--medical"
                 />
-            ) : (
-                <div className="rt-medical-icon">⚕</div>
             )}
             <div className="rt-header-text">
                 <h1 className="rt-name">{data.personalInfo.fullName || 'Dr. Name'}</h1>
@@ -503,16 +501,12 @@ const CreativeTemplate: React.FC<TemplateProps> = ({ data, showPhoto }) => (
                 <div className="rt-bg-circle rt-bg-circle--2"></div>
             </div>
             <div className="rt-creative-profile">
-                {showPhoto && data.personalInfo.photo ? (
+                {showPhoto && data.personalInfo.photo && (
                     <img
                         src={data.personalInfo.photo}
                         alt={data.personalInfo.fullName}
                         className="rt-avatar-img rt-avatar-img--creative"
                     />
-                ) : (
-                    <div className="rt-avatar rt-avatar--creative">
-                        {data.personalInfo.fullName?.charAt(0) || 'C'}
-                    </div>
                 )}
                 <h1 className="rt-name rt-name--creative">{data.personalInfo.fullName || 'Creative Name'}</h1>
                 <p className="rt-title rt-title--creative">{data.personalInfo.title || 'Creative Professional'}</p>
