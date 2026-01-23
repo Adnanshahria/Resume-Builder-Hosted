@@ -4,7 +4,7 @@ import { ResumeData, ExperienceItem } from "../types";
 const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
 // Using gemini-2.5-flash as requested by the user prompt for this specific task
-const MODEL_NAME = "gemini-2.5-flash"; 
+const MODEL_NAME = "gemini-2.5-flash";
 
 export const generateResumeSummary = async (data: ResumeData): Promise<string> => {
   if (!data.personalInfo.title && data.experience.length === 0) {
@@ -12,16 +12,15 @@ export const generateResumeSummary = async (data: ResumeData): Promise<string> =
   }
 
   const prompt = `
-    You are an expert resume writer. Write a professional, punchy, and modern executive summary (max 3-4 sentences) for a resume based on the following details.
+    You are an expert resume writer. Write a professional, punchy executive summary in EXACTLY 2 sentences (MAX 30 WORDS TOTAL).
     
     Job Title: ${data.personalInfo.title}
-    Skills: ${data.skills.join(", ")}
-    Experience Count: ${data.experience.length} roles
+    Skills: ${data.skills.slice(0, 5).join(", ")}
     
     Key Experience:
-    ${data.experience.map(e => `- ${e.role} at ${e.company}`).join("\n")}
+    ${data.experience.slice(0, 2).map(e => `- ${e.role} at ${e.company}`).join("\n")}
     
-    Do not use first person pronouns heavily. Focus on achievements and professional value.
+    BE SUPER MINIMAL. MAX 30 WORDS. No first person. Focus on value and impact.
   `;
 
   try {
@@ -45,13 +44,13 @@ export const enhanceExperienceDescription = async (item: ExperienceItem): Promis
   }
 
   const prompt = `
-    You are an expert resume writer. Enhance the following job description for a ${item.role} at ${item.company}. 
-    Convert it into 3-5 punchy, results-oriented bullet points using action verbs.
+    You are an expert resume writer. Enhance this job description for a ${item.role} at ${item.company}.
+    Generate 2-3 SHORT bullet points (MAX 10 WORDS EACH). Use strong action verbs.
     
-    Current Description (might be empty or basic):
+    Current Description:
     "${item.description}"
     
-    Return ONLY the bullet points, starting each with a bullet character (•). Do not add introductory text.
+    BE SUPER MINIMAL. Each bullet MAX 10 words. Start each with •. No filler words.
   `;
 
   try {

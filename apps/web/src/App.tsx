@@ -81,7 +81,7 @@ export default function App() {
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           <div className="flex items-center gap-2 font-bold text-xl">
             <LayoutTemplate className="w-6 h-6 text-primary" />
-            <span>Freemium Resume</span>
+            <span>FreeMium Resume</span>
           </div>
           <div className="flex items-center gap-2">
             <Button
@@ -95,16 +95,6 @@ export default function App() {
             </Button>
             <Button variant="outline" size="sm" onClick={() => setData(INITIAL_DATA)}>
               Clear
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => downloadLatex(data, data.personalInfo.fullName?.replace(/\s+/g, '_') || 'resume')}
-              className="gap-2"
-              title="Download LaTeX (.tex) file for ATS-friendly PDF"
-            >
-              <FileText className="w-4 h-4" />
-              <span className="hidden sm:inline">LaTeX</span>
             </Button>
             <Button onClick={handlePrint} size="sm" className="gap-2">
               <Printer className="w-4 h-4" />

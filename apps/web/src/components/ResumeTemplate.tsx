@@ -1,7 +1,6 @@
 import React from 'react';
 import { ResumeData } from '../types';
 import { TemplateType } from '../lib/templates';
-import { GitHubIcon, LinkedInIcon, EmailIcon, PhoneIcon, LocationIcon, GlobeIcon } from './PlatformIcons';
 
 interface ResumeTemplateProps {
     data: ResumeData;

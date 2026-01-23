@@ -1,6 +1,6 @@
 import React from 'react';
 import { ResumeData } from '../types';
-import { MapPin, Mail, Phone, Linkedin, ExternalLink } from 'lucide-react';
+import { MapPin, Mail, Phone, Linkedin } from 'lucide-react';
 
 interface ResumePreviewProps {
   data: ResumeData;
@@ -9,17 +9,17 @@ interface ResumePreviewProps {
 
 export const ResumePreview: React.FC<ResumePreviewProps> = ({ data, scale = 1 }) => {
   return (
-    <div 
+    <div
       className="bg-white text-black shadow-2xl mx-auto origin-top transition-transform duration-200"
-      style={{ 
-        width: '210mm', 
+      style={{
+        width: '210mm',
         minHeight: '297mm',
         transform: `scale(${scale})`,
-        marginBottom: `-${(1 - scale) * 297}mm` 
+        marginBottom: `-${(1 - scale) * 297}mm`
       }}
     >
       <div className="p-10 h-full flex flex-col gap-6">
-        
+
         {/* Header */}
         <header className="border-b-2 border-gray-800 pb-6">
           <h1 className="text-4xl font-bold uppercase tracking-wide text-gray-900 mb-2">
@@ -28,7 +28,7 @@ export const ResumePreview: React.FC<ResumePreviewProps> = ({ data, scale = 1 })
           <p className="text-xl text-gray-600 font-medium mb-4">
             {data.personalInfo.title || 'Professional Title'}
           </p>
-          
+
           <div className="flex flex-wrap gap-4 text-sm text-gray-600">
             {data.personalInfo.email && (
               <div className="flex items-center gap-1">
@@ -93,16 +93,16 @@ export const ResumePreview: React.FC<ResumePreviewProps> = ({ data, scale = 1 })
             </div>
           </section>
         )}
-        
+
         {/* Footer / Skills (Static example for structure) */}
-         <section>
-            <h2 className="text-sm font-bold uppercase tracking-wider text-gray-800 border-b border-gray-300 mb-3 pb-1">
-              Skills
-            </h2>
-            <div className="text-sm text-gray-700 leading-relaxed">
-             {data.skills.length > 0 ? data.skills.join(" • ") : "Add skills to see them here..."}
-            </div>
-          </section>
+        <section>
+          <h2 className="text-sm font-bold uppercase tracking-wider text-gray-800 border-b border-gray-300 mb-3 pb-1">
+            Skills
+          </h2>
+          <div className="text-sm text-gray-700 leading-relaxed">
+            {data.skills.length > 0 ? data.skills.join(" • ") : "Add skills to see them here..."}
+          </div>
+        </section>
       </div>
     </div>
   );

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ResumeData, ExperienceItem, EducationItem } from '../types';
+import { ResumeData, ExperienceItem } from '../types';
 import { Plus, Trash2, Wand2, Sparkles, ChevronDown, ChevronUp } from 'lucide-react';
 import { Button } from './ui/Button';
 import { PhotoUpload } from './PhotoUpload';
