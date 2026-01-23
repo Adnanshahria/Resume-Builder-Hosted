@@ -4,7 +4,7 @@ import { ResumeForm } from './components/ResumeForm';
 import { ResumeTemplate } from './components/ResumeTemplate';
 import { TemplateSelector } from './components/TemplateSelector';
 import { TemplateType } from './lib/templates';
-import { LayoutTemplate, Printer, Palette } from 'lucide-react';
+import { Printer, Palette } from 'lucide-react';
 import { Button } from './components/ui/Button';
 import { ToggleSwitch } from './components/ui/ToggleSwitch';
 
@@ -80,7 +80,7 @@ export default function App() {
       <nav className="border-b border-border bg-card/50 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 no-print">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           <div className="flex items-center gap-2 font-bold text-xl">
-            <LayoutTemplate className="w-6 h-6 text-primary" />
+            <img src="/icon-512.png" alt="FreeMium Resume" className="w-8 h-8" />
             <span>FreeMium Resume</span>
           </div>
           <div className="flex items-center gap-2">

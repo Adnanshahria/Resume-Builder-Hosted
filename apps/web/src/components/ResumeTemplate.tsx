@@ -92,16 +92,12 @@ const DeveloperTemplate: React.FC<TemplateProps> = ({ data, showPhoto }) => (
     <div className="resume-template resume-template--developer">
         <div className="rt-sidebar rt-sidebar--developer">
             <div className="rt-profile">
-                {showPhoto && data.personalInfo.photo ? (
+                {showPhoto && data.personalInfo.photo && (
                     <img
                         src={data.personalInfo.photo}
                         alt={data.personalInfo.fullName}
                         className="rt-avatar-img rt-avatar-img--developer"
                     />
-                ) : (
-                    <div className="rt-avatar rt-avatar--developer">
-                        {data.personalInfo.fullName?.charAt(0) || 'D'}
-                    </div>
                 )}
                 <h1 className="rt-name rt-name--developer">{data.personalInfo.fullName || 'Developer Name'}</h1>
                 <p className="rt-title rt-title--developer">{data.personalInfo.title || 'Software Developer'}</p>
