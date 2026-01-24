@@ -174,7 +174,8 @@ export const generateLatexResume = (data: ResumeData): string => {
   const contactParts: string[] = [];
 
   if (personalInfo.phone) {
-    contactParts.push(`\\textbf{Phone:} ${escapeLatex(personalInfo.phone)}`);
+    const phoneNumber = personalInfo.phone.replace(/[^+\d]/g, '');
+    contactParts.push(`\\textbf{Phone:} \\href{tel:${phoneNumber}}{\\underline{${escapeLatex(personalInfo.phone)}}}`);
   }
   if (personalInfo.email) {
     contactParts.push(`\\textbf{Mail:} \\href{mailto:${personalInfo.email}}{\\underline{${escapeLatex(personalInfo.email)}}}`);
@@ -219,7 +220,7 @@ export const generateLatexResume = (data: ResumeData): string => {
   }
 
   if (competitiveParts.length > 0) {
-    latex += `    \\\\ \\small ${competitiveParts.join(' $|$ ')}\n`;
+    latex += `    \\\\ \\footnotesize ${competitiveParts.join(' $|$ ')}\n`;
   }
 
   latex += `    \\vspace{-8pt}
