@@ -148,7 +148,12 @@ const TechTemplate: React.FC<TemplateProps> = ({ data }) => {
                     <div className="rt-contact rt-contact--tech">
                         {data.personalInfo.leetcode && (
                             <a href={data.personalInfo.leetcode.startsWith('http') ? data.personalInfo.leetcode : `https://${data.personalInfo.leetcode}`} className="rt-contact-link--tech" target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: '3px' }}>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="#FFA116"><path d="M13.483 0a1.374 1.374 0 0 0-.961.438L7.116 6.226l-3.854 4.126a5.266 5.266 0 0 0-1.209 2.104 5.35 5.35 0 0 0-.125.513 5.527 5.527 0 0 0 .062 2.362 5.83 5.83 0 0 0 .349 1.017 5.938 5.938 0 0 0 1.120 1.632l4.111 4.111a5.982 5.982 0 0 0 2.025 1.348 5.926 5.926 0 0 0 2.307.46 5.95 5.95 0 0 0 2.307-.46 5.982 5.982 0 0 0 2.025-1.348l4.111-4.111a5.897 5.897 0 0 0 1.469-2.649 5.527 5.527 0 0 0 .062-2.362 5.35 5.35 0 0 0-.125-.513 5.266 5.266 0 0 0-1.209-2.104l-3.854-4.126L14.444.438A1.374 1.374 0 0 0 13.483 0zm-2.866 12.815a1.205 1.205 0 0 1 1.215 1.215v5.940a1.205 1.205 0 0 1-2.410 0v-5.940a1.205 1.205 0 0 1 1.195-1.215z" /></svg>
+                                {/* LeetCode Logo - Black & Orange C shape */}
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24">
+                                    <path fill="#B3B1B0" d="M22 14.355c0-.742-.564-1.346-1.26-1.346H10.676c-.696 0-1.26.604-1.26 1.346s.563 1.346 1.26 1.346H20.74c.696.001 1.26-.603 1.26-1.346z" />
+                                    <path fill="#E7A41F" d="m3.482 18.187 4.313 4.361c.973.979 2.318 1.452 3.803 1.452 1.485 0 2.83-.512 3.805-1.494l2.588-2.637c.51-.514.492-1.365-.039-1.9-.531-.535-1.375-.553-1.884-.039l-2.676 2.607c-.462.467-1.102.662-1.809.662s-1.346-.195-1.81-.662l-4.298-4.363c-.463-.467-.696-1.15-.696-1.863 0-.713.233-1.357.696-1.824l4.285-4.38c.463-.467 1.116-.645 1.822-.645s1.346.195 1.809.662l2.676 2.606c.51.515 1.354.497 1.885-.038.531-.536.549-1.387.039-1.901l-2.588-2.636a5.055 5.055 0 0 0-3.805-1.494c-1.485 0-2.83.512-3.803 1.494L3.482 10.476C2.509 11.458 2 12.813 2 14.311c0 1.498.509 2.896 1.482 3.876z" />
+                                    <path fill="#070706" d="M8.115 22.814a2.109 2.109 0 0 1-.474-.361c-1.327-1.333-2.647-2.672-3.97-4.008-.626-.63-.897-1.418-.897-2.223 0-.77.242-1.561.897-2.246l4.56-4.567a1.06 1.06 0 0 0 .015-1.49 1.046 1.046 0 0 0-1.481-.009L2.183 12.502c-.975.977-1.468 2.254-1.468 3.498 0 1.244.493 2.52 1.468 3.497l3.97 4.015c.975.974 2.25 1.468 3.491 1.468.039 0 .078-.001.117-.003a1.048 1.048 0 0 0-.646-2.163z" />
+                                </svg>
                                 {extractUsername(data.personalInfo.leetcode)}{data.personalInfo.leetcodeRating ? ` (${data.personalInfo.leetcodeRating})` : ''}
                             </a>
                         )}
@@ -156,7 +161,12 @@ const TechTemplate: React.FC<TemplateProps> = ({ data }) => {
                             <>
                                 {data.personalInfo.leetcode && <span className="rt-separator">|</span>}
                                 <a href={data.personalInfo.codeforces.startsWith('http') ? data.personalInfo.codeforces : `https://${data.personalInfo.codeforces}`} className="rt-contact-link--tech" target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: '3px' }}>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="#1F8ACB"><path d="M4.5 7.5C5.328 7.5 6 8.172 6 9v10.5c0 .828-.672 1.5-1.5 1.5h-3C.672 21 0 20.328 0 19.5V9c0-.828.672-1.5 1.5-1.5h3zm9-7.5c.828 0 1.5.672 1.5 1.5v18c0 .828-.672 1.5-1.5 1.5h-3c-.828 0-1.5-.672-1.5-1.5v-18c0-.828.672-1.5 1.5-1.5h3zm9 9c.828 0 1.5.672 1.5 1.5v9c0 .828-.672 1.5-1.5 1.5h-3c-.828 0-1.5-.672-1.5-1.5v-9c0-.828.672-1.5 1.5-1.5h3z" /></svg>
+                                    {/* Codeforces Logo - 3 colored bars (blue, yellow, red) */}
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24">
+                                        <path fill="#F44336" d="M0 10h4.8v10H0z" />
+                                        <path fill="#FFC107" d="M6.4 6h4.8v14H6.4z" />
+                                        <path fill="#2196F3" d="M12.8 0h4.8v20h-4.8z" />
+                                    </svg>
                                     {extractUsername(data.personalInfo.codeforces)}{data.personalInfo.codeforcesRating ? ` (${data.personalInfo.codeforcesRating})` : ''}
                                 </a>
                             </>
@@ -165,7 +175,15 @@ const TechTemplate: React.FC<TemplateProps> = ({ data }) => {
                             <>
                                 {(data.personalInfo.leetcode || data.personalInfo.codeforces) && <span className="rt-separator">|</span>}
                                 <a href={data.personalInfo.codechef.startsWith('http') ? data.personalInfo.codechef : `https://${data.personalInfo.codechef}`} className="rt-contact-link--tech" target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: '3px' }}>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="#5B4638"><circle cx="12" cy="7" r="5" /><path d="M5 20c0-4 3-7 7-7s7 3 7 7" /></svg>
+                                    {/* CodeChef Logo - Chef hat */}
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24">
+                                        <ellipse cx="12" cy="6" rx="8" ry="4" fill="#F5E6D3" />
+                                        <path d="M4 6c0 2.2 3.6 4 8 4s8-1.8 8-4" fill="#E8D4BC" />
+                                        <path d="M6 10v8c0 2 2.7 4 6 4s6-2 6-4v-8" fill="#5D4037" />
+                                        <circle cx="9" cy="14" r="1" fill="#3E2723" />
+                                        <circle cx="15" cy="14" r="1" fill="#3E2723" />
+                                        <path d="M10 17c0 0 1 1 2 1s2-1 2-1" stroke="#3E2723" fill="none" strokeWidth="0.5" />
+                                    </svg>
                                     {extractUsername(data.personalInfo.codechef)}{data.personalInfo.codechefRating ? ` (${data.personalInfo.codechefRating})` : ''}
                                 </a>
                             </>
