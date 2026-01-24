@@ -212,7 +212,7 @@ export default function App() {
                 onClick={handleDownloadPDF}
                 disabled={exportingPDF}
                 className="p-2 rounded-lg bg-green-600 text-white hover:bg-green-700 transition-all disabled:opacity-50"
-                title="Download PDF (Visual - not ATS friendly)"
+                title="Download PDF with clickable links"
               >
                 <Download className={`w-4 h-4 ${exportingPDF ? 'animate-pulse' : ''}`} />
               </button>
@@ -281,7 +281,7 @@ export default function App() {
               onClick={handleDownloadPDF}
               disabled={exportingPDF}
               className="px-2 py-1.5 rounded-lg bg-green-600 text-white hover:bg-green-700 transition-all flex items-center gap-1 text-sm font-medium disabled:opacity-50"
-              title="Download PDF"
+              title="Download PDF with clickable links"
             >
               <Download className={`w-4 h-4 ${exportingPDF ? 'animate-pulse' : ''}`} />
               PDF

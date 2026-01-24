@@ -159,3 +159,33 @@ Accomplished Full-Stack Engineer with 5+ years of experience at top tech compani
 - Operating Systems
 - Software Engineering
 - Cloud Computing
+
+---
+
+## Vocational Certifications
+
+### Entry 1
+| Field | Value |
+|-------|-------|
+| **Name** | Complete Web Development Bootcamp |
+| **Provider** | Programming Hero |
+| **Date** | 2023-08 |
+| **Credential URL** | https://programming-hero.com/cert/abc123 |
+| **Description** | • Mastered full-stack web development with MERN stack<br>• Built 15+ real-world projects including e-commerce platform<br>• Learned modern DevOps practices with Docker and AWS |
+
+### Entry 2
+| Field | Value |
+|-------|-------|
+| **Name** | Advanced React & Next.js Course |
+| **Provider** | Udemy |
+| **Date** | 2023-03 |
+| **Credential URL** | https://udemy.com/certificate/xyz789 |
+| **Description** | • Developed advanced React patterns and performance optimization techniques<br>• Built server-side rendered applications with Next.js<br>• Implemented authentication, state management, and API integration |
+
+### Entry 3
+| Field | Value |
+|-------|-------|
+| **Name** | Python for Data Science |
+| **Provider** | CoderVhai |
+| **Date** | 2022-11 |
+| **Description** | • Learned data analysis with Pandas and NumPy<br>• Built machine learning models using Scikit-learn<br>• Created data visualizations with Matplotlib and Seaborn |

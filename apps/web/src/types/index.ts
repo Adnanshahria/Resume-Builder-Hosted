@@ -84,14 +84,26 @@ export interface ProjectItem {
     github?: string;
 }
 
+// Vocational Certifications - courses from online/offline platforms
+export interface VocationalCertificationItem {
+    id?: string;
+    name: string;                    // Certificate/Course name
+    provider: string;                // Provider (e.g., Programming Hero, CoderVhai, Udemy)
+    date?: string;                   // Completion date
+    description?: string;            // What they learned
+    credentialUrl?: string;          // Link to certificate
+}
+
 export interface ResumeData {
     personalInfo: PersonalInfo;
     summary: string;
     experience: ExperienceItem[];
     education: EducationItem[];
     skills: string[];
-    certifications?: CertificationItem[];  // Optional for some templates
-    projects?: ProjectItem[];              // For developer/tech templates
+    coursework?: string[];                              // Relevant coursework for tech templates
+    certifications?: CertificationItem[];              // Leadership/Extracurricular for some templates
+    projects?: ProjectItem[];                          // For developer/tech templates
+    vocationalCertifications?: VocationalCertificationItem[];  // Online/offline course certifications
 }
 
 // Template type (re-exported from lib/templates for convenience)
