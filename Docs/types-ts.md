@@ -120,6 +120,58 @@ export enum GeneratorType {
 | `SUMMARY` | Generate professional summary |
 | `EXPERIENCE` | Enhance experience descriptions |
 
+---
+
+### 5. AchievementItem Interface (NEW)
+
+```typescript
+export interface AchievementItem {
+  id?: string;
+  title: string;
+  organization?: string;
+  date?: string;
+  description?: string;
+}
+```
+
+**Achievement entry:**
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `id` | `string` | Unique identifier |
+| `title` | `string` | Achievement name |
+| `organization` | `string` | Organizer/institution |
+| `date` | `string` | When achieved |
+| `description` | `string` | Details |
+
+---
+
+### 6. ExtracurricularItem Interface (NEW)
+
+```typescript
+export interface ExtracurricularItem {
+  id?: string;
+  role: string;
+  organization: string;
+  startDate?: string;
+  endDate?: string;
+  isCurrent?: boolean;
+  description?: string;
+}
+```
+
+**Extracurricular entry:**
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `id` | `string` | Unique identifier |
+| `role` | `string` | Position held (e.g., "Vice-President") |
+| `organization` | `string` | Club/committee name |
+| `startDate` | `string` | Start month (YYYY-MM format) |
+| `endDate` | `string` | End month (YYYY-MM format) |
+| `isCurrent` | `boolean` | If currently active |
+| `description` | `string` | Bullet-point achievements |
+
 ## Usage Examples
 
 ### Creating Resume Data

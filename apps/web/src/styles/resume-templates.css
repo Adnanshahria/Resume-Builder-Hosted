@@ -245,6 +245,8 @@
     margin-top: 2pt;
     margin-bottom: 4pt;
     line-height: 1.6;
+    white-space: nowrap;
+    /* Keep all items on one line */
 }
 
 .rt-contact--tech a,
@@ -507,6 +509,13 @@
 /* Projects - Name | Tech Stack format */
 .rt-project-item--tech {
     margin-bottom: 8pt;
+}
+
+.rt-project-header--tech {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    width: 100%;
 }
 
 .rt-project-row {

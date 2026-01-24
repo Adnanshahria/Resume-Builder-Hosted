@@ -41,31 +41,20 @@ const formatLatexDate = (date: string): string => {
   return date;
 };
 
-// Categorize skills for technical skills section
-const categorizeSkills = (allSkills: string[]) => {
-  const languages = allSkills.filter(s =>
-    /python|java|javascript|typescript|c\+\+|c#|ruby|go|rust|php|swift|kotlin|dart|sql|html|css/i.test(s)
-  );
-  const tools = allSkills.filter(s =>
-    /vs code|eclipse|android studio|xcode|git|docker|kubernetes|jenkins|jira|figma|postman/i.test(s)
-  );
-  const frameworks = allSkills.filter(s =>
-    /react|angular|vue|node|express|django|flask|spring|flutter|next|tailwind|bootstrap/i.test(s)
-  );
-  const other = allSkills.filter(s =>
-    !languages.includes(s) && !tools.includes(s) && !frameworks.includes(s)
-  );
-
-  return { languages, tools, frameworks, other };
+// Extract username from URL
+const extractUsername = (url: string, patterns: RegExp[]): string => {
+  let result = url;
+  for (const pattern of patterns) {
+    result = result.replace(pattern, '');
+  }
+  return result.replace(/\/$/, '').split('/')[0] || url;
 };
 
 // Generate LaTeX document using Jake Gutierrez's ATS-friendly template
 export const generateLatexResume = (data: ResumeData): string => {
-  const { personalInfo, summary, experience, education, skills, projects, certifications } = data;
+  const { personalInfo, summary, experience, education, skills, skillsData, projects, vocationalCertifications, achievements, extracurricular, showDeclaration } = data;
 
   logger.info('LatexService', 'Generating LaTeX resume', { name: personalInfo.fullName });
-
-  const skillCategories = categorizeSkills(skills);
 
   // Build sections
   let latex = `%-------------------------
@@ -181,27 +170,72 @@ export const generateLatexResume = (data: ResumeData): string => {
     latex += `    ${escapeLatex(personalInfo.location)} \\\\ \\vspace{1pt}\n`;
   }
 
-  // Contact info line
-  latex += `    \\small `;
+  // Contact info line 1: Phone, Email, GitHub, LinkedIn (text labels with pipe separators)
+  const contactParts: string[] = [];
+
   if (personalInfo.phone) {
-    latex += `\\raisebox{-0.1\\height}\\faPhone\\ ${escapeLatex(personalInfo.phone)} ~ `;
+    contactParts.push(`\\textbf{Phone:} ${escapeLatex(personalInfo.phone)}`);
   }
   if (personalInfo.email) {
-    latex += `\\href{mailto:${personalInfo.email}}{\\raisebox{-0.2\\height}\\faEnvelope\\  \\underline{${escapeLatex(personalInfo.email)}}} ~ `;
-  }
-  if (personalInfo.linkedin) {
-    const linkedinClean = personalInfo.linkedin.replace(/^https?:\/\//, '');
-    latex += `\\href{https://${linkedinClean}}{\\raisebox{-0.2\\height}\\faLinkedin\\ \\underline{${escapeLatex(linkedinClean)}}} ~ `;
+    contactParts.push(`\\textbf{Mail:} \\href{mailto:${personalInfo.email}}{\\underline{${escapeLatex(personalInfo.email)}}}`);
   }
   if (personalInfo.github) {
-    const githubClean = personalInfo.github.replace(/^https?:\/\//, '');
-    latex += `\\href{https://${githubClean}}{\\raisebox{-0.2\\height}\\faGithub\\ \\underline{${escapeLatex(githubClean)}}}`;
+    const ghUser = personalInfo.githubUsername || extractUsername(personalInfo.github, [/^https?:\/\/(www\.)?github\.com\//]);
+    const ghUrl = personalInfo.github.startsWith('http') ? personalInfo.github : `https://github.com/${personalInfo.github}`;
+    contactParts.push(`\\textbf{GitHub:} \\href{${ghUrl}}{\\underline{@${escapeLatex(ghUser)}}}`);
   }
-  latex += `
-    \\vspace{-8pt}
+  if (personalInfo.linkedin) {
+    const liUser = personalInfo.linkedinUsername || extractUsername(personalInfo.linkedin, [/^https?:\/\/(www\.)?linkedin\.com\/in\//]);
+    const liUrl = personalInfo.linkedin.startsWith('http') ? personalInfo.linkedin : `https://linkedin.com/in/${personalInfo.linkedin}`;
+    contactParts.push(`\\textbf{LinkedIn:} \\href{${liUrl}}{\\underline{@${escapeLatex(liUser)}}}`);
+  }
+
+  if (contactParts.length > 0) {
+    latex += `    \\small ${contactParts.join(' $|$ ')}\n`;
+  }
+
+  // Contact info line 2: Competitive programming profiles (text labels with pipe separators)
+  const competitiveParts: string[] = [];
+
+  if (personalInfo.leetcode) {
+    const lcUser = personalInfo.leetcodeUsername || extractUsername(personalInfo.leetcode, [/^https?:\/\/(www\.)?leetcode\.com\/(u\/)?/]);
+    const lcRating = personalInfo.leetcodeRating ? ` (${personalInfo.leetcodeRating})` : '';
+    competitiveParts.push(`\\textbf{LeetCode:} \\href{https://leetcode.com/u/${lcUser}}{\\underline{@${escapeLatex(lcUser)}${escapeLatex(lcRating)}}}`);
+  }
+  if (personalInfo.codeforces) {
+    const cfUser = personalInfo.codeforcesUsername || extractUsername(personalInfo.codeforces, [/^https?:\/\/(www\.)?codeforces\.com\/profile\//]);
+    const cfRating = personalInfo.codeforcesRating ? ` (${personalInfo.codeforcesRating})` : '';
+    competitiveParts.push(`\\textbf{Codeforces:} \\href{https://codeforces.com/profile/${cfUser}}{\\underline{@${escapeLatex(cfUser)}${escapeLatex(cfRating)}}}`);
+  }
+  if (personalInfo.codechef) {
+    const ccUser = personalInfo.codechefUsername || extractUsername(personalInfo.codechef, [/^https?:\/\/(www\.)?codechef\.com\/users\//]);
+    const ccRating = personalInfo.codechefRating ? ` (${personalInfo.codechefRating})` : '';
+    competitiveParts.push(`\\textbf{CodeChef:} \\href{https://www.codechef.com/users/${ccUser}}{\\underline{@${escapeLatex(ccUser)}${escapeLatex(ccRating)}}}`);
+  }
+  if (personalInfo.website) {
+    const wsDisplay = personalInfo.website.replace(/^https?:\/\//, '');
+    const wsUrl = personalInfo.website.startsWith('http') ? personalInfo.website : `https://${personalInfo.website}`;
+    competitiveParts.push(`\\textbf{Portfolio:} \\href{${wsUrl}}{\\underline{${escapeLatex(wsDisplay)}}}`);
+  }
+
+  if (competitiveParts.length > 0) {
+    latex += `    \\\\ \\small ${competitiveParts.join(' $|$ ')}\n`;
+  }
+
+  latex += `    \\vspace{-8pt}
 \\end{center}
 
 `;
+
+  // Summary section
+  if (summary) {
+    latex += `%-----------SUMMARY-----------
+\\section{Summary}
+\\small{${escapeLatex(summary)}}
+\\vspace{-5pt}
+
+`;
+  }
 
   // Education section
   if (education.length > 0) {
@@ -223,12 +257,71 @@ export const generateLatexResume = (data: ResumeData): string => {
 `;
   }
 
-  // Summary section
-  if (summary) {
-    latex += `%-----------SUMMARY-----------
-\\section{Professional Summary}
-\\small{${escapeLatex(summary)}}
-\\vspace{-5pt}
+  // Vocational Certifications section
+  if (vocationalCertifications && vocationalCertifications.length > 0) {
+    latex += `%-----------VOCATIONAL CERTIFICATIONS-----------
+\\section{Vocational Certifications}
+  \\resumeSubHeadingListStart
+`;
+    for (const cert of vocationalCertifications) {
+      const dateText = cert.date ? formatLatexDate(cert.date) : '';
+      latex += `    \\resumeSubheading
+      {${escapeLatex(cert.name)}}{${dateText}}
+      {\\textit{${escapeLatex(cert.provider)}}}{}
+`;
+      if (cert.description) {
+        latex += `      \\resumeItemListStart\n`;
+        const lines = cert.description.split('\n').filter(line => line.trim());
+        for (const line of lines) {
+          const cleanLine = line.replace(/^[•\-]\s*/, '');
+          latex += `        \\resumeItem{${escapeLatex(cleanLine)}}\n`;
+        }
+        latex += `      \\resumeItemListEnd\n`;
+      }
+    }
+    latex += `  \\resumeSubHeadingListEnd
+
+`;
+  }
+
+  // Skills section - use skillsData if available, otherwise fall back to skills array
+  const hasSkillsData = skillsData && Object.values(skillsData).some(arr => arr && arr.length > 0);
+
+  if (hasSkillsData || skills.length > 0) {
+    latex += `%-----------TECHNICAL SKILLS-----------
+\\section{Skills}
+ \\begin{itemize}[leftmargin=0.15in, label={}]
+    \\small{\\item{
+`;
+    if (hasSkillsData) {
+      if (skillsData?.coursework && skillsData.coursework.length > 0) {
+        latex += `     \\textbf{Coursework}{: ${escapeLatex(skillsData.coursework.join(', '))}} \\\\\n`;
+      }
+      if (skillsData?.programmingLanguages && skillsData.programmingLanguages.length > 0) {
+        latex += `     \\textbf{Programming Languages}{: ${escapeLatex(skillsData.programmingLanguages.join(', '))}} \\\\\n`;
+      }
+      if (skillsData?.webTechnologies && skillsData.webTechnologies.length > 0) {
+        latex += `     \\textbf{Web Technologies}{: ${escapeLatex(skillsData.webTechnologies.join(', '))}} \\\\\n`;
+      }
+      if (skillsData?.databases && skillsData.databases.length > 0) {
+        latex += `     \\textbf{Databases}{: ${escapeLatex(skillsData.databases.join(', '))}} \\\\\n`;
+      }
+      if (skillsData?.tools && skillsData.tools.length > 0) {
+        latex += `     \\textbf{Tools}{: ${escapeLatex(skillsData.tools.join(', '))}} \\\\\n`;
+      }
+      if (skillsData?.languages && skillsData.languages.length > 0) {
+        latex += `     \\textbf{Languages}{: ${escapeLatex(skillsData.languages.join(', '))}} \\\\\n`;
+      }
+      if (skillsData?.interests && skillsData.interests.length > 0) {
+        latex += `     \\textbf{Interests}{: ${escapeLatex(skillsData.interests.join(', '))}}\n`;
+      }
+    } else {
+      // Fallback to flat skills array
+      latex += `     \\textbf{Skills}{: ${escapeLatex(skills.join(', '))}}\n`;
+    }
+    latex += `    }}
+ \\end{itemize}
+ \\vspace{-5pt}
 
 `;
   }
@@ -271,9 +364,16 @@ export const generateLatexResume = (data: ResumeData): string => {
 `;
     for (const project of projects) {
       const techStack = (project.techStack || []).join(', ');
-      const linkLabel = project.github ? 'GitHub' : (project.link ? 'Live' : '');
+      let links = '';
+      if (project.github) {
+        links += `\\href{${project.github}}{\\underline{GitHub}}`;
+      }
+      if (project.link) {
+        if (links) links += ' $|$ ';
+        links += `\\href{${project.link}}{\\underline{Visit Site}}`;
+      }
       latex += `      \\resumeProjectHeading
-          {\\textbf{${escapeLatex(project.name)}} $|$ \\emph{${escapeLatex(techStack)}}}{${linkLabel}}
+          {\\textbf{${escapeLatex(project.name)}} $|$ \\emph{${escapeLatex(techStack)}}}{${links}}
 `;
       if (project.description) {
         latex += `          \\resumeItemListStart\n`;
@@ -287,53 +387,75 @@ export const generateLatexResume = (data: ResumeData): string => {
       }
     }
     latex += `    \\resumeSubHeadingListEnd
-\\vspace{-15pt}
+\\vspace{-5pt}
 
 `;
   }
 
-  // Technical Skills section
-  if (skills.length > 0) {
-    latex += `%-----------TECHNICAL SKILLS-----------
-\\section{Technical Skills}
- \\begin{itemize}[leftmargin=0.15in, label={}]
-    \\small{\\item{
+  // Achievements section
+  if (achievements && achievements.length > 0) {
+    latex += `%-----------ACHIEVEMENTS-----------
+\\section{Achievements}
+  \\resumeSubHeadingListStart
 `;
-    if (skillCategories.languages.length > 0) {
-      latex += `     \\textbf{Languages}{: ${escapeLatex(skillCategories.languages.join(', '))}} \\\\\n`;
+    for (const ach of achievements) {
+      const dateText = ach.date ? formatLatexDate(ach.date) : '';
+      const org = ach.organization ? escapeLatex(ach.organization) : '';
+      latex += `    \\resumeSubheading
+      {${escapeLatex(ach.title)}}{${dateText}}
+      {\\textit{${org}}}{}
+`;
+      if (ach.description) {
+        latex += `      \\resumeItemListStart\n`;
+        const lines = ach.description.split('\n').filter(line => line.trim());
+        for (const line of lines) {
+          const cleanLine = line.replace(/^[•\-]\s*/, '');
+          latex += `        \\resumeItem{${escapeLatex(cleanLine)}}\n`;
+        }
+        latex += `      \\resumeItemListEnd\n`;
+      }
     }
-    if (skillCategories.tools.length > 0) {
-      latex += `     \\textbf{Developer Tools}{: ${escapeLatex(skillCategories.tools.join(', '))}} \\\\\n`;
-    }
-    if (skillCategories.frameworks.length > 0) {
-      latex += `     \\textbf{Technologies/Frameworks}{: ${escapeLatex(skillCategories.frameworks.join(', '))}} \\\\\n`;
-    }
-    if (skillCategories.other.length > 0) {
-      latex += `     \\textbf{Other Skills}{: ${escapeLatex(skillCategories.other.join(', '))}}\n`;
-    }
-    latex += `    }}
- \\end{itemize}
- \\vspace{-16pt}
+    latex += `  \\resumeSubHeadingListEnd
 
 `;
   }
 
-  // Certifications section
-  if (certifications && certifications.length > 0) {
-    latex += `%-----------CERTIFICATIONS-----------
-\\section{Certifications}
-    \\resumeSubHeadingListStart
+  // Extracurricular Activities section
+  if (extracurricular && extracurricular.length > 0) {
+    latex += `%-----------EXTRACURRICULAR ACTIVITIES-----------
+\\section{Extracurricular Activities}
+  \\resumeSubHeadingListStart
 `;
-    for (const cert of certifications) {
-      const dateText = cert.date ? formatLatexDate(cert.date) : '';
-      const issuerText = cert.issuer ? escapeLatex(cert.issuer) : '';
-      const idText = cert.credentialId ? `ID: ${escapeLatex(cert.credentialId)}` : '';
-      latex += `        \\resumeSubheading
-          {${escapeLatex(cert.name)}}{${dateText}}
-          {${issuerText}}{${idText}}
+    for (const ext of extracurricular) {
+      const startDate = ext.startDate ? formatLatexDate(ext.startDate) : '';
+      const endDate = ext.isCurrent ? 'Present' : (ext.endDate ? formatLatexDate(ext.endDate) : '');
+      const dateRange = startDate ? `${startDate} -- ${endDate}` : endDate;
+
+      latex += `    \\resumeSubheading
+      {${escapeLatex(ext.organization)}}{${dateRange}}
+      {${escapeLatex(ext.role)}}{}
 `;
+      if (ext.description) {
+        latex += `      \\resumeItemListStart\n`;
+        const lines = ext.description.split('\n').filter(line => line.trim());
+        for (const line of lines) {
+          const cleanLine = line.replace(/^[•\-]\s*/, '');
+          latex += `        \\resumeItem{${escapeLatex(cleanLine)}}\n`;
+        }
+        latex += `      \\resumeItemListEnd\n`;
+      }
     }
-    latex += `    \\resumeSubHeadingListEnd
+    latex += `  \\resumeSubHeadingListEnd
+
+`;
+  }
+
+  // Declaration section
+  if (showDeclaration) {
+    latex += `%-----------DECLARATION-----------
+\\section{Declaration}
+\\small{I hereby declare that all the details furnished above are true to the best of my knowledge and belief.}
+\\vspace{-5pt}
 
 `;
   }
@@ -362,4 +484,53 @@ export const downloadLatex = (data: ResumeData, filename: string = 'resume'): vo
   logger.info('LatexService', 'LaTeX file downloaded successfully');
 };
 
-export default { generateLatexResume, downloadLatex };
+// Compile LaTeX to PDF using free API (latex.ytotech.com)
+export const compileLatexToPDF = async (latex: string): Promise<Blob> => {
+  logger.info('LatexService', 'Compiling LaTeX to PDF via API');
+
+  const response = await fetch('https://latex.ytotech.com/builds/sync', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      compiler: 'pdflatex',
+      resources: [{
+        main: true,
+        content: latex
+      }]
+    })
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text().catch(() => 'Unknown error');
+    logger.error('LatexService', 'LaTeX compilation failed', { status: response.status, error: errorText });
+    throw new Error(`LaTeX compilation failed: ${response.status}`);
+  }
+
+  logger.info('LatexService', 'LaTeX compiled successfully');
+  return response.blob();
+};
+
+// Generate and download PDF from resume data
+export const downloadLatexPDF = async (data: ResumeData, filename: string = 'resume'): Promise<void> => {
+  logger.info('LatexService', 'Generating PDF from resume data', { filename });
+
+  // Generate LaTeX code
+  const latex = generateLatexResume(data);
+
+  // Compile to PDF
+  const pdfBlob = await compileLatexToPDF(latex);
+
+  // Download the PDF
+  const url = URL.createObjectURL(pdfBlob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `${filename}.pdf`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+
+  logger.info('LatexService', 'PDF downloaded successfully');
+};
+
+export default { generateLatexResume, downloadLatex, compileLatexToPDF, downloadLatexPDF };

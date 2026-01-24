@@ -1,6 +1,7 @@
 import { GoogleGenAI } from "@google/genai";
 import { ResumeData, ExperienceItem } from "../types";
 import { logger } from "../utils/logger";
+import { isHuggingFaceEnabled, generateWithHuggingFace, getCurrentProvider } from "./huggingfaceService";
 
 // Gracefully handle missing API key
 const API_KEY = import.meta.env.VITE_GEMINI_API_KEY || process.env.API_KEY || "";
@@ -11,7 +12,43 @@ if (API_KEY) {
 }
 
 // Using gemini-2.5-flash as requested by the user prompt for this specific task
-const MODEL_NAME = "gemini-2.5-flash";
+const MODEL_NAME = "gemini-2.5-flash-lite";
+
+// Export provider info for UI
+export { getCurrentProvider };
+
+/**
+ * Unified AI call - tries HuggingFace first (if configured), falls back to Gemini
+ */
+const callAI = async (prompt: string, context: string): Promise<string> => {
+  // Try HuggingFace first if enabled
+  if (isHuggingFaceEnabled()) {
+    try {
+      logger.info('AIService', `Using HuggingFace for: ${context}`);
+      const result = await generateWithHuggingFace(prompt);
+      if (result && result.trim()) {
+        return result;
+      }
+      logger.warn('AIService', 'HF returned empty, falling back to Gemini');
+    } catch (hfError) {
+      logger.warn('AIService', 'HF failed, falling back to Gemini', hfError);
+    }
+  }
+
+  // Fallback to Gemini
+  if (!ai) {
+    throw new Error("AI features require an API key. Please configure VITE_GEMINI_API_KEY.");
+  }
+
+  logger.info('AIService', `Using Gemini for: ${context}`);
+  const response = await ai.models.generateContent({
+    model: MODEL_NAME,
+    contents: prompt,
+    config: { thinkingConfig: { thinkingBudget: 0 } }
+  });
+
+  return response.text || "";
+};
 
 export const generateResumeSummary = async (data: ResumeData): Promise<string> => {
   // Check if there's enough data to generate a summary
@@ -69,26 +106,16 @@ export const generateResumeSummary = async (data: ResumeData): Promise<string> =
   `;
 
   try {
-    if (!ai) {
-      logger.warn('GeminiService', 'AI not initialized - missing API key');
-      throw new Error("AI features require an API key. Please configure VITE_GEMINI_API_KEY.");
-    }
-    logger.info('GeminiService', 'Generating comprehensive resume summary', {
+    logger.info('AIService', 'Generating comprehensive resume summary', {
       name: data.personalInfo.fullName,
       experienceCount: data.experience.length,
       skillsCount: data.skills.length
     });
-    const response = await ai.models.generateContent({
-      model: MODEL_NAME,
-      contents: prompt,
-      config: {
-        thinkingConfig: { thinkingBudget: 0 },
-      }
-    });
-    logger.info('GeminiService', 'Summary generated successfully');
-    return response.text || "";
+    const result = await callAI(prompt, 'generateResumeSummary');
+    logger.info('AIService', 'Summary generated successfully');
+    return result;
   } catch (error) {
-    logger.error('GeminiService', 'Failed to generate summary', error);
+    logger.error('AIService', 'Failed to generate summary', error);
     throw new Error("Failed to generate summary. Please check your API key or try again.");
   }
 };
@@ -115,22 +142,12 @@ export const enhanceExperienceDescription = async (item: ExperienceItem): Promis
   `;
 
   try {
-    if (!ai) {
-      logger.warn('GeminiService', 'AI not initialized - missing API key');
-      throw new Error("AI features require an API key. Please configure VITE_GEMINI_API_KEY.");
-    }
-    logger.info('GeminiService', 'Enhancing experience description', { role: item.role, company: item.company });
-    const response = await ai.models.generateContent({
-      model: MODEL_NAME,
-      contents: prompt,
-      config: {
-        thinkingConfig: { thinkingBudget: 0 },
-      }
-    });
-    logger.info('GeminiService', 'Experience enhanced successfully');
-    return response.text || "";
+    logger.info('AIService', 'Enhancing experience description', { role: item.role, company: item.company });
+    const result = await callAI(prompt, 'enhanceExperienceDescription');
+    logger.info('AIService', 'Experience enhanced successfully');
+    return result;
   } catch (error) {
-    logger.error('GeminiService', 'Failed to enhance description', error);
+    logger.error('AIService', 'Failed to enhance description', error);
     throw new Error("Failed to enhance description.");
   }
 };
@@ -160,22 +177,12 @@ export const enhanceProjectDescription = async (project: { name: string; descrip
   `;
 
   try {
-    if (!ai) {
-      logger.warn('GeminiService', 'AI not initialized - missing API key');
-      throw new Error("AI features require an API key. Please configure VITE_GEMINI_API_KEY.");
-    }
-    logger.info('GeminiService', 'Enhancing project description', { name: project.name });
-    const response = await ai.models.generateContent({
-      model: MODEL_NAME,
-      contents: prompt,
-      config: {
-        thinkingConfig: { thinkingBudget: 0 },
-      }
-    });
-    logger.info('GeminiService', 'Project description enhanced successfully');
-    return response.text || "";
+    logger.info('AIService', 'Enhancing project description', { name: project.name });
+    const result = await callAI(prompt, 'enhanceProjectDescription');
+    logger.info('AIService', 'Project description enhanced successfully');
+    return result;
   } catch (error) {
-    logger.error('GeminiService', 'Failed to enhance project description', error);
+    logger.error('AIService', 'Failed to enhance project description', error);
     throw new Error("Failed to enhance project description.");
   }
 };
@@ -204,23 +211,85 @@ export const enhanceVocationalCertification = async (certification: {
   `;
 
   try {
-    if (!ai) {
-      logger.warn('GeminiService', 'AI not initialized - missing API key');
-      throw new Error("AI features require an API key. Please configure VITE_GEMINI_API_KEY.");
-    }
-    logger.info('GeminiService', 'Enhancing vocational certification', { name: certification.name });
-    const response = await ai.models.generateContent({
-      model: MODEL_NAME,
-      contents: prompt,
-      config: {
-        thinkingConfig: { thinkingBudget: 0 },
-      }
-    });
-    logger.info('GeminiService', 'Vocational certification enhanced successfully');
-    return response.text || "";
+    logger.info('AIService', 'Enhancing vocational certification', { name: certification.name });
+    const result = await callAI(prompt, 'enhanceVocationalCertification');
+    logger.info('AIService', 'Vocational certification enhanced successfully');
+    return result;
   } catch (error) {
-    logger.error('GeminiService', 'Failed to enhance vocational certification', error);
+    logger.error('AIService', 'Failed to enhance vocational certification', error);
     throw new Error("Failed to enhance certification description.");
+  }
+};
+
+export const enhanceAchievementDescription = async (achievement: {
+  title: string;
+  organization?: string;
+  description?: string;
+}): Promise<string> => {
+  if (!achievement.title) {
+    throw new Error("Please fill in Achievement Title first.");
+  }
+
+  const prompt = `
+    Write a 1-2 sentence professional description for this achievement on a resume.
+    
+    ACHIEVEMENT DETAILS:
+    - Title: ${achievement.title}
+    - Organization: ${achievement.organization || 'Not specified'}
+    - Current Description: ${achievement.description || 'Not provided'}
+    
+    RULES:
+    - MAX 25 words total
+    - Highlight the impact, skills demonstrated, or recognition received
+    - Use professional tone
+    - Plain text only, no bullet points
+    
+    Output ONLY the description, nothing else.
+  `;
+
+  try {
+    logger.info('AIService', 'Enhancing achievement', { title: achievement.title });
+    const result = await callAI(prompt, 'enhanceAchievementDescription');
+    return result;
+  } catch (error) {
+    logger.error('AIService', 'Failed to enhance achievement', error);
+    throw new Error("Failed to enhance achievement description.");
+  }
+};
+
+export const enhanceExtracurricularDescription = async (item: {
+  organization: string;
+  role: string;
+  description?: string;
+}): Promise<string> => {
+  if (!item.role || !item.organization) {
+    throw new Error("Please fill in Role and Organization first.");
+  }
+
+  const prompt = `
+    Write a 1-2 sentence professional description for this extracurricular activity on a resume.
+    
+    DETAILS:
+    - Role: ${item.role}
+    - Organization: ${item.organization}
+    - Current Description: ${item.description || 'Not provided'}
+    
+    RULES:
+    - MAX 25 words total
+    - Highlight leadership, impact, skills, or contributions
+    - Use professional tone
+    - Plain text only, no bullet points
+    
+    Output ONLY the description, nothing else.
+  `;
+
+  try {
+    logger.info('AIService', 'Enhancing extracurricular', { role: item.role });
+    const result = await callAI(prompt, 'enhanceExtracurricularDescription');
+    return result;
+  } catch (error) {
+    logger.error('AIService', 'Failed to enhance extracurricular', error);
+    throw new Error("Failed to enhance activity description.");
   }
 };
 
@@ -235,56 +304,90 @@ export interface SpellingResult {
 }
 
 export const checkSpelling = async (data: ResumeData): Promise<SpellingResult> => {
-  // Collect all text from resume
-  const allText: string[] = [];
+  // Collect text by section for better error reporting
+  const sections: { name: string; text: string[] }[] = [];
 
   // Personal info
-  if (data.personalInfo.fullName) allText.push(data.personalInfo.fullName);
-  if (data.personalInfo.title) allText.push(data.personalInfo.title);
-  if (data.personalInfo.location) allText.push(data.personalInfo.location);
+  const personalText: string[] = [];
+  if (data.personalInfo.fullName) personalText.push(data.personalInfo.fullName);
+  if (data.personalInfo.title) personalText.push(data.personalInfo.title);
+  if (data.personalInfo.location) personalText.push(data.personalInfo.location);
+  if (personalText.length > 0) sections.push({ name: 'Personal Details', text: personalText });
 
   // Summary
-  if (data.summary) allText.push(data.summary);
-
-  // Experience
-  data.experience.forEach(exp => {
-    if (exp.company) allText.push(exp.company);
-    if (exp.role) allText.push(exp.role);
-    if (exp.description) allText.push(exp.description);
-  });
+  if (data.summary) sections.push({ name: 'Summary', text: [data.summary] });
 
   // Education
+  const educationText: string[] = [];
   data.education.forEach(edu => {
-    if (edu.institution) allText.push(edu.institution);
-    if (edu.degree) allText.push(edu.degree);
-    if (edu.field) allText.push(edu.field);
+    if (edu.institution) educationText.push(edu.institution);
+    if (edu.degree) educationText.push(edu.degree);
+    if (edu.field) educationText.push(edu.field);
   });
+  if (educationText.length > 0) sections.push({ name: 'Education', text: educationText });
 
-  // Skills
-  if (data.skills.length > 0) allText.push(data.skills.join(', '));
-
-  // Coursework
-  if (data.coursework && data.coursework.length > 0) allText.push(data.coursework.join(', '));
+  // Experience
+  const experienceText: string[] = [];
+  data.experience.forEach(exp => {
+    if (exp.company) experienceText.push(exp.company);
+    if (exp.role) experienceText.push(exp.role);
+    if (exp.description) experienceText.push(exp.description);
+  });
+  if (experienceText.length > 0) sections.push({ name: 'Experience', text: experienceText });
 
   // Projects
+  const projectsText: string[] = [];
   if (data.projects) {
     data.projects.forEach(project => {
-      if (project.name) allText.push(project.name);
-      if (project.description) allText.push(project.description);
+      if (project.name) projectsText.push(project.name);
+      if (project.description) projectsText.push(project.description);
     });
   }
+  if (projectsText.length > 0) sections.push({ name: 'Projects', text: projectsText });
 
-  // Certifications
-  if (data.certifications) {
-    data.certifications.forEach(cert => {
-      if (cert.name) allText.push(cert.name);
-      if (cert.issuer) allText.push(cert.issuer);
+  // Achievements
+  const achievementsText: string[] = [];
+  if (data.achievements) {
+    data.achievements.forEach(ach => {
+      if (ach.title) achievementsText.push(ach.title);
+      if (ach.organization) achievementsText.push(ach.organization);
+      if (ach.description) achievementsText.push(ach.description);
     });
   }
+  if (achievementsText.length > 0) sections.push({ name: 'Achievements', text: achievementsText });
 
-  const combinedText = allText.join('\n');
+  // Extracurricular
+  const extracurricularText: string[] = [];
+  if (data.extracurricular) {
+    data.extracurricular.forEach(ext => {
+      if (ext.organization) extracurricularText.push(ext.organization);
+      if (ext.role) extracurricularText.push(ext.role);
+      if (ext.description) extracurricularText.push(ext.description);
+    });
+  }
+  if (extracurricularText.length > 0) sections.push({ name: 'Extracurricular', text: extracurricularText });
 
-  if (!combinedText.trim()) {
+  // Vocational Certifications
+  const vocationalText: string[] = [];
+  if (data.vocationalCertifications) {
+    data.vocationalCertifications.forEach(cert => {
+      if (cert.name) vocationalText.push(cert.name);
+      if (cert.provider) vocationalText.push(cert.provider);
+      if (cert.description) vocationalText.push(cert.description);
+    });
+  }
+  if (vocationalText.length > 0) sections.push({ name: 'Vocational Certifications', text: vocationalText });
+
+  // Skills
+  if (data.skills.length > 0) sections.push({ name: 'Skills', text: [data.skills.join(', ')] });
+
+  // Coursework
+  if (data.coursework && data.coursework.length > 0) sections.push({ name: 'Coursework', text: [data.coursework.join(', ')] });
+
+  // Create structured text for AI with section markers
+  const structuredText = sections.map(s => `[${s.name}]\n${s.text.join('\n')}`).join('\n\n');
+
+  if (!structuredText.trim()) {
     return {
       hasErrors: false,
       errors: [],
@@ -294,10 +397,11 @@ export const checkSpelling = async (data: ResumeData): Promise<SpellingResult> =
 
   const prompt = `
     You are a spelling and grammar checker. Analyze the following resume text for SPELLING MISTAKES ONLY.
+    The text is organized by sections marked with [Section Name].
     
     TEXT TO CHECK:
     """
-    ${combinedText}
+    ${structuredText}
     """
     
     RULES:
@@ -305,12 +409,13 @@ export const checkSpelling = async (data: ResumeData): Promise<SpellingResult> =
     - Ignore proper nouns, company names, technology names (React, JavaScript, AWS, etc.)
     - Ignore abbreviations and acronyms
     - Be strict only for common English words
+    - Include which SECTION the error was found in
     
     RESPOND IN THIS EXACT JSON FORMAT:
     {
       "hasErrors": true/false,
       "errors": [
-        {"word": "misspelled word", "suggestion": "correct spelling", "context": "short phrase where it appears"}
+        {"section": "Experience", "word": "misspelled word", "suggestion": "correct spelling", "context": "short phrase where it appears"}
       ],
       "message": "Summary message for user"
     }
@@ -326,21 +431,9 @@ export const checkSpelling = async (data: ResumeData): Promise<SpellingResult> =
   `;
 
   try {
-    if (!ai) {
-      logger.warn('GeminiService', 'AI not initialized - missing API key');
-      throw new Error("AI features require an API key. Please configure VITE_GEMINI_API_KEY.");
-    }
-    logger.info('GeminiService', 'Checking spelling', { textLength: combinedText.length });
-    const response = await ai.models.generateContent({
-      model: MODEL_NAME,
-      contents: prompt,
-      config: {
-        thinkingConfig: { thinkingBudget: 0 },
-      }
-    });
-
-    const responseText = response.text || "";
-    logger.info('GeminiService', 'Spelling check completed');
+    logger.info('AIService', 'Checking spelling', { textLength: structuredText.length });
+    const responseText = await callAI(prompt, 'checkSpelling');
+    logger.info('AIService', 'Spelling check completed');
 
     // Parse JSON response
     try {
@@ -349,7 +442,7 @@ export const checkSpelling = async (data: ResumeData): Promise<SpellingResult> =
       const result = JSON.parse(cleanJson);
       return result as SpellingResult;
     } catch {
-      logger.warn('GeminiService', 'Failed to parse spelling response', { response: responseText });
+      logger.warn('AIService', 'Failed to parse spelling response', { response: responseText });
       return {
         hasErrors: false,
         errors: [],
@@ -357,7 +450,7 @@ export const checkSpelling = async (data: ResumeData): Promise<SpellingResult> =
       };
     }
   } catch (error) {
-    logger.error('GeminiService', 'Failed to check spelling', error);
+    logger.error('AIService', 'Failed to check spelling', error);
     throw new Error("Failed to check spelling. Please try again.");
   }
 };

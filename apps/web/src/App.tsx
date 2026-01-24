@@ -18,9 +18,15 @@ const INITIAL_DATA: ResumeData = {
     title: '',
   },
   summary: '',
-  experience: [],
   education: [],
-  skills: ["JavaScript", "TypeScript", "React", "Next.js", "Node.js", "Tailwind CSS", "AI Integration"],
+  vocationalCertifications: [],
+  skills: ["JavaScript", "TypeScript", "React", "Next.js", "Node.js", "Tailwind CSS"],
+  coursework: [],
+  experience: [],
+  projects: [],
+  achievements: [],
+  extracurricular: [],
+  showDeclaration: false,
 };
 
 export default function App() {
@@ -92,9 +98,14 @@ export default function App() {
     }
     setExportingPDF(true);
     try {
-      await exportToPDF(resumeElement, `${data.personalInfo.fullName || 'resume'}.pdf`);
+      const result = await exportToPDF(data, resumeElement, `${data.personalInfo.fullName || 'resume'}`);
+      if (result.method === 'browser') {
+        // User was shown print dialog as fallback
+        console.log('Used browser print fallback');
+      }
     } catch (error) {
-      alert('Failed to export PDF');
+      console.error('PDF export failed:', error);
+      alert('Failed to export PDF. Please check your internet connection and try again.');
     } finally {
       setExportingPDF(false);
     }

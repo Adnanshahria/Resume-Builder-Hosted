@@ -111,33 +111,27 @@ const TechTemplate: React.FC<TemplateProps> = ({ data }) => {
                 {data.personalInfo.location && (
                     <p className="rt-location--tech">{data.personalInfo.location}</p>
                 )}
-                {/* Row 2: Phone | Email | GitHub | LinkedIn (centered) */}
+                {/* Row 2: Phone | Mail | GitHub | LinkedIn (centered) */}
                 <div className="rt-contact rt-contact--tech">
                     {data.personalInfo.phone && (
-                        <span>{data.personalInfo.phone}</span>
+                        <span><strong>Phone:</strong> {data.personalInfo.phone}</span>
                     )}
                     {data.personalInfo.email && (
                         <>
                             {data.personalInfo.phone && <span className="rt-separator">|</span>}
-                            <a href={`mailto:${data.personalInfo.email}`} className="rt-contact-link--tech">
-                                {data.personalInfo.email}
-                            </a>
+                            <span><strong>Mail:</strong> <a href={`mailto:${data.personalInfo.email}`} className="rt-contact-link--tech">{data.personalInfo.email}</a></span>
                         </>
                     )}
                     {data.personalInfo.github && (
                         <>
                             {(data.personalInfo.phone || data.personalInfo.email) && <span className="rt-separator">|</span>}
-                            <a href={getFullUrl(data.personalInfo.github, 'github')} className="rt-contact-link--tech" target="_blank" rel="noopener noreferrer">
-                                GitHub
-                            </a>
+                            <span><strong>GitHub:</strong> <a href={getFullUrl(data.personalInfo.github, 'github')} className="rt-contact-link--tech" target="_blank" rel="noopener noreferrer">{data.personalInfo.githubUsername || extractUsername(data.personalInfo.github)}</a></span>
                         </>
                     )}
                     {data.personalInfo.linkedin && (
                         <>
                             {(data.personalInfo.phone || data.personalInfo.email || data.personalInfo.github) && <span className="rt-separator">|</span>}
-                            <a href={getFullUrl(data.personalInfo.linkedin, 'linkedin')} className="rt-contact-link--tech" target="_blank" rel="noopener noreferrer">
-                                LinkedIn
-                            </a>
+                            <span><strong>LinkedIn:</strong> <a href={getFullUrl(data.personalInfo.linkedin, 'linkedin')} className="rt-contact-link--tech" target="_blank" rel="noopener noreferrer">{data.personalInfo.linkedinUsername || extractUsername(data.personalInfo.linkedin)}</a></span>
                         </>
                     )}
                 </div>
@@ -145,39 +139,39 @@ const TechTemplate: React.FC<TemplateProps> = ({ data }) => {
                 {(data.personalInfo.leetcode || data.personalInfo.codeforces || data.personalInfo.codechef || data.personalInfo.website) && (
                     <div className="rt-contact rt-contact--tech">
                         {data.personalInfo.leetcode && (
-                            <a href={data.personalInfo.leetcode.startsWith('http') ? data.personalInfo.leetcode : `https://${data.personalInfo.leetcode}`} className="rt-contact-link--tech" target="_blank" rel="noopener noreferrer">
-                                LeetCode{data.personalInfo.leetcodeRating ? ` (${data.personalInfo.leetcodeRating})` : ''}
-                            </a>
+                            <span><strong>LeetCode:</strong> <a href={`https://leetcode.com/u/${(data.personalInfo.leetcodeUsername || data.personalInfo.leetcode).replace(/^@/, '')}`} className="rt-contact-link--tech" target="_blank" rel="noopener noreferrer">{data.personalInfo.leetcodeUsername ? `@${data.personalInfo.leetcodeUsername.replace(/^@/, '')}` : extractUsername(data.personalInfo.leetcode)}{data.personalInfo.leetcodeRating ? ` (${data.personalInfo.leetcodeRating})` : ''}</a></span>
                         )}
                         {data.personalInfo.codeforces && (
                             <>
                                 {data.personalInfo.leetcode && <span className="rt-separator">|</span>}
-                                <a href={data.personalInfo.codeforces.startsWith('http') ? data.personalInfo.codeforces : `https://${data.personalInfo.codeforces}`} className="rt-contact-link--tech" target="_blank" rel="noopener noreferrer">
-                                    Codeforces{data.personalInfo.codeforcesRating ? ` (${data.personalInfo.codeforcesRating})` : ''}
-                                </a>
+                                <span><strong>Codeforces:</strong> <a href={`https://codeforces.com/profile/${(data.personalInfo.codeforcesUsername || data.personalInfo.codeforces).replace(/^@/, '')}`} className="rt-contact-link--tech" target="_blank" rel="noopener noreferrer">{data.personalInfo.codeforcesUsername ? `@${data.personalInfo.codeforcesUsername.replace(/^@/, '')}` : extractUsername(data.personalInfo.codeforces)}{data.personalInfo.codeforcesRating ? ` (${data.personalInfo.codeforcesRating})` : ''}</a></span>
                             </>
                         )}
                         {data.personalInfo.codechef && (
                             <>
                                 {(data.personalInfo.leetcode || data.personalInfo.codeforces) && <span className="rt-separator">|</span>}
-                                <a href={data.personalInfo.codechef.startsWith('http') ? data.personalInfo.codechef : `https://${data.personalInfo.codechef}`} className="rt-contact-link--tech" target="_blank" rel="noopener noreferrer">
-                                    CodeChef{data.personalInfo.codechefRating ? ` (${data.personalInfo.codechefRating})` : ''}
-                                </a>
+                                <span><strong>CodeChef:</strong> <a href={`https://www.codechef.com/users/${(data.personalInfo.codechefUsername || data.personalInfo.codechef).replace(/^@/, '')}`} className="rt-contact-link--tech" target="_blank" rel="noopener noreferrer">{data.personalInfo.codechefUsername ? `@${data.personalInfo.codechefUsername.replace(/^@/, '')}` : extractUsername(data.personalInfo.codechef)}{data.personalInfo.codechefRating ? ` (${data.personalInfo.codechefRating})` : ''}</a></span>
                             </>
                         )}
                         {data.personalInfo.website && (
                             <>
                                 {(data.personalInfo.leetcode || data.personalInfo.codeforces || data.personalInfo.codechef) && <span className="rt-separator">|</span>}
-                                <a href={data.personalInfo.website.startsWith('http') ? data.personalInfo.website : `https://${data.personalInfo.website}`} className="rt-contact-link--tech" target="_blank" rel="noopener noreferrer">
-                                    Portfolio
-                                </a>
+                                <span><strong>Portfolio:</strong> <a href={data.personalInfo.website.startsWith('http') ? data.personalInfo.website : `https://${data.personalInfo.website}`} className="rt-contact-link--tech" target="_blank" rel="noopener noreferrer">{data.personalInfo.website.replace(/^https?:\/\//, '')}</a></span>
                             </>
                         )}
                     </div>
                 )}
             </header>
 
-            {/* 1. Education Section */}
+            {/* 1. Summary Section (Position 2 - after Header) */}
+            {data.summary && (
+                <section className="rt-section rt-section--tech">
+                    <h2 className="rt-section-title rt-section-title--tech">Summary</h2>
+                    <p className="rt-summary--tech">{data.summary}</p>
+                </section>
+            )}
+
+            {/* 2. Education Section */}
             {data.education.length > 0 && (
                 <section className="rt-section rt-section--tech">
                     <h2 className="rt-section-title rt-section-title--tech">Education</h2>
@@ -198,19 +192,73 @@ const TechTemplate: React.FC<TemplateProps> = ({ data }) => {
                 </section>
             )}
 
-            {/* 2. Relevant Coursework - Multi-column grid */}
-            {data.skills.length > 0 && data.skills.some(s => s.toLowerCase().includes('course') || s.length < 30) && (
+            {/* 3. Vocational Certifications Section */}
+            {data.vocationalCertifications && data.vocationalCertifications.length > 0 && (
                 <section className="rt-section rt-section--tech">
-                    <h2 className="rt-section-title rt-section-title--tech">Relevant Coursework</h2>
-                    <div className="rt-coursework-grid">
-                        {data.skills.slice(0, 8).map((skill, idx) => (
-                            <span key={idx} className="rt-coursework-item">• {skill}</span>
+                    <h2 className="rt-section-title rt-section-title--tech">Vocational Certifications</h2>
+                    <div className="rt-section-content">
+                        {data.vocationalCertifications.map((cert, idx) => (
+                            <div key={idx} className="rt-exp-item rt-exp-item--tech">
+                                <div className="rt-two-col">
+                                    <span className="rt-bold">{cert.name}</span>
+                                    <span className="rt-bold">{cert.date ? formatDate(cert.date) : ''}</span>
+                                </div>
+                                <div className="rt-two-col">
+                                    <span className="rt-italic">{cert.provider}</span>
+                                    {cert.credentialUrl && (
+                                        <a href={cert.credentialUrl} className="rt-contact-link--tech" target="_blank" rel="noopener noreferrer">View Certificate</a>
+                                    )}
+                                </div>
+                                {cert.description && (
+                                    <ul className="rt-bullets--tech">
+                                        {cert.description.split('\n').filter(line => line.trim()).map((line, i) => (
+                                            <li key={i}>{line.replace(/^[•\-]\s*/, '')}</li>
+                                        ))}
+                                    </ul>
+                                )}
+                            </div>
                         ))}
                     </div>
                 </section>
             )}
 
-            {/* 3. Experience Section - Sorted by date (most recent first) */}
+            {/* 4. Skills Section - Structured Categories */}
+            {(data.skillsData || data.skills.length > 0) && (
+                <section className="rt-section rt-section--tech">
+                    <h2 className="rt-section-title rt-section-title--tech">Skills</h2>
+                    <div className="rt-skills--tech">
+                        {data.skillsData ? (
+                            <>
+                                {data.skillsData.coursework && data.skillsData.coursework.length > 0 && (
+                                    <p><strong>Coursework:</strong> {data.skillsData.coursework.join(', ')}</p>
+                                )}
+                                {data.skillsData.programmingLanguages && data.skillsData.programmingLanguages.length > 0 && (
+                                    <p><strong>Programming Languages:</strong> {data.skillsData.programmingLanguages.join(', ')}</p>
+                                )}
+                                {data.skillsData.webTechnologies && data.skillsData.webTechnologies.length > 0 && (
+                                    <p><strong>Web Technologies:</strong> {data.skillsData.webTechnologies.join(', ')}</p>
+                                )}
+                                {data.skillsData.databases && data.skillsData.databases.length > 0 && (
+                                    <p><strong>Databases:</strong> {data.skillsData.databases.join(', ')}</p>
+                                )}
+                                {data.skillsData.tools && data.skillsData.tools.length > 0 && (
+                                    <p><strong>Tools:</strong> {data.skillsData.tools.join(', ')}</p>
+                                )}
+                                {data.skillsData.languages && data.skillsData.languages.length > 0 && (
+                                    <p><strong>Languages:</strong> {data.skillsData.languages.join(', ')}</p>
+                                )}
+                                {data.skillsData.interests && data.skillsData.interests.length > 0 && (
+                                    <p><strong>Interests:</strong> {data.skillsData.interests.join(', ')}</p>
+                                )}
+                            </>
+                        ) : (
+                            <p><strong>Skills:</strong> {data.skills.join(', ')}</p>
+                        )}
+                    </div>
+                </section>
+            )}
+
+            {/* 5. Experience Section - Sorted by date (most recent first) */}
             {data.experience.length > 0 && (
                 <section className="rt-section rt-section--tech">
                     <h2 className="rt-section-title rt-section-title--tech">Experience</h2>
@@ -262,7 +310,7 @@ const TechTemplate: React.FC<TemplateProps> = ({ data }) => {
                 </section>
             )}
 
-            {/* 4. Projects Section */}
+            {/* 6. Projects Section */}
             {data.projects && data.projects.length > 0 && (
                 <section className="rt-section rt-section--tech">
                     <h2 className="rt-section-title rt-section-title--tech">Projects</h2>
@@ -276,7 +324,15 @@ const TechTemplate: React.FC<TemplateProps> = ({ data }) => {
                                             <span className="rt-italic"> | {project.techStack.join(', ')}</span>
                                         )}
                                     </span>
-                                    <span className="rt-bold">{project.link ? 'Link' : ''}</span>
+                                    <span>
+                                        {project.github && (
+                                            <a href={project.github} className="rt-contact-link--tech" style={{ color: '#374151' }} target="_blank" rel="noopener noreferrer">GitHub</a>
+                                        )}
+                                        {project.github && project.link && ' | '}
+                                        {project.link && (
+                                            <a href={project.link} className="rt-contact-link--tech" style={{ color: '#2563eb' }} target="_blank" rel="noopener noreferrer">Visit Site</a>
+                                        )}
+                                    </span>
                                 </div>
                                 {project.description && (
                                     <ul className="rt-bullets--tech">
@@ -291,42 +347,75 @@ const TechTemplate: React.FC<TemplateProps> = ({ data }) => {
                 </section>
             )}
 
-            {/* 5. Technical Skills Section */}
-            {data.skills.length > 0 && (
+            {/* 7. Achievements Section */}
+            {data.achievements && data.achievements.length > 0 && (
                 <section className="rt-section rt-section--tech">
-                    <h2 className="rt-section-title rt-section-title--tech">Technical Skills</h2>
-                    <div className="rt-skills--tech">
-                        <p><strong>Skills:</strong> {data.skills.join(', ')}</p>
-                    </div>
-                </section>
-            )}
-
-            {/* 6. Leadership / Extracurricular Section */}
-            {data.certifications && data.certifications.length > 0 && (
-                <section className="rt-section rt-section--tech">
-                    <h2 className="rt-section-title rt-section-title--tech">Leadership / Extracurricular</h2>
+                    <h2 className="rt-section-title rt-section-title--tech">Achievements</h2>
                     <div className="rt-section-content">
-                        {data.certifications.map((cert, idx) => (
+                        {data.achievements.map((ach, idx) => (
                             <div key={idx} className="rt-exp-item rt-exp-item--tech">
                                 <div className="rt-two-col">
-                                    <span className="rt-bold">{cert.name}</span>
-                                    <span className="rt-bold">{cert.date ? formatDate(cert.date) : ''}</span>
+                                    <span className="rt-bold">{ach.title}</span>
+                                    <span className="rt-bold">{ach.date ? formatDate(ach.date) : ''}</span>
                                 </div>
-                                <div className="rt-two-col">
-                                    <span className="rt-italic">{cert.issuer || ''}</span>
-                                    <span className="rt-italic"></span>
-                                </div>
+                                {ach.organization && (
+                                    <div className="rt-two-col">
+                                        <span className="rt-italic">{ach.organization}</span>
+                                        <span></span>
+                                    </div>
+                                )}
+                                {ach.description && (
+                                    <ul className="rt-bullets--tech">
+                                        {ach.description.split('\n').filter(line => line.trim()).map((line, i) => (
+                                            <li key={i}>{line.replace(/^[•\-]\s*/, '')}</li>
+                                        ))}
+                                    </ul>
+                                )}
                             </div>
                         ))}
                     </div>
                 </section>
             )}
 
-            {/* 7. Summary (if provided) - at the end */}
-            {data.summary && (
+            {/* 8. Extracurricular Section */}
+            {data.extracurricular && data.extracurricular.length > 0 && (
                 <section className="rt-section rt-section--tech">
-                    <h2 className="rt-section-title rt-section-title--tech">Summary</h2>
-                    <p className="rt-summary--tech">{data.summary}</p>
+                    <h2 className="rt-section-title rt-section-title--tech">Extracurricular Activities</h2>
+                    <div className="rt-section-content">
+                        {data.extracurricular.map((activity, idx) => (
+                            <div key={idx} className="rt-exp-item rt-exp-item--tech">
+                                <div className="rt-two-col">
+                                    <span className="rt-bold">{activity.organization}</span>
+                                    <span className="rt-bold">
+                                        {activity.startDate ? formatDate(activity.startDate) : ''}
+                                        {activity.startDate && ' – '}
+                                        {activity.isCurrent ? 'Present' : (activity.endDate ? formatDate(activity.endDate) : '')}
+                                    </span>
+                                </div>
+                                <div className="rt-two-col">
+                                    <span className="rt-italic">{activity.role}</span>
+                                    <span></span>
+                                </div>
+                                {activity.description && (
+                                    <ul className="rt-bullets--tech">
+                                        {activity.description.split('\n').filter(line => line.trim()).map((line, i) => (
+                                            <li key={i}>{line.replace(/^[•\-]\s*/, '')}</li>
+                                        ))}
+                                    </ul>
+                                )}
+                            </div>
+                        ))}
+                    </div>
+                </section>
+            )}
+
+            {/* 9. Declaration Section */}
+            {data.showDeclaration && (
+                <section className="rt-section rt-section--tech">
+                    <h2 className="rt-section-title rt-section-title--tech">Declaration</h2>
+                    <p className="rt-summary--tech">
+                        I hereby declare that all the information provided above is true and correct to the best of my knowledge and belief.
+                    </p>
                 </section>
             )}
         </div>

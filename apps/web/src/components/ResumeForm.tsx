@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { ResumeData, ExperienceItem, VocationalCertificationItem } from '../types';
+import { ResumeData, ExperienceItem, VocationalCertificationItem, AchievementItem, ExtracurricularItem } from '../types';
 import { Plus, Trash2, Wand2, Sparkles, ChevronDown, ChevronUp, SpellCheck } from 'lucide-react';
 import { Button } from './ui/Button';
-import { generateResumeSummary, enhanceExperienceDescription, enhanceProjectDescription, enhanceVocationalCertification, checkSpelling, SpellingResult } from '../services/geminiService';
+import { generateResumeSummary, enhanceExperienceDescription, enhanceProjectDescription, enhanceVocationalCertification, enhanceAchievementDescription, enhanceExtracurricularDescription, checkSpelling, SpellingResult } from '../services/geminiService';
 import { TemplateType, TEMPLATES } from '../lib/templates';
 
 interface ResumeFormProps {
@@ -16,11 +16,25 @@ export const ResumeForm: React.FC<ResumeFormProps> = ({ data, onChange, template
   const [generatingExpId, setGeneratingExpId] = useState<string | null>(null);
   const [generatingProjectId, setGeneratingProjectId] = useState<string | null>(null);
   const [generatingVocationalId, setGeneratingVocationalId] = useState<string | null>(null);
+  const [generatingAchievementId, setGeneratingAchievementId] = useState<string | null>(null);
+  const [generatingExtracurricularId, setGeneratingExtracurricularId] = useState<string | null>(null);
   const [expandedSection, setExpandedSection] = useState<string | null>('personal');
   const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set()); // Track expanded individual items
   const [datePickerOpen, setDatePickerOpen] = useState(false);
   const [isCheckingSpelling, setIsCheckingSpelling] = useState(false);
   const [spellingResult, setSpellingResult] = useState<SpellingResult | null>(null);
+  const [showLockedPopup, setShowLockedPopup] = useState(false);
+
+  // Check if user has filled enough data to unlock AI generation
+  const isProfileComplete = () => {
+    const hasName = !!data.personalInfo.fullName;
+    const hasEducation = data.education.length > 0 && data.education.some(e => e.institution && e.degree);
+    const hasExperienceOrProjects = (data.experience.length > 0 && data.experience.some(e => e.company && e.role)) ||
+      (data.projects && data.projects.length > 0 && data.projects.some(p => p.name));
+    const hasSkills = data.skills.length > 0 || (data.skillsData && Object.values(data.skillsData).some(arr => arr && arr.length > 0));
+
+    return hasName && hasEducation && (hasExperienceOrProjects || hasSkills);
+  };
 
   // Get template info for dynamic fields
   const templateInfo = TEMPLATES.find(t => t.id === template);
@@ -37,6 +51,7 @@ export const ResumeForm: React.FC<ResumeFormProps> = ({ data, onChange, template
 
   const handleGenerateSummary = async () => {
     setIsGeneratingSummary(true);
+
     try {
       const summary = await generateResumeSummary(data);
       onChange({ ...data, summary });
@@ -79,6 +94,7 @@ export const ResumeForm: React.FC<ResumeFormProps> = ({ data, onChange, template
     if (!item) return;
 
     setGeneratingExpId(id);
+
     try {
       const enhanced = await enhanceExperienceDescription(item);
       updateExperience(id, 'description', enhanced);
@@ -94,6 +110,7 @@ export const ResumeForm: React.FC<ResumeFormProps> = ({ data, onChange, template
     if (!project) return;
 
     setGeneratingProjectId(id);
+
     try {
       const enhanced = await enhanceProjectDescription(project);
       const updated = (data.projects || []).map(item =>
@@ -112,6 +129,7 @@ export const ResumeForm: React.FC<ResumeFormProps> = ({ data, onChange, template
     if (!cert) return;
 
     setGeneratingVocationalId(id);
+
     try {
       const enhanced = await enhanceVocationalCertification(cert);
       const updated = (data.vocationalCertifications || []).map(item =>
@@ -145,6 +163,7 @@ export const ResumeForm: React.FC<ResumeFormProps> = ({ data, onChange, template
   const handleCheckSpelling = async () => {
     setIsCheckingSpelling(true);
     setSpellingResult(null);
+
     try {
       const result = await checkSpelling(data);
       setSpellingResult(result);
@@ -177,15 +196,28 @@ export const ResumeForm: React.FC<ResumeFormProps> = ({ data, onChange, template
             {spellingResult.hasErrors ? (
               <div className="space-y-3">
                 <p className="text-amber-500 text-sm">{spellingResult.message}</p>
-                <div className="space-y-2 max-h-60 overflow-y-auto">
-                  {spellingResult.errors.map((error, idx) => (
-                    <div key={idx} className="bg-destructive/10 rounded-lg p-3 text-sm">
-                      <div className="flex items-center gap-2">
-                        <span className="text-destructive font-medium line-through">{error.word}</span>
-                        <span className="text-muted-foreground">→</span>
-                        <span className="text-green-500 font-medium">{error.suggestion}</span>
-                      </div>
-                      <p className="text-muted-foreground text-xs mt-1">Context: "{error.context}"</p>
+                <div className="space-y-3 max-h-60 overflow-y-auto">
+                  {/* Group errors by section */}
+                  {Object.entries(
+                    spellingResult.errors.reduce((acc: Record<string, typeof spellingResult.errors>, error) => {
+                      const section = (error as { section?: string }).section || 'General';
+                      if (!acc[section]) acc[section] = [];
+                      acc[section].push(error);
+                      return acc;
+                    }, {})
+                  ).map(([section, errors]) => (
+                    <div key={section} className="space-y-2">
+                      <h4 className="text-sm font-semibold text-primary">In {section}:</h4>
+                      {errors.map((error, idx) => (
+                        <div key={idx} className="bg-destructive/10 rounded-lg p-3 text-sm ml-2">
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <span className="text-destructive font-medium line-through">{error.word}</span>
+                            <span className="text-muted-foreground">→</span>
+                            <span className="text-green-500 font-medium">{error.suggestion}</span>
+                          </div>
+                          <p className="text-muted-foreground text-xs mt-1">"{error.context}"</p>
+                        </div>
+                      ))}
                     </div>
                   ))}
                 </div>
@@ -201,6 +233,7 @@ export const ResumeForm: React.FC<ResumeFormProps> = ({ data, onChange, template
           </div>
         </div>
       )}
+
 
       <div className="space-y-6 p-6 bg-card text-card-foreground rounded-xl border shadow-sm relative">
 
@@ -220,7 +253,7 @@ export const ResumeForm: React.FC<ResumeFormProps> = ({ data, onChange, template
               </>
             ) : (
               <>
-                <SpellCheck className="w-4 h-4" /> Check Spelling
+                <SpellCheck className="w-4 h-4" /> Check Spelling with AI
               </>
             )}
           </Button>
@@ -548,14 +581,109 @@ export const ResumeForm: React.FC<ResumeFormProps> = ({ data, onChange, template
 
         <hr className="border-border" />
 
-        {/* Education - Section 2 */}
+        {/* Professional Summary - Section 2 */}
+        <div className="space-y-4 border-l-2 border-teal-400 dark:border-teal-600 pl-4">
+          <div
+            className="flex items-center justify-between cursor-pointer"
+            onClick={() => toggleSection('summary')}
+          >
+            <h2 className="text-xl font-semibold flex items-center gap-2">
+              <span className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary text-sm">2</span>
+              Professional Summary
+            </h2>
+            {expandedSection === 'summary' ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
+          </div>
+
+          {expandedSection === 'summary' && (
+            <div className="space-y-4 animate-in fade-in slide-in-from-top-2 duration-200">
+              <div className="flex justify-between items-center">
+                <label className="text-sm font-medium text-muted-foreground">
+                  Write a short professional bio or let AI do it.
+                </label>
+                {isProfileComplete() ? (
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    size="sm"
+                    onClick={handleGenerateSummary}
+                    isLoading={isGeneratingSummary}
+                    className="gap-2 text-purple-600 dark:text-purple-400"
+                  >
+                    <Sparkles className="w-4 h-4" />
+                    Generate with AI
+                  </Button>
+                ) : (
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    size="sm"
+                    onClick={() => setShowLockedPopup(true)}
+                    className="gap-2 text-purple-600 dark:text-purple-400 relative overflow-hidden"
+                  >
+                    <Sparkles className="w-4 h-4" />
+                    Generate with AI
+                    <span className="absolute inset-0 flex items-center justify-center text-3xl opacity-10 pointer-events-none">🔒</span>
+                  </Button>
+                )}
+              </div>
+
+              {/* Locked Popup Modal */}
+              {showLockedPopup && (
+                <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={() => setShowLockedPopup(false)}>
+                  <div className="bg-card rounded-xl shadow-xl max-w-md w-full p-6 space-y-4" onClick={e => e.stopPropagation()}>
+                    <div className="flex items-center justify-between">
+                      <h3 className="text-lg font-semibold flex items-center gap-2">
+                        <span className="text-2xl">🔒</span>
+                        AI Generation Locked
+                      </h3>
+                      <button onClick={() => setShowLockedPopup(false)} className="text-muted-foreground hover:text-foreground text-xl">×</button>
+                    </div>
+                    <p className="text-muted-foreground">
+                      Please fill in the following sections first so our AI can analyze your profile and generate a personalized summary:
+                    </p>
+                    <ul className="space-y-2 text-sm">
+                      <li className={`flex items-center gap-2 ${data.personalInfo.fullName ? 'text-green-600' : 'text-red-500'}`}>
+                        {data.personalInfo.fullName ? '✓' : '○'} Personal Details (Name)
+                      </li>
+                      <li className={`flex items-center gap-2 ${data.education.length > 0 && data.education.some(e => e.institution) ? 'text-green-600' : 'text-red-500'}`}>
+                        {data.education.length > 0 && data.education.some(e => e.institution) ? '✓' : '○'} Education
+                      </li>
+                      <li className={`flex items-center gap-2 ${(data.experience.length > 0 || (data.projects && data.projects.length > 0)) ? 'text-green-600' : 'text-red-500'}`}>
+                        {(data.experience.length > 0 || (data.projects && data.projects.length > 0)) ? '✓' : '○'} Experience or Projects
+                      </li>
+                      <li className={`flex items-center gap-2 ${data.skills.length > 0 ? 'text-green-600' : 'text-red-500'}`}>
+                        {data.skills.length > 0 ? '✓' : '○'} Skills
+                      </li>
+                    </ul>
+                    <Button
+                      onClick={() => setShowLockedPopup(false)}
+                      className="w-full"
+                    >
+                      Got it!
+                    </Button>
+                  </div>
+                </div>
+              )}
+              <textarea
+                className="flex min-h-[120px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                value={data.summary}
+                onChange={(e) => onChange({ ...data, summary: e.target.value })}
+                placeholder="Experienced professional with a track record of..."
+              />
+            </div>
+          )}
+        </div>
+
+        <hr className="border-border" />
+
+        {/* Education - Section 3 */}
         <div className="space-y-4 border-l-2 border-teal-400 dark:border-teal-600 pl-4">
           <div
             className="flex items-center justify-between cursor-pointer"
             onClick={() => toggleSection('education')}
           >
             <h2 className="text-xl font-semibold flex items-center gap-2">
-              <span className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary text-sm">2</span>
+              <span className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary text-sm">3</span>
               {isMedicalTemplate ? 'Medical Education' : 'Education'}
             </h2>
             {expandedSection === 'education' ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
@@ -666,27 +794,6 @@ export const ResumeForm: React.FC<ResumeFormProps> = ({ data, onChange, template
                           placeholder="CGPA 3.9/4, Grade 89%"
                         />
                       </div>
-                      {/* Add Another Education Button */}
-                      <div className="col-span-1 md:col-span-2 pt-2">
-                        <Button
-                          onClick={() => {
-                            const newEdu = {
-                              id: crypto.randomUUID(),
-                              institution: '',
-                              degree: '',
-                              field: '',
-                              graduationYear: '',
-                            };
-                            onChange({ ...data, education: [...data.education, newEdu] });
-                            setExpandedSection(`edu-${newEdu.id}`);
-                          }}
-                          size="sm"
-                          variant="outline"
-                          className="gap-2 w-full border-dashed"
-                        >
-                          <Plus className="w-4 h-4" /> Add Another Education
-                        </Button>
-                      </div>
                     </div>
                   )}
                 </div>
@@ -729,7 +836,7 @@ export const ResumeForm: React.FC<ResumeFormProps> = ({ data, onChange, template
             onClick={() => toggleSection('experience')}
           >
             <h2 className="text-xl font-semibold flex items-center gap-2">
-              <span className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary text-sm">3</span>
+              <span className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary text-sm">6</span>
               Experience
             </h2>
             {expandedSection === 'experience' ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
@@ -862,17 +969,6 @@ export const ResumeForm: React.FC<ResumeFormProps> = ({ data, onChange, template
                           onChange={(e) => exp.id && updateExperience(exp.id, 'description', e.target.value)}
                           placeholder="• Led a team of 5 engineers..."
                         />
-                      </div>
-                      {/* Add Another Role Button */}
-                      <div className="col-span-1 md:col-span-2 pt-2">
-                        <Button
-                          onClick={addExperience}
-                          size="sm"
-                          variant="outline"
-                          className="gap-2 w-full border-dashed"
-                        >
-                          <Plus className="w-4 h-4" /> Add Another Role
-                        </Button>
                       </div>
                     </div>
                   )}
@@ -1053,6 +1149,191 @@ export const ResumeForm: React.FC<ResumeFormProps> = ({ data, onChange, template
                   </div>
                 </div>
               )}
+
+              {/* Additional Skill Categories - Only for tech templates */}
+              {isTechTemplate && (
+                <>
+                  {/* Programming Languages */}
+                  <div className="space-y-2 pt-4 border-t border-border">
+                    <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">
+                      Programming Languages
+                    </h3>
+                    <div className="flex flex-wrap gap-2">
+                      {(data.skillsData?.programmingLanguages || []).map((lang, idx) => (
+                        <div key={idx} className="flex items-center gap-1 bg-green-500/10 text-green-600 px-3 py-1 rounded-full text-sm">
+                          {lang}
+                          <button type="button" onClick={() => {
+                            const updated = (data.skillsData?.programmingLanguages || []).filter((_, i) => i !== idx);
+                            onChange({ ...data, skillsData: { ...data.skillsData, programmingLanguages: updated } });
+                          }} className="ml-1 hover:text-destructive">×</button>
+                        </div>
+                      ))}
+                    </div>
+                    <input type="text" id="prog-lang-input" className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm" placeholder="Add language (e.g., Python, Java, C++)"
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ',') {
+                          e.preventDefault();
+                          const value = e.currentTarget.value.trim().replace(/,/g, '');
+                          if (value && !(data.skillsData?.programmingLanguages || []).includes(value)) {
+                            onChange({ ...data, skillsData: { ...data.skillsData, programmingLanguages: [...(data.skillsData?.programmingLanguages || []), value] } });
+                            e.currentTarget.value = '';
+                          }
+                        }
+                      }}
+                    />
+                  </div>
+
+                  {/* Web Technologies */}
+                  <div className="space-y-2 pt-4 border-t border-border">
+                    <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">
+                      Web Technologies
+                    </h3>
+                    <div className="flex flex-wrap gap-2">
+                      {(data.skillsData?.webTechnologies || []).map((tech, idx) => (
+                        <div key={idx} className="flex items-center gap-1 bg-purple-500/10 text-purple-600 px-3 py-1 rounded-full text-sm">
+                          {tech}
+                          <button type="button" onClick={() => {
+                            const updated = (data.skillsData?.webTechnologies || []).filter((_, i) => i !== idx);
+                            onChange({ ...data, skillsData: { ...data.skillsData, webTechnologies: updated } });
+                          }} className="ml-1 hover:text-destructive">×</button>
+                        </div>
+                      ))}
+                    </div>
+                    <input type="text" id="web-tech-input" className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm" placeholder="Add technology (e.g., React, Node.js, Next.js)"
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ',') {
+                          e.preventDefault();
+                          const value = e.currentTarget.value.trim().replace(/,/g, '');
+                          if (value && !(data.skillsData?.webTechnologies || []).includes(value)) {
+                            onChange({ ...data, skillsData: { ...data.skillsData, webTechnologies: [...(data.skillsData?.webTechnologies || []), value] } });
+                            e.currentTarget.value = '';
+                          }
+                        }
+                      }}
+                    />
+                  </div>
+
+                  {/* Databases */}
+                  <div className="space-y-2 pt-4 border-t border-border">
+                    <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">
+                      Databases
+                    </h3>
+                    <div className="flex flex-wrap gap-2">
+                      {(data.skillsData?.databases || []).map((db, idx) => (
+                        <div key={idx} className="flex items-center gap-1 bg-orange-500/10 text-orange-600 px-3 py-1 rounded-full text-sm">
+                          {db}
+                          <button type="button" onClick={() => {
+                            const updated = (data.skillsData?.databases || []).filter((_, i) => i !== idx);
+                            onChange({ ...data, skillsData: { ...data.skillsData, databases: updated } });
+                          }} className="ml-1 hover:text-destructive">×</button>
+                        </div>
+                      ))}
+                    </div>
+                    <input type="text" id="db-input" className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm" placeholder="Add database (e.g., MySQL, MongoDB, PostgreSQL)"
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ',') {
+                          e.preventDefault();
+                          const value = e.currentTarget.value.trim().replace(/,/g, '');
+                          if (value && !(data.skillsData?.databases || []).includes(value)) {
+                            onChange({ ...data, skillsData: { ...data.skillsData, databases: [...(data.skillsData?.databases || []), value] } });
+                            e.currentTarget.value = '';
+                          }
+                        }
+                      }}
+                    />
+                  </div>
+
+                  {/* Tools */}
+                  <div className="space-y-2 pt-4 border-t border-border">
+                    <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">
+                      Tools
+                    </h3>
+                    <div className="flex flex-wrap gap-2">
+                      {(data.skillsData?.tools || []).map((tool, idx) => (
+                        <div key={idx} className="flex items-center gap-1 bg-cyan-500/10 text-cyan-600 px-3 py-1 rounded-full text-sm">
+                          {tool}
+                          <button type="button" onClick={() => {
+                            const updated = (data.skillsData?.tools || []).filter((_, i) => i !== idx);
+                            onChange({ ...data, skillsData: { ...data.skillsData, tools: updated } });
+                          }} className="ml-1 hover:text-destructive">×</button>
+                        </div>
+                      ))}
+                    </div>
+                    <input type="text" id="tools-input" className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm" placeholder="Add tool (e.g., Git, Docker, VS Code)"
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ',') {
+                          e.preventDefault();
+                          const value = e.currentTarget.value.trim().replace(/,/g, '');
+                          if (value && !(data.skillsData?.tools || []).includes(value)) {
+                            onChange({ ...data, skillsData: { ...data.skillsData, tools: [...(data.skillsData?.tools || []), value] } });
+                            e.currentTarget.value = '';
+                          }
+                        }
+                      }}
+                    />
+                  </div>
+
+                  {/* Languages (Spoken) */}
+                  <div className="space-y-2 pt-4 border-t border-border">
+                    <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">
+                      Languages (Spoken)
+                    </h3>
+                    <div className="flex flex-wrap gap-2">
+                      {(data.skillsData?.languages || []).map((lang, idx) => (
+                        <div key={idx} className="flex items-center gap-1 bg-pink-500/10 text-pink-600 px-3 py-1 rounded-full text-sm">
+                          {lang}
+                          <button type="button" onClick={() => {
+                            const updated = (data.skillsData?.languages || []).filter((_, i) => i !== idx);
+                            onChange({ ...data, skillsData: { ...data.skillsData, languages: updated } });
+                          }} className="ml-1 hover:text-destructive">×</button>
+                        </div>
+                      ))}
+                    </div>
+                    <input type="text" id="languages-input" className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm" placeholder="Add language (e.g., English, Bengali, Hindi)"
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ',') {
+                          e.preventDefault();
+                          const value = e.currentTarget.value.trim().replace(/,/g, '');
+                          if (value && !(data.skillsData?.languages || []).includes(value)) {
+                            onChange({ ...data, skillsData: { ...data.skillsData, languages: [...(data.skillsData?.languages || []), value] } });
+                            e.currentTarget.value = '';
+                          }
+                        }
+                      }}
+                    />
+                  </div>
+
+                  {/* Interests */}
+                  <div className="space-y-2 pt-4 border-t border-border">
+                    <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">
+                      Interests (Optional)
+                    </h3>
+                    <div className="flex flex-wrap gap-2">
+                      {(data.skillsData?.interests || []).map((interest, idx) => (
+                        <div key={idx} className="flex items-center gap-1 bg-amber-500/10 text-amber-600 px-3 py-1 rounded-full text-sm">
+                          {interest}
+                          <button type="button" onClick={() => {
+                            const updated = (data.skillsData?.interests || []).filter((_, i) => i !== idx);
+                            onChange({ ...data, skillsData: { ...data.skillsData, interests: updated } });
+                          }} className="ml-1 hover:text-destructive">×</button>
+                        </div>
+                      ))}
+                    </div>
+                    <input type="text" id="interests-input" className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm" placeholder="Add interest (e.g., Open Source, AI Research, Gaming)"
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ',') {
+                          e.preventDefault();
+                          const value = e.currentTarget.value.trim().replace(/,/g, '');
+                          if (value && !(data.skillsData?.interests || []).includes(value)) {
+                            onChange({ ...data, skillsData: { ...data.skillsData, interests: [...(data.skillsData?.interests || []), value] } });
+                            e.currentTarget.value = '';
+                          }
+                        }
+                      }}
+                    />
+                  </div>
+                </>
+              )}
             </div>
           )}
         </div>
@@ -1068,7 +1349,7 @@ export const ResumeForm: React.FC<ResumeFormProps> = ({ data, onChange, template
                 onClick={() => toggleSection('projects')}
               >
                 <h2 className="text-xl font-semibold flex items-center gap-2">
-                  <span className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary text-sm">6</span>
+                  <span className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary text-sm">7</span>
                   Projects
                 </h2>
                 {expandedSection === 'projects' ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
@@ -1244,7 +1525,7 @@ export const ResumeForm: React.FC<ResumeFormProps> = ({ data, onChange, template
                 onClick={() => toggleSection('vocational')}
               >
                 <h2 className="text-xl font-semibold flex items-center gap-2">
-                  <span className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary text-sm">7</span>
+                  <span className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary text-sm">4</span>
                   Vocational Certifications
                 </h2>
                 {expandedSection === 'vocational' ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
@@ -1405,43 +1686,335 @@ export const ResumeForm: React.FC<ResumeFormProps> = ({ data, onChange, template
 
         <hr className="border-border" />
 
-        {/* Professional Summary - At the end */}
+        {/* Achievements Section */}
         <div className="space-y-4 border-l-2 border-teal-400 dark:border-teal-600 pl-4">
           <div
             className="flex items-center justify-between cursor-pointer"
-            onClick={() => toggleSection('summary')}
+            onClick={() => toggleSection('achievements')}
           >
             <h2 className="text-xl font-semibold flex items-center gap-2">
-              <span className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary text-sm">6</span>
-              Professional Summary
+              <span className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary text-sm">8</span>
+              Achievements
             </h2>
-            {expandedSection === 'summary' ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
+            {expandedSection === 'achievements' ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
           </div>
 
-          {expandedSection === 'summary' && (
+          {expandedSection === 'achievements' && (
             <div className="space-y-4 animate-in fade-in slide-in-from-top-2 duration-200">
-              <div className="flex justify-between items-center">
-                <label className="text-sm font-medium text-muted-foreground">
-                  Write a short professional bio or let AI do it.
-                </label>
-                <Button
-                  type="button"
-                  variant="secondary"
-                  size="sm"
-                  onClick={handleGenerateSummary}
-                  isLoading={isGeneratingSummary}
-                  className="gap-2 text-purple-600 dark:text-purple-400"
-                >
-                  <Sparkles className="w-4 h-4" />
-                  Generate with Gemini
-                </Button>
+              {(data.achievements || []).map((ach, index) => (
+                <div key={ach.id || index} className="p-4 border border-border rounded-lg space-y-3">
+                  <div className="flex justify-between items-center">
+                    <span className="font-medium text-sm">Achievement {index + 1}</span>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => {
+                        const updated = (data.achievements || []).filter((_, i) => i !== index);
+                        onChange({ ...data, achievements: updated });
+                      }}
+                      className="text-destructive hover:text-destructive/80"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </Button>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <input
+                      type="text"
+                      className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                      placeholder="Achievement Title (e.g., 1st Place Hackathon)"
+                      value={ach.title}
+                      onChange={(e) => {
+                        const updated = [...(data.achievements || [])];
+                        updated[index] = { ...ach, title: e.target.value };
+                        onChange({ ...data, achievements: updated });
+                      }}
+                    />
+                    <input
+                      type="text"
+                      className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                      placeholder="Organization (e.g., Google, IEEE)"
+                      value={ach.organization || ''}
+                      onChange={(e) => {
+                        const updated = [...(data.achievements || [])];
+                        updated[index] = { ...ach, organization: e.target.value };
+                        onChange({ ...data, achievements: updated });
+                      }}
+                    />
+                    <input
+                      type="text"
+                      className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                      placeholder="Date (e.g., March 2024)"
+                      value={ach.date || ''}
+                      onChange={(e) => {
+                        const updated = [...(data.achievements || [])];
+                        updated[index] = { ...ach, date: e.target.value };
+                        onChange({ ...data, achievements: updated });
+                      }}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <div className="flex justify-between items-center">
+                      <label className="text-sm font-medium text-muted-foreground">Description (optional)</label>
+                      <Button
+                        type="button"
+                        variant="secondary"
+                        size="sm"
+                        onClick={async () => {
+                          if (!ach.id) return;
+                          setGeneratingAchievementId(ach.id);
+                          try {
+                            const enhanced = await enhanceAchievementDescription(ach);
+                            const updated = [...(data.achievements || [])];
+                            updated[index] = { ...ach, description: enhanced };
+                            onChange({ ...data, achievements: updated });
+                          } catch (error) {
+                            console.error('Failed to enhance achievement:', error);
+                          } finally {
+                            setGeneratingAchievementId(null);
+                          }
+                        }}
+                        isLoading={generatingAchievementId === ach.id}
+                        className="gap-2 text-purple-600 dark:text-purple-400"
+                      >
+                        <Sparkles className="w-4 h-4" />
+                        Enhance with AI
+                      </Button>
+                    </div>
+                    <textarea
+                      className="flex min-h-[60px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                      placeholder="Brief description"
+                      value={ach.description || ''}
+                      onChange={(e) => {
+                        const updated = [...(data.achievements || [])];
+                        updated[index] = { ...ach, description: e.target.value };
+                        onChange({ ...data, achievements: updated });
+                      }}
+                    />
+                  </div>
+                </div>
+              ))}
+              <Button
+                onClick={() => {
+                  const newAch: AchievementItem = {
+                    id: crypto.randomUUID(),
+                    title: '',
+                    organization: '',
+                    date: '',
+                    description: '',
+                  };
+                  onChange({ ...data, achievements: [...(data.achievements || []), newAch] });
+                }}
+                size="sm"
+                variant="outline"
+                className="gap-2 w-full border-dashed"
+              >
+                <Plus className="w-4 h-4" /> Add Achievement
+              </Button>
+            </div>
+          )}
+        </div>
+
+        <hr className="border-border" />
+
+        {/* Extracurricular Section */}
+        <div className="space-y-4 border-l-2 border-teal-400 dark:border-teal-600 pl-4">
+          <div
+            className="flex items-center justify-between cursor-pointer"
+            onClick={() => toggleSection('extracurricular')}
+          >
+            <h2 className="text-xl font-semibold flex items-center gap-2">
+              <span className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary text-sm">9</span>
+              Extracurricular Activities
+            </h2>
+            {expandedSection === 'extracurricular' ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
+          </div>
+
+          {expandedSection === 'extracurricular' && (
+            <div className="space-y-4 animate-in fade-in slide-in-from-top-2 duration-200">
+              {(data.extracurricular || []).map((ext, index) => (
+                <div key={ext.id || index} className="p-4 border border-border rounded-lg space-y-3">
+                  <div className="flex justify-between items-center">
+                    <span className="font-medium text-sm">Extracurricular {index + 1}</span>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => {
+                        const updated = (data.extracurricular || []).filter((_, i) => i !== index);
+                        onChange({ ...data, extracurricular: updated });
+                      }}
+                      className="text-destructive hover:text-destructive/80"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </Button>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <input
+                      type="text"
+                      className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                      placeholder="Organization (e.g., IEEE Student Branch)"
+                      value={ext.organization}
+                      onChange={(e) => {
+                        const updated = [...(data.extracurricular || [])];
+                        updated[index] = { ...ext, organization: e.target.value };
+                        onChange({ ...data, extracurricular: updated });
+                      }}
+                    />
+                    <input
+                      type="text"
+                      className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                      placeholder="Role (e.g., Vice President)"
+                      value={ext.role}
+                      onChange={(e) => {
+                        const updated = [...(data.extracurricular || [])];
+                        updated[index] = { ...ext, role: e.target.value };
+                        onChange({ ...data, extracurricular: updated });
+                      }}
+                    />
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-3 items-center">
+                    <div className="space-y-1">
+                      <label className="text-xs text-muted-foreground">Start Date</label>
+                      <input
+                        type="month"
+                        className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                        value={ext.startDate || ''}
+                        onChange={(e) => {
+                          const updated = [...(data.extracurricular || [])];
+                          updated[index] = { ...ext, startDate: e.target.value };
+                          onChange({ ...data, extracurricular: updated });
+                        }}
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <label className="text-xs text-muted-foreground">End Date</label>
+                      <input
+                        type="month"
+                        className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-2 text-sm disabled:opacity-50"
+                        value={ext.isCurrent ? '' : (ext.endDate || '')}
+                        disabled={ext.isCurrent}
+                        onChange={(e) => {
+                          const updated = [...(data.extracurricular || [])];
+                          updated[index] = { ...ext, endDate: e.target.value };
+                          onChange({ ...data, extracurricular: updated });
+                        }}
+                      />
+                    </div>
+                    <label className="flex items-center gap-2 cursor-pointer mt-5">
+                      <input
+                        type="checkbox"
+                        checked={ext.isCurrent || false}
+                        onChange={(e) => {
+                          const updated = [...(data.extracurricular || [])];
+                          updated[index] = { ...ext, isCurrent: e.target.checked, endDate: e.target.checked ? '' : ext.endDate };
+                          onChange({ ...data, extracurricular: updated });
+                        }}
+                        className="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary"
+                      />
+                      <span className="text-sm">Present</span>
+                    </label>
+                  </div>
+                  <div className="space-y-2">
+                    <div className="flex justify-between items-center">
+                      <label className="text-sm font-medium text-muted-foreground">Description (optional)</label>
+                      <Button
+                        type="button"
+                        variant="secondary"
+                        size="sm"
+                        onClick={async () => {
+                          // Ensure the item has an ID (generate one if missing)
+                          let itemId = ext.id;
+                          if (!itemId) {
+                            itemId = crypto.randomUUID();
+                            const updated = [...(data.extracurricular || [])];
+                            updated[index] = { ...ext, id: itemId };
+                            onChange({ ...data, extracurricular: updated });
+                          }
+                          setGeneratingExtracurricularId(itemId);
+                          try {
+                            const enhanced = await enhanceExtracurricularDescription(ext);
+                            const updated = [...(data.extracurricular || [])];
+                            updated[index] = { ...ext, id: itemId, description: enhanced };
+                            onChange({ ...data, extracurricular: updated });
+                          } catch (error) {
+                            console.error('Failed to enhance extracurricular:', error);
+                          } finally {
+                            setGeneratingExtracurricularId(null);
+                          }
+                        }}
+                        isLoading={generatingExtracurricularId === ext.id}
+                        className="gap-2 text-purple-600 dark:text-purple-400"
+                      >
+                        <Sparkles className="w-4 h-4" />
+                        Enhance with AI
+                      </Button>
+                    </div>
+                    <textarea
+                      className="flex min-h-[60px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                      placeholder="Description"
+                      value={ext.description || ''}
+                      onChange={(e) => {
+                        const updated = [...(data.extracurricular || [])];
+                        updated[index] = { ...ext, description: e.target.value };
+                        onChange({ ...data, extracurricular: updated });
+                      }}
+                    />
+                  </div>
+                </div>
+              ))}
+              <Button
+                onClick={() => {
+                  const newExt: ExtracurricularItem = {
+                    id: crypto.randomUUID(),
+                    organization: '',
+                    role: '',
+                    startDate: '',
+                    endDate: '',
+                    isCurrent: false,
+                    description: '',
+                  };
+                  onChange({ ...data, extracurricular: [...(data.extracurricular || []), newExt] });
+                }}
+                size="sm"
+                variant="outline"
+                className="gap-2 w-full border-dashed"
+              >
+                <Plus className="w-4 h-4" /> Add Extracurricular
+              </Button>
+            </div>
+          )}
+        </div>
+
+        <hr className="border-border" />
+
+        {/* Declaration Section */}
+        <div className="space-y-4 border-l-2 border-teal-400 dark:border-teal-600 pl-4">
+          <div
+            className="flex items-center justify-between cursor-pointer"
+            onClick={() => toggleSection('declaration')}
+          >
+            <h2 className="text-xl font-semibold flex items-center gap-2">
+              <span className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary text-sm">10</span>
+              Declaration
+            </h2>
+            {expandedSection === 'declaration' ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
+          </div>
+
+          {expandedSection === 'declaration' && (
+            <div className="space-y-4 animate-in fade-in slide-in-from-top-2 duration-200">
+              <label className="flex items-center gap-3 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={data.showDeclaration || false}
+                  onChange={(e) => onChange({ ...data, showDeclaration: e.target.checked })}
+                  className="w-5 h-5 rounded border-gray-300 text-primary focus:ring-primary"
+                />
+                <span className="text-sm">Include declaration in resume</span>
+              </label>
+              <div className="p-4 bg-muted/50 rounded-lg border border-dashed">
+                <p className="text-sm text-muted-foreground italic">
+                  "I hereby declare that all the details furnished above are true to the best of my knowledge and belief."
+                </p>
               </div>
-              <textarea
-                className="flex min-h-[120px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-                value={data.summary}
-                onChange={(e) => onChange({ ...data, summary: e.target.value })}
-                placeholder="Experienced professional with a track record of..."
-              />
             </div>
           )}
         </div>

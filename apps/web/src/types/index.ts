@@ -6,16 +6,21 @@ export interface PersonalInfo {
     phone?: string;
     location?: string;
     linkedin?: string;
+    linkedinUsername?: string;    // Display username (e.g., @adnanshahria)
     website?: string;
     photo?: string | null;  // Base64 encoded photo
     // Template-specific fields
     github?: string;          // For developer/tech templates
+    githubUsername?: string;  // Display username (e.g., @adnanshahria)
     // Competitive programming profiles
-    leetcode?: string;        // LeetCode profile
+    leetcode?: string;        // LeetCode profile URL
+    leetcodeUsername?: string; // Display username
     leetcodeRating?: string;  // LeetCode rating (optional)
-    codeforces?: string;      // Codeforces profile
+    codeforces?: string;      // Codeforces profile URL
+    codeforcesUsername?: string; // Display username
     codeforcesRating?: string; // Codeforces rating (optional)
-    codechef?: string;        // CodeChef profile
+    codechef?: string;        // CodeChef profile URL
+    codechefUsername?: string; // Display username
     codechefRating?: string;  // CodeChef rating (optional)
     dribbble?: string;        // For creative templates
     licenseNumber?: string;   // Legacy - kept for backwards compatibility
@@ -94,17 +99,53 @@ export interface VocationalCertificationItem {
     credentialUrl?: string;          // Link to certificate
 }
 
+// Achievements - hackathons, awards, competitions
+export interface AchievementItem {
+    id?: string;
+    title: string;                   // e.g., "1st Place - XYZ Hackathon"
+    organization?: string;           // e.g., "IEEE", "Google"
+    date?: string;
+    description?: string;
+}
+
+// Extracurricular - clubs, research, publications
+export interface ExtracurricularItem {
+    id?: string;
+    organization: string;            // e.g., "IEEE Student Branch", "MIT AI Lab"
+    role: string;                    // e.g., "Vice President", "Research Assistant"
+    startDate?: string;              // e.g., "2022-03" or "03/2022"
+    endDate?: string;                // e.g., "2024-01" or "Present"
+    isCurrent?: boolean;             // If currently active
+    description?: string;
+}
+
+// Skills structured data
+export interface SkillsData {
+    coursework?: string[];           // Relevant coursework
+    programmingLanguages?: string[]; // Python, Java, etc.
+    webTechnologies?: string[];      // React, Node.js, etc.
+    databases?: string[];            // MySQL, MongoDB, etc.
+    tools?: string[];                // Git, Docker, etc.
+    languages?: string[];            // English, Bengali, etc.
+    interests?: string[];            // Optional hobbies/interests
+}
+
 export interface ResumeData {
     personalInfo: PersonalInfo;
     summary: string;
-    experience: ExperienceItem[];
     education: EducationItem[];
-    skills: string[];
-    coursework?: string[];                              // Relevant coursework for tech templates
-    certifications?: CertificationItem[];              // Leadership/Extracurricular for some templates
-    projects?: ProjectItem[];                          // For developer/tech templates
     vocationalCertifications?: VocationalCertificationItem[];  // Online/offline course certifications
+    skills: string[];                                          // Legacy simple skills array
+    skillsData?: SkillsData;                                   // Structured skills
+    coursework?: string[];                                     // Relevant coursework for tech templates
+    experience: ExperienceItem[];
+    projects?: ProjectItem[];                                  // For developer/tech templates
+    achievements?: AchievementItem[];                          // Hackathons, awards
+    extracurricular?: ExtracurricularItem[];                   // Clubs, research, publications
+    showDeclaration?: boolean;                                 // Toggle for declaration section
+    certifications?: CertificationItem[];                      // Legacy - kept for backwards compatibility
 }
 
 // Template type (re-exported from lib/templates for convenience)
 export type { TemplateType } from '../lib/templates';
+

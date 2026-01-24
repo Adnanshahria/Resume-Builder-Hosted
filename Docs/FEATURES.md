@@ -20,9 +20,12 @@ AI Resume Forge is a modern resume builder with template-aware editing, AI enhan
 - **LaTeX export**: Generate ATS-optimized PDFs via LaTeX compilation
 
 ### 3. Skills/Specializations
+- **Structured categories**: Coursework, Programming Languages, Web Technologies, Databases, Tools, Languages, Interests
 - **Tag-based input**: Add skills with Enter or comma
 - **Remove functionality**: Click × to remove individual skills
 - **Template-aware labels**: Shows "Skills" or "Specializations" based on template
+- **Fallback support**: Uses legacy `skills[]` array if `skillsData` not provided
+
 
 ### 4. Medical Template Features
 - **Dynamic licenses**: Add multiple medical licenses (BMDC, MCI, GMC, USMLE, etc.)
@@ -42,10 +45,15 @@ AI Resume Forge is a modern resume builder with template-aware editing, AI enhan
 - **Fields**: Institution, Degree, Field of Study, Graduation Year
 - **Template-aware**: "Medical Education" for doctor templates
 
-### 7. LaTeX Export (NEW)
+### 8. LaTeX Export (ENHANCED)
 - **Download .tex files**: Click "LaTeX" button in navbar
-- **ATS-friendly**: Standard LaTeX resume format
-- **FontAwesome5 icons**: GitHub, LinkedIn, Email, Phone in LaTeX
+- **ATS-friendly**: Standard LaTeX resume format based on Jake Gutierrez template
+- **FontAwesome5 icons**: GitHub, LinkedIn, Email, Phone in header
+- **All sections included**: Summary, Education, Vocational Certifications, Skills (structured categories), Experience, Projects, Achievements, Extracurricular Activities, Declaration
+- **Competitive programming profiles**: LeetCode, Codeforces, CodeChef with ratings
+- **Structured skills**: Uses skillsData categories (Coursework, Programming Languages, Web Technologies, Databases, Tools, Languages, Interests)
+- **Clickable project links**: GitHub and Live links for projects
+- **Multi-page support**: Resumes automatically span multiple pages
 - **Compile with**: pdflatex, xelatex, or Overleaf
 
 ### 8. Platform Icons (NEW)
@@ -81,6 +89,48 @@ AI Resume Forge is a modern resume builder with template-aware editing, AI enhan
 - **Education-first**: Layout optimized for technical roles
 - **Date formatting**: "Sep. 2017 -- May 2021" format
 
+### 14. Resume Section Ordering (NEW)
+The resume sections are displayed in the following order:
+1. **Header**: Name, contact info, GitHub, LinkedIn, etc.
+2. **Summary**: Professional summary/bio
+3. **Education**: Academic qualifications with CGPA
+4. **Vocational Certifications**: Courses, bootcamps, online certifications
+5. **Skills**: Technical skills and coursework
+6. **Experience**: Work experience with duration calculation
+7. **Projects**: Personal/professional projects with GitHub links
+8. **Achievements**: Hackathon results, awards, competitions
+9. **Extracurricular**: Clubs, research, leadership roles
+10. **Declaration**: Optional formal declaration
+
+### 15. Achievements Section (NEW)
+- **Title**: Achievement name (e.g., "Hackathon Winner")
+- **Organization**: Organizer name
+- **Date**: When achieved
+- **Description**: Details with AI enhancement
+
+### 16. Extracurricular Activities Section (NEW)
+- **Role**: Position held (e.g., "Vice-President")
+- **Organization**: Club/committee name (displayed in italics)
+- **Date Range**: Start date to end date with "Present" option
+- **Duration**: Auto-calculated (e.g., "1 yr 5 mos")
+- **Description**: Bullet-point formatted achievements
+- **Month picker inputs**: Native month/year selectors
+
+### 17. Declaration Section (NEW)
+- **Toggle**: Enable/disable in editor
+- **Standard text**: "I hereby declare that all the details furnished above are true to the best of my knowledge and belief."
+
+### 18. Project Links Enhancement (NEW)
+- **GitHub | Visit**: Blue clickable link for project repositories
+- **Formatted display**: Project name with tech stack on same line
+
+### 19. Multi-Provider AI System (NEW)
+- **Hugging Face Space Integration**: Connect your own HF Space with Ollama
+- **Gemini Fallback**: Automatically falls back to Gemini if HF fails
+- **Processing Popup**: Shows status while AI is working
+- **Provider Display**: Shows which AI provider is being used
+- **Configuration**: Set `VITE_AI_PROVIDER=huggingface` in `.env`
+
 ---
 
 ## Resume Formats Folder
@@ -111,7 +161,7 @@ Located at: `apps/web/src/resume-formats/`
 ## Tech Stack
 - **Frontend**: React + TypeScript + Vite
 - **Styling**: Tailwind CSS + Custom CSS
-- **AI**: Google Gemini API
+- **AI**: Google Gemini API + Hugging Face Spaces (Ollama)
 - **Storage**: LocalStorage (client-side), Turso (cloud DB)
 - **Export**: LaTeX (.tex) for ATS-friendly PDFs
 
