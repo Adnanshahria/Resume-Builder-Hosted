@@ -1,57 +1,146 @@
 /* Template Selector Styles */
 .template-selector {
-    padding: 1.5rem;
-    margin-bottom: 1.5rem;
+    padding: 0.5rem;
 }
 
 .template-selector-title {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     font-weight: 700;
     color: hsl(var(--foreground));
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.25rem;
 }
 
 .template-selector-subtitle {
-    font-size: 0.875rem;
+    font-size: 0.8rem;
     color: hsl(var(--muted-foreground));
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
 }
 
 .template-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1rem;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.75rem;
 }
 
-.template-card {
+@media (max-width: 768px) {
+    .template-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .template-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.5rem;
+    }
+}
+
+/* Simple Block Grid */
+.template-grid-simple {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.75rem;
+}
+
+@media (max-width: 768px) {
+    .template-grid-simple {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.5rem;
+    }
+}
+
+/* Simple Template Block */
+.template-block {
     position: relative;
     background: hsl(var(--card));
     border: 2px solid hsl(var(--border));
     border-radius: 12px;
+    padding: 1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.template-block:hover {
+    border-color: var(--template-accent, hsl(var(--primary)));
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.05), rgba(20, 184, 166, 0.05));
+}
+
+.template-block--selected {
+    border-color: var(--template-accent, hsl(var(--primary)));
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(20, 184, 166, 0.1));
+    box-shadow: 0 0 0 3px hsl(var(--primary) / 0.2);
+}
+
+.template-block-icon {
+    font-size: 1.5rem;
+    margin-bottom: 0.25rem;
+}
+
+.template-block-name {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: hsl(var(--foreground));
+}
+
+.template-block-check {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    width: 20px;
+    height: 20px;
+    background: var(--template-accent, hsl(var(--primary)));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+
+.template-block-check svg {
+    width: 12px;
+    height: 12px;
+}
+
+/* Old Template Card Styles - kept for compatibility */
+.template-card {
+    position: relative;
+    background: hsl(var(--card));
+    border: 2px solid hsl(var(--border));
+    border-radius: 8px;
     padding: 0;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.2s ease;
     overflow: hidden;
     text-align: left;
 }
 
 .template-card:hover {
     border-color: var(--template-accent, hsl(var(--primary)));
-    transform: translateY(-4px);
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
 }
 
 .template-card--selected {
     border-color: var(--template-accent, hsl(var(--primary)));
-    box-shadow: 0 0 0 3px hsl(var(--primary) / 0.2);
+    box-shadow: 0 0 0 2px hsl(var(--primary) / 0.3);
 }
 
-/* Template Preview - Two Column Layout */
+/* Template Preview - Realistic Resume Look */
 .template-card-preview {
-    background: #f8f9fa;
-    aspect-ratio: 3 / 4;
+    background: white;
+    aspect-ratio: 8.5 / 11;
+    /* US Letter proportions */
     overflow: hidden;
     position: relative;
+    border-bottom: 1px solid hsl(var(--border));
 }
 
 .template-card-preview--two-column {
@@ -161,29 +250,27 @@
 
 /* Template Card Info */
 .template-card-info {
-    padding: 1rem;
+    padding: 0.5rem 0.6rem;
     background: hsl(var(--card));
-    border-top: 1px solid hsl(var(--border));
 }
 
 .template-icon {
-    font-size: 1.5rem;
-    margin-bottom: 0.5rem;
-    display: block;
+    font-size: 1rem;
+    display: inline;
+    margin-right: 0.25rem;
 }
 
 .template-name {
-    font-size: 1rem;
+    font-size: 0.75rem;
     font-weight: 600;
     color: hsl(var(--foreground));
-    margin: 0 0 0.25rem 0;
+    margin: 0;
+    display: inline;
 }
 
 .template-description {
-    font-size: 0.75rem;
-    color: hsl(var(--muted-foreground));
-    margin: 0;
-    line-height: 1.4;
+    display: none;
+    /* Hide description for compact view */
 }
 
 /* Selected Badge */

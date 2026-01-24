@@ -10,6 +10,13 @@ export interface PersonalInfo {
     photo?: string | null;  // Base64 encoded photo
     // Template-specific fields
     github?: string;          // For developer/tech templates
+    // Competitive programming profiles
+    leetcode?: string;        // LeetCode profile
+    leetcodeRating?: string;  // LeetCode rating (optional)
+    codeforces?: string;      // Codeforces profile
+    codeforcesRating?: string; // Codeforces rating (optional)
+    codechef?: string;        // CodeChef profile
+    codechefRating?: string;  // CodeChef rating (optional)
     dribbble?: string;        // For creative templates
     licenseNumber?: string;   // Legacy - kept for backwards compatibility
     // Enhanced medical fields
@@ -45,6 +52,7 @@ export interface ExperienceItem {
     role: string;
     startDate: string;
     endDate?: string;
+    location?: string;  // City, State for ATS format
     description: string;
 }
 
@@ -53,7 +61,9 @@ export interface EducationItem {
     institution: string;
     degree: string;
     field?: string;
+    startDate?: string;   // For date range display
     graduationYear: string;
+    cgpa?: string;
 }
 
 // Certifications for professional templates

@@ -8,14 +8,16 @@ AI Resume Forge is a modern resume builder with template-aware editing, AI enhan
 ## Features Implemented
 
 ### 1. Template System
-- **6 Templates**: Professional, Software Engineer, Developer, Technical, Medical, Creative
+- **4 Templates**: Professional, Tech (ATS-friendly), Medical, Creative
 - **Template-aware editor**: Shows different fields based on selected template
 - **Visual previews**: Layout-aware thumbnail previews in template selector
+- **Unified Tech template**: Consolidated Developer, Software Engineer, and Technical into one ATS-optimized format
+- **All templates ATS-friendly**: No photos for maximum ATS compatibility
 
-### 2. Photo System
-- **Photo upload**: Drag-drop or click to upload profile picture
-- **Auto-resize**: Images automatically optimized for storage
-- **ATS Toggle**: "With Photo" / "ATS Friendly" button to hide photo for ATS compatibility
+### 2. ATS Compliance
+- **No photos**: All templates are photo-free for ATS parsing
+- **Clean text-based layout**: Machine-readable formatting
+- **LaTeX export**: Generate ATS-optimized PDFs via LaTeX compilation
 
 ### 3. Skills/Specializations
 - **Tag-based input**: Add skills with Enter or comma
@@ -28,11 +30,12 @@ AI Resume Forge is a modern resume builder with template-aware editing, AI enhan
 - **Custom license name**: When "Other" selected, input for custom license name
 - **Primary license**: First license is required, additional are optional
 
-### 5. Developer Template Features  
+### 5. Tech Template Features (NEW)
+- **ATS-Optimized**: Based on Jake Gutierrez's industry-standard format
 - **GitHub field**: Link to GitHub profile
-- **Portfolio/Website**: Link to personal site
-- **Projects section**: Name, description, tech stack, GitHub, live demo
-- **Technical focus**: Skills displayed as tech stack
+- **Projects section**: Name, description, tech stack, links
+- **Education-first layout**: Optimized for students and tech roles
+- **No photos**: Maximizes ATS compatibility
 
 ### 6. Education Section
 - **Add/Remove**: Dynamic education entries
@@ -49,6 +52,34 @@ AI Resume Forge is a modern resume builder with template-aware editing, AI enhan
 - **Original SVG icons**: GitHub, LinkedIn, Email, Phone, Location
 - **Competitive programming**: Codeforces, LeetCode
 - **Design**: Dribbble, StackOverflow
+
+### 9. PDF Export (NEW)
+- **One-click download**: Green PDF button in navbar
+- **Visual PDF**: Creates image-based PDF from preview
+- **Print for ATS**: Blue Print button for ATS-friendly text-based PDF
+
+### 10. Enhanced Date Formatting (NEW)
+- **Readable dates**: "Jan 2024" instead of "2024-01-15"
+- **Automatic formatting**: Applied to all experience/education dates
+- **Supports multiple formats**: YYYY-MM-DD, YYYY-MM, or YYYY
+
+### 11. Complete PWA Support (NEW)
+- **Multiple icon sizes**: 192px, 384px, 512px
+- **Apple Touch Icon**: 180px for iOS devices
+- **Installable**: Works as standalone app on mobile/desktop
+
+### 12. Logging System (NEW)
+- **Centralized logger**: `utils/logger.ts` for consistent logging
+- **Dev/Prod modes**: Debug/info shown in dev only, errors always shown
+- **Context-aware**: Logs include timestamps and component names
+- **Optional persistence**: Can store logs in localStorage
+
+### 13. ATS-Friendly LaTeX Template (NEW)
+- **Jake Gutierrez template**: Industry-standard ATS-parsable format
+- **Unicode support**: `\pdfgentounicode=1` ensures machine readability
+- **Skill categorization**: Auto-groups into Languages/Tools/Frameworks
+- **Education-first**: Layout optimized for technical roles
+- **Date formatting**: "Sep. 2017 -- May 2021" format
 
 ---
 

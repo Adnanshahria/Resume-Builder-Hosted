@@ -23,45 +23,45 @@
 .photo-remove-btn,
 .photo-change-btn {
     position: absolute;
-    width: 24px;
-    height: 24px;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
-    border: none;
+    border: 3px solid white;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     transition: all 0.2s ease;
-    opacity: 0;
+    opacity: 1;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    z-index: 10;
 }
 
 .photo-preview:hover .photo-remove-btn,
 .photo-preview:hover .photo-change-btn {
-    opacity: 1;
+    transform: scale(1.15);
 }
 
 .photo-remove-btn {
-    top: 0;
-    right: 0;
+    top: -8px;
+    right: -8px;
     background: #ef4444;
     color: white;
 }
 
 .photo-remove-btn:hover {
     background: #dc2626;
-    transform: scale(1.1);
 }
 
 .photo-change-btn {
-    bottom: 0;
-    right: 0;
-    background: var(--color-primary, #3b82f6);
+    bottom: -8px;
+    right: -8px;
+    background: #3b82f6;
     color: white;
 }
 
 .photo-change-btn:hover {
     background: #2563eb;
-    transform: scale(1.1);
 }
 
 .photo-upload-placeholder {

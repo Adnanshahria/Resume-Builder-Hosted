@@ -73,6 +73,39 @@
   border-color: hsl(var(--border));
 }
 
+/* Sky Blue Scrollbar - Webkit (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #e2e8f0;
+}
+
+.dark ::-webkit-scrollbar-track {
+  background: #1e293b;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #3b82f6;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #2563eb;
+}
+
+/* Blue Scrollbar - Firefox */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: #3b82f6 #e2e8f0;
+}
+
+html.dark {
+  scrollbar-color: #3b82f6 #1e293b;
+}
+
 body {
   background-color: hsl(var(--background));
   color: hsl(var(--foreground));
@@ -96,6 +129,103 @@ body {
   }
 }
 
+/* Mobile Responsive Utilities */
+@layer utilities {
+
+  /* Custom xs breakpoint (480px) */
+  @media (min-width: 480px) {
+    .xs\:inline {
+      display: inline !important;
+    }
+
+    .xs\:hidden {
+      display: none !important;
+    }
+  }
+
+  /* Default state for xs classes */
+  .xs\:inline {
+    display: none;
+  }
+
+  .xs\:hidden {
+    display: inline;
+  }
+}
+
+/* Mobile-specific improvements */
+@media (max-width: 1023px) {
+
+  /* Form inputs - touch friendly */
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"],
+  input[type="url"],
+  textarea,
+  select {
+    min-height: 44px;
+    font-size: 16px !important;
+    /* Prevents iOS zoom on focus */
+  }
+
+  /* Better touch targets */
+  button {
+    min-height: 40px;
+  }
+
+  /* Improve card spacing on mobile */
+  .space-y-6>*+* {
+    margin-top: 1rem;
+  }
+
+  /* Reduce excessive padding */
+  .p-6 {
+    padding: 1rem;
+  }
+
+  /* Date input - make entire field clickable */
+  input[type="date"] {
+    min-height: 44px;
+    font-size: 16px !important;
+  }
+}
+
+/* Date input - make entire field clickable to show picker */
+input[type="date"] {
+  cursor: pointer;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* Small mobile (< 480px) */
+@media (max-width: 479px) {
+
+  /* Even more compact */
+  .gap-8 {
+    gap: 1rem;
+  }
+
+  .text-2xl {
+    font-size: 1.25rem;
+  }
+
+  /* Form sections stack better */
+  .grid-cols-2 {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* Print styles */
 @media print {
   @page {
     margin: 0;

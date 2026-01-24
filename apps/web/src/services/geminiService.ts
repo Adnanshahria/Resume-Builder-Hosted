@@ -1,7 +1,14 @@
 import { GoogleGenAI } from "@google/genai";
 import { ResumeData, ExperienceItem } from "../types";
+import { logger } from "../utils/logger";
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+// Gracefully handle missing API key
+const API_KEY = import.meta.env.VITE_GEMINI_API_KEY || process.env.API_KEY || "";
+let ai: GoogleGenAI | null = null;
+
+if (API_KEY) {
+  ai = new GoogleGenAI({ apiKey: API_KEY });
+}
 
 // Using gemini-2.5-flash as requested by the user prompt for this specific task
 const MODEL_NAME = "gemini-2.5-flash";
@@ -12,28 +19,31 @@ export const generateResumeSummary = async (data: ResumeData): Promise<string> =
   }
 
   const prompt = `
-    You are an expert resume writer. Write a professional, punchy executive summary in EXACTLY 2 sentences (MAX 30 WORDS TOTAL).
+    You are an expert resume writer. Write a professional summary in EXACTLY 1-2 sentences (MAX 15 WORDS TOTAL).
     
     Job Title: ${data.personalInfo.title}
-    Skills: ${data.skills.slice(0, 5).join(", ")}
+    Skills: ${data.skills.slice(0, 3).join(", ")}
     
-    Key Experience:
-    ${data.experience.slice(0, 2).map(e => `- ${e.role} at ${e.company}`).join("\n")}
-    
-    BE SUPER MINIMAL. MAX 30 WORDS. No first person. Focus on value and impact.
+    BE SUPER MINIMAL. MAX 15 WORDS. No first person. No filler. Action-focused.
   `;
 
   try {
+    if (!ai) {
+      logger.warn('GeminiService', 'AI not initialized - missing API key');
+      throw new Error("AI features require an API key. Please configure VITE_GEMINI_API_KEY.");
+    }
+    logger.info('GeminiService', 'Generating resume summary', { title: data.personalInfo.title });
     const response = await ai.models.generateContent({
       model: MODEL_NAME,
       contents: prompt,
       config: {
-        thinkingConfig: { thinkingBudget: 0 }, // Disable thinking for speed on simple text
+        thinkingConfig: { thinkingBudget: 0 },
       }
     });
+    logger.info('GeminiService', 'Summary generated successfully');
     return response.text || "";
   } catch (error) {
-    console.error("Gemini API Error:", error);
+    logger.error('GeminiService', 'Failed to generate summary', error);
     throw new Error("Failed to generate summary. Please check your API key or try again.");
   }
 };
@@ -44,16 +54,27 @@ export const enhanceExperienceDescription = async (item: ExperienceItem): Promis
   }
 
   const prompt = `
-    You are an expert resume writer. Enhance this job description for a ${item.role} at ${item.company}.
-    Generate 2-3 SHORT bullet points (MAX 10 WORDS EACH). Use strong action verbs.
+    Write 2-3 resume bullet points for a ${item.role} at ${item.company}.
     
-    Current Description:
-    "${item.description}"
+    RULES:
+    - Total output MAX 20 words
+    - Each bullet starts with "• " (bullet character)
+    - Use strong action verbs (Led, Developed, Managed, etc.)
+    - NO markdown, NO asterisks, NO formatting
+    - Plain text only
+    - One line per bullet
     
-    BE SUPER MINIMAL. Each bullet MAX 10 words. Start each with •. No filler words.
+    Current: "${item.description || 'No description provided'}"
+    
+    Output ONLY the bullets, nothing else.
   `;
 
   try {
+    if (!ai) {
+      logger.warn('GeminiService', 'AI not initialized - missing API key');
+      throw new Error("AI features require an API key. Please configure VITE_GEMINI_API_KEY.");
+    }
+    logger.info('GeminiService', 'Enhancing experience description', { role: item.role, company: item.company });
     const response = await ai.models.generateContent({
       model: MODEL_NAME,
       contents: prompt,
@@ -61,9 +82,10 @@ export const enhanceExperienceDescription = async (item: ExperienceItem): Promis
         thinkingConfig: { thinkingBudget: 0 },
       }
     });
+    logger.info('GeminiService', 'Experience enhanced successfully');
     return response.text || "";
   } catch (error) {
-    console.error("Gemini API Error:", error);
+    logger.error('GeminiService', 'Failed to enhance description', error);
     throw new Error("Failed to enhance description.");
   }
 };

@@ -1,9 +1,7 @@
-// Template type definitions
+// Template type definitions - Simplified to 4 core templates
 export type TemplateType =
-    | 'professional'       // General jobs
-    | 'developer'          // Programmer/Tech jobs
-    | 'software-engineer'  // Software Engineer (two-column)
-    | 'technical'          // Engineering/Technical jobs
+    | 'professional'       // General/Business jobs
+    | 'tech'               // Developer/Engineer/Technical (ATS-friendly)
     | 'medical'            // Doctor/Healthcare jobs
     | 'creative';          // Design/Creative jobs
 
@@ -29,31 +27,13 @@ export const TEMPLATES: TemplateInfo[] = [
         layout: 'single',
     },
     {
-        id: 'software-engineer',
-        name: 'Software Engineer',
-        description: 'Two-column layout perfect for tech roles with skills sidebar',
-        icon: '👨‍💻',
-        primaryColor: '#2d3748',  // Dark charcoal gray
-        accentColor: '#4a5568',   // Muted gray accent
-        layout: 'two-column',
-    },
-    {
-        id: 'developer',
-        name: 'Developer',
-        description: 'Modern tech-focused layout for programmers',
+        id: 'tech',
+        name: 'Tech',
+        description: 'ATS-friendly format for developers and engineers',
         icon: '💻',
         primaryColor: '#1a202c',  // Near black
         accentColor: '#2d3748',   // Dark gray
-        layout: 'sidebar',
-    },
-    {
-        id: 'technical',
-        name: 'Technical',
-        description: 'Engineering and technical specialist template',
-        icon: '⚙️',
-        primaryColor: '#2d3748',  // Dark charcoal
-        accentColor: '#4a5568',   // Medium gray
-        layout: 'two-column',
+        layout: 'single',
     },
     {
         id: 'medical',

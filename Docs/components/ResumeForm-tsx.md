@@ -160,9 +160,15 @@ Accordion-style section expansion/collapse.
 
 ## Form Structure
 
+Each section has a left border divider for visual separation:
+
+```tsx
+className="space-y-4 border-l-2 border-slate-200 dark:border-slate-700 pl-4"
+```
+
 ```
 <div> (Card container)
-├── Section 1: Personal Details
+├── Section 1: Personal Details (left border divider)
 │   ├── Header (numbered badge + title + chevron)
 │   └── Grid (6 input fields)
 │       ├── Full Name
@@ -174,24 +180,44 @@ Accordion-style section expansion/collapse.
 │
 ├── <hr> (Divider)
 │
-├── Section 2: Professional Summary
+├── Section 2: Professional Summary (left border divider)
 │   ├── Header (numbered badge + title + chevron)
 │   ├── "Generate with Gemini" Button (AI integration)
 │   └── Textarea
 │
 ├── <hr> (Divider)
 │
-└── Section 3: Experience
-    ├── Header (numbered badge + title + Add Role button)
-    └── Experience Cards (map)
-        ├── Card Header (role @ company + expand/delete)
-        └── Expanded Content (grid)
-            ├── Role Input
-            ├── Company Input
-            ├── Start Date Input
-            ├── End Date Input
-            ├── Description Header + "Enhance with AI" Button
-            └── Description Textarea
+├── Section 3: Experience (left border divider)
+│   ├── Header (numbered badge + title + Add Role button)
+│   ├── Serial numbers for each entry (blue circle)
+│   ├── Duration calculation (years/months)
+│   └── Experience Cards (map)
+│       ├── Card Header (role @ company + expand/delete)
+│       └── Expanded Content (grid)
+│           ├── Role Input
+│           ├── Company Input
+│           ├── Start Date Input (native date picker)
+│           ├── End Date Input (native date picker)
+│           ├── Description Header + "Enhance with AI" Button
+│           └── Description Textarea
+│
+├── <hr> (Divider)
+│
+├── Section 4: Skills (left border divider)
+│   ├── Header (numbered badge + title + chevron)
+│   └── Skill tags with add/remove
+│
+├── <hr> (Divider)
+│
+├── Section 5: Education (left border divider)
+│   ├── Header (numbered badge + title + Add button)
+│   └── Education cards
+│
+├── <hr> (Divider)
+│
+└── Section 6: Projects (left border divider, tech/creative templates only)
+    ├── Header (numbered badge + title + Add button)
+    └── Project cards
 ```
 
 ## UI Features

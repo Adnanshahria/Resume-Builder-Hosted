@@ -10,21 +10,23 @@
         "lint": "tsc --noEmit"
     },
     "dependencies": {
+        "@google/genai": "^1.0.0",
+        "@resume-forge/shared": "*",
+        "clsx": "^2.1.1",
+        "html2canvas": "^1.4.1",
+        "jspdf": "^4.0.0",
+        "lucide-react": "^0.460.0",
         "react": "^19.0.0",
         "react-dom": "^19.0.0",
         "react-router-dom": "^7.0.0",
-        "@google/genai": "^1.0.0",
-        "lucide-react": "^0.460.0",
-        "clsx": "^2.1.1",
         "tailwind-merge": "^2.5.0",
-        "zustand": "^5.0.0",
-        "@resume-forge/shared": "*"
+        "zustand": "^5.0.0"
     },
     "devDependencies": {
         "@alloc/quick-lru": "^5.2.0",
+        "@types/node": "^22.0.0",
         "@types/react": "^19.0.0",
         "@types/react-dom": "^19.0.0",
-        "@types/node": "^22.0.0",
         "@vitejs/plugin-react": "^4.3.0",
         "arg": "^5.0.2",
         "autoprefixer": "^10.4.0",
