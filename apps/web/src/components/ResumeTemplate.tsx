@@ -156,7 +156,7 @@ const TechTemplate: React.FC<TemplateProps> = ({ data }) => {
                         {data.personalInfo.website && (
                             <>
                                 {(data.personalInfo.leetcode || data.personalInfo.codeforces || data.personalInfo.codechef) && <span className="rt-separator">|</span>}
-                                <span><strong>Portfolio:</strong> <a href={data.personalInfo.website.startsWith('http') ? data.personalInfo.website : `https://${data.personalInfo.website}`} className="rt-contact-link--tech" target="_blank" rel="noopener noreferrer">{data.personalInfo.website.replace(/^https?:\/\//, '')}</a></span>
+                                <span><a href={data.personalInfo.website.startsWith('http') ? data.personalInfo.website : `https://${data.personalInfo.website}`} className="rt-contact-link--tech" target="_blank" rel="noopener noreferrer"><strong>Portfolio</strong></a></span>
                             </>
                         )}
                     </div>

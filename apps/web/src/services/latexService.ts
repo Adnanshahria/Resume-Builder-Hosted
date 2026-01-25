@@ -214,13 +214,12 @@ export const generateLatexResume = (data: ResumeData): string => {
     competitiveParts.push(`\\textbf{CodeChef:} \\href{https://www.codechef.com/users/${ccUser}}{\\underline{@${escapeLatex(ccUser)}${escapeLatex(ccRating)}}}`);
   }
   if (personalInfo.website) {
-    const wsDisplay = personalInfo.website.replace(/^https?:\/\//, '');
     const wsUrl = personalInfo.website.startsWith('http') ? personalInfo.website : `https://${personalInfo.website}`;
-    competitiveParts.push(`\\textbf{Portfolio:} \\href{${wsUrl}}{\\underline{${escapeLatex(wsDisplay)}}}`);
+    competitiveParts.push(`\\href{${wsUrl}}{\\underline{\\textbf{Portfolio}}}`);
   }
 
   if (competitiveParts.length > 0) {
-    latex += `    \\\\ \\footnotesize ${competitiveParts.join(' $|$ ')}\n`;
+    latex += `    \\\\ \\small ${competitiveParts.join(' $|$ ')}\n`;
   }
 
   latex += `    \\vspace{-8pt}
