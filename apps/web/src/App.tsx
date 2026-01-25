@@ -4,6 +4,7 @@ import { ResumeForm } from './components/ResumeForm';
 import { ResumeTemplate } from './components/ResumeTemplate';
 import { TemplateSelector } from './components/TemplateSelector';
 import { TemplateType, TEMPLATES } from './lib/templates';
+import { SEOContent } from './components/SEOContent';
 import { Pencil, Eye, RotateCcw, Sun, Moon, Download } from 'lucide-react';
 import { Button } from './components/ui/Button';
 import { exportToPDF } from './utils/pdfExport';
@@ -326,6 +327,8 @@ export default function App() {
 
         </div>
       </main>
+
+      <SEOContent />
 
       {/* Print View */}
       <div className="hidden print-only">
