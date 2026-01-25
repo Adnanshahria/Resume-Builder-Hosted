@@ -1,0 +1,56 @@
+name: Keep Hugging Face Space Alive
+
+# This workflow prevents your HF Space from going to sleep by pinging it every 47 hours
+# HF Spaces go to sleep after 48 hours of inactivity, so we ping just before that
+
+on:
+  schedule:
+    # Run every 47 hours (cron doesn't support hours > 23, so we use a pattern that averages to ~47 hours)
+    # This runs at 00:00, 23:00 next day, 22:00 the day after, etc.
+    # Effectively pings roughly every 23-24 hours to be safe
+    - cron: '0 */23 * * *'
+  
+  # Allow manual trigger for testing
+  workflow_dispatch:
+
+jobs:
+  ping-hf-space:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Ping Hugging Face Space
+        run: |
+          echo "🚀 Pinging Hugging Face Space to keep it awake..."
+          
+          # Your HF Space URL
+          HF_SPACE_URL="https://adnanshahria2019-my-qwen-coder.hf.space"
+          
+          # Try multiple endpoints to ensure the Space wakes up
+          echo "📡 Pinging main URL..."
+          HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$HF_SPACE_URL" --max-time 120)
+          echo "Main URL Status: $HTTP_STATUS"
+          
+          # Also ping the API endpoint to ensure the model is loaded
+          echo "📡 Pinging API endpoint..."
+          API_STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$HF_SPACE_URL/api/generate" --max-time 120 -X POST -H "Content-Type: application/json" -d '{"model":"gemma2:2b","prompt":"ping","stream":false}' || echo "000")
+          echo "API Endpoint Status: $API_STATUS"
+          
+          # Check if at least one ping succeeded
+          if [ "$HTTP_STATUS" -eq 200 ] || [ "$HTTP_STATUS" -eq 303 ] || [ "$HTTP_STATUS" -eq 302 ]; then
+            echo "✅ Hugging Face Space is awake and responding!"
+          else
+            echo "⚠️ Main URL returned status $HTTP_STATUS - Space might be starting up"
+          fi
+          
+          # Log timestamp
+          echo "🕐 Ping completed at: $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
+          
+      - name: Summary
+        run: |
+          echo "## 🤗 HF Space Keep-Alive Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Space URL:** https://adnanshahria2019-my-qwen-coder.hf.space" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Timestamp:** $(date -u '+%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "The Space has been pinged to prevent it from entering sleep mode." >> $GITHUB_STEP_SUMMARY
