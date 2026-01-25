@@ -1,0 +1,12 @@
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://freemiumresume.online/sitemap.xml
+
+# Crawl-delay (optional, be respectful to crawlers)
+Crawl-delay: 1
+
+# Disallow admin or private paths if any exist in the future
+# Disallow: /admin/
+# Disallow: /api/
