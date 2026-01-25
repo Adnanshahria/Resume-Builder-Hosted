@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Code, Stethoscope, GraduationCap, Briefcase, PenTool, Calculator, ArrowLeft, ArrowRight } from 'lucide-react';
+import { Code, Stethoscope, GraduationCap, Briefcase, PenTool, Calculator, ArrowLeft, ArrowRight, Settings } from 'lucide-react';
+import { SEOHead, SEO_CONFIG } from '../components/SEOHead';
+import { SettingsModal } from '../components/SettingsModal';
 
 const PROFESSION_TEMPLATES = [
     {
@@ -54,17 +56,36 @@ const PROFESSION_TEMPLATES = [
 ];
 
 export const TemplatesPage: React.FC = () => {
+    const [showSettings, setShowSettings] = useState(false);
+
     return (
         <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-800">
+            <SEOHead
+                title={SEO_CONFIG.templates.title}
+                description={SEO_CONFIG.templates.description}
+                canonicalPath={SEO_CONFIG.templates.path}
+            />
+
+            <SettingsModal isOpen={showSettings} onClose={() => setShowSettings(false)} />
+
             {/* Header */}
             <div className="container mx-auto px-4 py-8">
-                <Link
-                    to="/"
-                    className="inline-flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-teal-500 dark:hover:text-teal-400 transition-colors mb-8"
-                >
-                    <ArrowLeft className="w-4 h-4" />
-                    Back to Home
-                </Link>
+                <div className="flex justify-between items-center mb-8">
+                    <Link
+                        to="/"
+                        className="inline-flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-teal-500 dark:hover:text-teal-400 transition-colors"
+                    >
+                        <ArrowLeft className="w-4 h-4" />
+                        Back to Home
+                    </Link>
+                    <button
+                        onClick={() => setShowSettings(true)}
+                        className="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all"
+                        title="Settings"
+                    >
+                        <Settings className="w-5 h-5" />
+                    </button>
+                </div>
 
                 <div className="text-center mb-12">
                     <h1 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-4">

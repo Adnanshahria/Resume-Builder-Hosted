@@ -1,11 +1,38 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { SEOContent } from '../components/SEOContent';
-import { ArrowRight, Sparkles, FileText, Download, Shield, Zap, CheckCircle } from 'lucide-react';
+import { SEOHead, SEO_CONFIG } from '../components/SEOHead';
+import { SettingsModal } from '../components/SettingsModal';
+import { ArrowRight, Sparkles, FileText, Download, Shield, Zap, CheckCircle, Settings } from 'lucide-react';
 
 export const LandingPage: React.FC = () => {
+    const [showSettings, setShowSettings] = useState(false);
+
     return (
         <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-800">
+            <SEOHead
+                title={SEO_CONFIG.landing.title}
+                description={SEO_CONFIG.landing.description}
+                canonicalPath={SEO_CONFIG.landing.path}
+            />
+
+            {/* Header */}
+            <header className="container mx-auto px-4 py-4 flex justify-between items-center">
+                <Link to="/" className="flex items-center gap-2">
+                    <img src="/icon-512.png" alt="FreeMium Resume" className="w-8 h-8" />
+                    <span className="text-lg font-bold text-slate-900 dark:text-white">FreeMium Resume</span>
+                </Link>
+                <button
+                    onClick={() => setShowSettings(true)}
+                    className="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all"
+                    title="Settings"
+                >
+                    <Settings className="w-5 h-5" />
+                </button>
+            </header>
+
+            <SettingsModal isOpen={showSettings} onClose={() => setShowSettings(false)} />
+
             {/* Hero Section */}
             <section className="container mx-auto px-4 py-16 lg:py-24">
                 <div className="max-w-4xl mx-auto text-center space-y-8">

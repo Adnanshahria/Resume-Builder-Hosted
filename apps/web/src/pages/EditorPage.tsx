@@ -5,9 +5,11 @@ import { ResumeForm } from '../components/ResumeForm';
 import { ResumeTemplate } from '../components/ResumeTemplate';
 import { TemplateSelector } from '../components/TemplateSelector';
 import { TemplateType, TEMPLATES } from '../lib/templates';
-import { Pencil, Eye, RotateCcw, Sun, Moon, Download, ArrowLeft, Home } from 'lucide-react';
+import { Pencil, Eye, RotateCcw, Sun, Moon, Download, ArrowLeft, Home, Settings } from 'lucide-react';
 import { Button } from '../components/ui/Button';
 import { exportToPDF } from '../utils/pdfExport';
+import { SEOHead, SEO_CONFIG } from '../components/SEOHead';
+import { SettingsModal } from '../components/SettingsModal';
 
 const INITIAL_DATA: ResumeData = {
     personalInfo: {
@@ -45,6 +47,7 @@ export const EditorPage: React.FC = () => {
     });
 
     const [showTemplates, setShowTemplates] = useState(false);
+    const [showSettings, setShowSettings] = useState(false);
     const [previewScale, setPreviewScale] = useState(0.6);
     const [mobileView, setMobileView] = useState<'edit' | 'preview'>('edit');
     const [darkMode, setDarkMode] = useState(() => {
@@ -115,6 +118,14 @@ export const EditorPage: React.FC = () => {
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-800 text-foreground flex flex-col">
+            <SEOHead
+                title={SEO_CONFIG.editor.title}
+                description={SEO_CONFIG.editor.description}
+                canonicalPath={SEO_CONFIG.editor.path}
+            />
+
+            <SettingsModal isOpen={showSettings} onClose={() => setShowSettings(false)} />
+
             {/* Navbar */}
             <nav className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl border-b border-slate-200/50 dark:border-slate-700/50 sticky top-0 z-50 no-print">
                 <div className="container mx-auto px-3 sm:px-4">
@@ -233,6 +244,13 @@ export const EditorPage: React.FC = () => {
                                 title="Download PDF with clickable links"
                             >
                                 <Download className={`w-4 h-4 ${exportingPDF ? 'animate-pulse' : ''}`} />
+                            </button>
+                            <button
+                                onClick={() => setShowSettings(true)}
+                                className="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all"
+                                title="Settings"
+                            >
+                                <Settings className="w-4 h-4" />
                             </button>
                         </div>
                     </div>
