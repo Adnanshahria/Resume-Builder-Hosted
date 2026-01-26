@@ -55,8 +55,8 @@ const TemplatePreviewCard: React.FC<TemplatePreviewCardProps> = ({ template, isS
             {/* CV Preview Container */}
             <div className={`relative w-full bg-white rounded-lg shadow-lg overflow-hidden border-2 transition-all duration-300
                 ${isSelected
-                    ? 'border-teal-500 shadow-teal-200 dark:shadow-teal-900/30'
-                    : 'border-slate-200 dark:border-slate-600 hover:border-teal-300 dark:hover:border-teal-500'
+                    ? 'border-teal-500 shadow-xl shadow-teal-500/20 dark:shadow-teal-900/40 ring-4 ring-teal-500/10'
+                    : 'border-slate-200 dark:border-slate-800 hover:border-teal-400 dark:hover:border-teal-600 hover:shadow-xl'
                 }`}
                 style={{ aspectRatio: '8.5/11' }} // A4 ratio
             >

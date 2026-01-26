@@ -19,7 +19,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
             onClick={onClose}
         >
             <div
-                className="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl w-full max-w-2xl max-h-[80vh] overflow-hidden border border-slate-200 dark:border-slate-700"
+                className="bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl rounded-3xl shadow-2xl w-full max-w-2xl max-h-[80vh] overflow-hidden border border-slate-200/60 dark:border-slate-700/60 animate-in zoom-in-95 duration-200"
                 onClick={(e) => e.stopPropagation()}
             >
                 {/* Header */}
@@ -73,8 +73,8 @@ const TabButton = ({ active, onClick, icon, label }: { active: boolean; onClick:
     <button
         onClick={onClick}
         className={`flex items-center gap-2 px-4 py-3 text-sm font-medium transition-colors ${active
-                ? 'text-teal-600 dark:text-teal-400 border-b-2 border-teal-500'
-                : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+            ? 'text-teal-600 dark:text-teal-400 border-b-2 border-teal-500'
+            : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
             }`}
     >
         {icon}
@@ -95,12 +95,12 @@ const AccountSection = () => (
                 <input
                     type="email"
                     placeholder="Email"
-                    className="w-full px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-teal-500 outline-none"
+                    className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-teal-500/50 focus:border-teal-500 outline-none transition-all"
                 />
                 <input
                     type="password"
                     placeholder="Password"
-                    className="w-full px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-teal-500 outline-none"
+                    className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-teal-500/50 focus:border-teal-500 outline-none transition-all"
                 />
                 <button className="w-full px-4 py-2 rounded-lg bg-teal-500 text-white font-medium hover:bg-teal-600 transition-colors">
                     Sign In
@@ -125,7 +125,7 @@ const AccountSection = () => (
 const AboutSection = () => (
     <div className="space-y-6">
         {/* Developer Info */}
-        <div className="bg-gradient-to-br from-teal-50 to-blue-50 dark:from-teal-900/20 dark:to-blue-900/20 rounded-xl p-6">
+        <div className="bg-gradient-to-br from-teal-50/50 to-blue-50/50 dark:from-teal-900/10 dark:to-blue-900/10 rounded-2xl p-6 border border-teal-100 dark:border-teal-900/30">
             <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">About the Developer</h3>
             <div className="space-y-3">
                 <div>

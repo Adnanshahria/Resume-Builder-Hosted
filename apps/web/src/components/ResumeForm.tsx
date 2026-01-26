@@ -291,7 +291,7 @@ export const ResumeForm: React.FC<ResumeFormProps> = ({ data, onChange, template
       )}
 
 
-      <div className="space-y-6 p-6 bg-card text-card-foreground rounded-xl border shadow-sm relative">
+      <div className="space-y-6 p-6 bg-white dark:bg-[#0f1012] text-card-foreground rounded-2xl border border-slate-200/60 dark:border-slate-800/60 shadow-xl shadow-slate-200/50 dark:shadow-black/20 relative">
 
         {/* Spelling Check Button - Top of Form */}
         <div className="flex justify-end">
