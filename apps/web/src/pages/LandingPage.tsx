@@ -14,8 +14,8 @@ export const LandingPage: React.FC = () => {
             />
 
             {/* Hero Section */}
-            <section className="container mx-auto px-4 py-4 lg:py-6">
-                <div className="max-w-4xl mx-auto text-center space-y-4 sm:space-y-6">
+            <section className="container mx-auto px-4 py-1 lg:py-2">
+                <div className="max-w-4xl mx-auto text-center space-y-3 sm:space-y-4">
 
                     {/* Main Headline */}
                     <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 dark:text-white leading-tight">
@@ -36,7 +36,7 @@ export const LandingPage: React.FC = () => {
                     </p>
 
                     {/* CTA Buttons */}
-                    <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center pt-2 sm:pt-4 px-4 sm:px-0">
+                    <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center pt-1 sm:pt-2 px-4 sm:px-0">
                         <Link
                             to="/templates"
                             className="inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3 sm:py-4 rounded-xl bg-gradient-to-r from-teal-500 to-blue-600 text-white font-semibold text-base sm:text-lg shadow-lg hover:shadow-xl hover:scale-105 transition-all"
@@ -53,7 +53,7 @@ export const LandingPage: React.FC = () => {
                     </div>
 
                     {/* Trust Indicators */}
-                    <div className="flex flex-wrap justify-center gap-6 pt-4 text-sm text-slate-500 dark:text-slate-400">
+                    <div className="flex flex-wrap justify-center gap-6 pt-2 text-sm text-slate-500 dark:text-slate-400">
                         <div className="flex items-center gap-2">
                             <CheckCircle className="w-4 h-4 text-green-500" />
                             ATS Optimized
@@ -71,12 +71,12 @@ export const LandingPage: React.FC = () => {
             </section>
 
             {/* Features Section */}
-            <section id="features" className="bg-white dark:bg-slate-900/50 py-8 lg:py-12">
+            <section id="features" className="bg-white dark:bg-slate-900/50 py-4 lg:py-6">
                 <div className="container mx-auto px-4">
-                    <h2 className="text-3xl font-bold text-center text-slate-900 dark:text-white mb-12">
+                    <h2 className="text-3xl font-bold text-center text-slate-900 dark:text-white mb-6">
                         Why Choose FreeMium Resume?
                     </h2>
-                    <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+                    <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
                         <FeatureCard
                             icon={<FileText className="w-8 h-8 text-teal-500" />}
                             title="ATS-Friendly Templates"
@@ -112,10 +112,10 @@ export const LandingPage: React.FC = () => {
             </section>
 
             {/* CTA Section */}
-            <section className="container mx-auto px-4 py-6 lg:py-8">
-                <div className="max-w-3xl mx-auto text-center bg-gradient-to-r from-teal-500 to-blue-600 rounded-3xl p-12 text-white">
-                    <h2 className="text-3xl font-bold mb-4">Ready to Build Your Resume?</h2>
-                    <p className="text-lg text-white/80 mb-8">Join thousands of job seekers who have landed interviews with our resume builder.</p>
+            <section className="container mx-auto px-4 py-2 lg:py-4">
+                <div className="max-w-3xl mx-auto text-center bg-gradient-to-r from-teal-500 to-blue-600 rounded-3xl p-6 md:p-10 text-white">
+                    <h2 className="text-3xl font-bold mb-3">Ready to Build Your Resume?</h2>
+                    <p className="text-lg text-white/80 mb-6">Join thousands of job seekers who have landed interviews with our resume builder.</p>
                     <Link
                         to="/templates"
                         className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl bg-white text-teal-600 font-semibold text-lg shadow-lg hover:shadow-xl hover:scale-105 transition-all"

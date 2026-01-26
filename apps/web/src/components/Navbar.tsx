@@ -56,7 +56,7 @@ export const Navbar: React.FC = () => {
     return (
         <>
             {/* Header with Navigation - Eco-Haat Style Floating Island */}
-            <header className="sticky top-4 z-50 px-4 mb-4">
+            <header className="sticky top-2 z-50 px-4 mb-2">
                 <div className="container mx-auto max-w-7xl bg-[#D5E4EC] dark:bg-slate-900/80 backdrop-blur-md border border-slate-200/60 dark:border-slate-700/60 shadow-lg shadow-slate-200/20 dark:shadow-black/20 rounded-2xl p-2.5">
                     <div className="flex items-center justify-between">
                         {/* Left: Logo */}

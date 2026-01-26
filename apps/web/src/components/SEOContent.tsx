@@ -3,11 +3,11 @@ import React from 'react';
 export const SEOContent: React.FC = () => {
     return (
         <div className="w-full bg-white dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800">
-            <div className="container mx-auto px-4 py-6 lg:py-8 space-y-6 max-w-5xl">
+            <div className="container mx-auto px-4 py-4 lg:py-6 space-y-4 max-w-5xl">
 
                 {/* Intro Section */}
-                <section className="text-center space-y-6">
-                    <h2 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white">
+                <section className="text-center space-y-4">
+                    <h2 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white">
                         The Best Free AI Resume Builder for 2026
                     </h2>
                     <p className="text-lg text-slate-600 dark:text-slate-400 max-w-3xl mx-auto leading-relaxed">
