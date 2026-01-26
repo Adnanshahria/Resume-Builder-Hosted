@@ -11,7 +11,11 @@ export const TemplatesPage: React.FC = () => {
     const [showSettings, setShowSettings] = useState(false);
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-800">
+        <div className="min-h-screen bg-[#fafafa] dark:bg-[#0a0a0b] relative overflow-hidden">
+            {/* Background decorative elements */}
+            <div className="absolute top-0 right-1/4 w-[500px] h-[500px] bg-teal-500/5 dark:bg-teal-500/5 rounded-full blur-[120px] -z-10 animate-pulse" />
+            <div className="absolute bottom-0 left-1/4 w-[500px] h-[500px] bg-blue-500/5 dark:bg-blue-500/5 rounded-full blur-[120px] -z-10" />
+
             <SEOHead
                 title={SEO_CONFIG.templates.title}
                 description={SEO_CONFIG.templates.description}
@@ -23,11 +27,11 @@ export const TemplatesPage: React.FC = () => {
             {/* Header */}
             <div className="container mx-auto px-4 py-8">
 
-                <div className="text-center mb-12">
-                    <h1 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-4">
-                        Choose Your Resume Template
+                <div className="text-center mb-12 relative z-10">
+                    <h1 className="text-3xl md:text-5xl font-bold text-slate-900 dark:text-white mb-4 tracking-tight">
+                        Choose Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-500 to-blue-600">Perfect Template</span>
                     </h1>
-                    <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
+                    <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto leading-relaxed">
                         Select a template optimized for your profession. Each template is ATS-friendly and designed to highlight what matters most for your field.
                     </p>
                 </div>
@@ -77,8 +81,9 @@ const TemplatePreviewCard: React.FC<TemplatePreviewCardProps> = ({ templateId, t
             className="group block"
         >
             {/* CV Preview Container */}
-            <div className="relative w-full bg-white rounded-xl shadow-lg overflow-hidden border-2 border-slate-200 dark:border-slate-600 hover:border-teal-400 dark:hover:border-teal-500 transition-all duration-300 hover:shadow-xl"
-                style={{ aspectRatio: '8.5/11' }} // A4 ratio
+            {/* CV Preview Container */}
+            <div className="relative w-full bg-slate-200/50 dark:bg-slate-800/50 rounded-2xl overflow-hidden border border-slate-200/60 dark:border-slate-700/60 transition-all duration-500 hover:shadow-2xl hover:shadow-teal-900/10 dark:hover:shadow-teal-900/20 group-hover:-translate-y-1"
+                style={{ aspectRatio: '1/1.414' }} // Exact A4 ratio
             >
                 {/* Mini Resume Preview */}
                 <div className="absolute inset-0 overflow-hidden flex justify-center">
@@ -99,8 +104,8 @@ const TemplatePreviewCard: React.FC<TemplatePreviewCardProps> = ({ templateId, t
                 </div>
 
                 {/* Hover Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-900/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-6">
-                    <span className="text-white text-sm font-medium px-5 py-2 bg-teal-500 rounded-full flex items-center gap-2">
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-8">
+                    <span className="text-white text-sm font-bold px-6 py-3 bg-teal-600/90 backdrop-blur-sm rounded-full flex items-center gap-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
                         Use This Template
                         <ArrowRight className="w-4 h-4" />
                     </span>

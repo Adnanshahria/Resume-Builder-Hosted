@@ -51,7 +51,10 @@ export const EditorPage: React.FC<EditorPageProps> = ({ lockedTemplate }) => {
     const previewData = getPreviewData();
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-800 text-foreground flex flex-col">
+        <div className="min-h-screen bg-[#fafafa] dark:bg-[#0a0a0b] text-foreground flex flex-col relative overflow-hidden">
+            {/* Background elements */}
+            <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-blue-500/5 dark:bg-blue-500/5 rounded-full blur-[120px] -z-10 pointer-events-none" />
+            <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-teal-500/5 dark:bg-teal-500/5 rounded-full blur-[120px] -z-10 pointer-events-none" />
             <SEOHead
                 title={SEO_CONFIG.editor.title}
                 description={SEO_CONFIG.editor.description}
@@ -144,7 +147,7 @@ export const EditorPage: React.FC<EditorPageProps> = ({ lockedTemplate }) => {
                     </div>
 
                     {/* Right: Preview */}
-                    <div className={`relative bg-white dark:bg-slate-800/50 rounded-xl lg:rounded-2xl border-2 border-teal-500 lg:border lg:border-slate-200 dark:lg:border-slate-700 overflow-hidden flex flex-col min-h-[80vh] lg:min-h-0 shadow-lg mx-3 lg:mx-0 ${mobileView === 'edit' ? 'hidden lg:flex' : 'flex'
+                    <div className={`relative bg-white dark:bg-slate-900/50 rounded-2xl border border-slate-200/60 dark:border-slate-800/60 overflow-hidden flex flex-col min-h-[80vh] lg:min-h-0 shadow-xl shadow-slate-200/50 dark:shadow-black/20 mx-3 lg:mx-0 ${mobileView === 'edit' ? 'hidden lg:flex' : 'flex'
                         }`}>
 
                         {/* Placeholder indicator */}
@@ -156,7 +159,7 @@ export const EditorPage: React.FC<EditorPageProps> = ({ lockedTemplate }) => {
 
                         <div
                             ref={containerRef}
-                            className={`flex-1 overflow-y-auto overflow-x-hidden p-0 sm:p-2 lg:p-6 flex justify-center items-start bg-slate-50 dark:bg-slate-900 ${!hasUserEdited ? 'pt-12' : ''}`}
+                            className={`flex-1 overflow-y-auto overflow-x-hidden p-0 sm:p-2 lg:p-6 flex justify-center items-start bg-slate-100/50 dark:bg-[#0f1012] ${!hasUserEdited ? 'pt-12' : ''}`}
                         >
                             <ResumeTemplate
                                 data={previewData}

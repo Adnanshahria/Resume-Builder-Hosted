@@ -2,7 +2,7 @@ import React from 'react';
 
 export const SEOContent: React.FC = () => {
     return (
-        <div className="w-full bg-white dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800">
+        <div className="w-full bg-slate-50/50 dark:bg-slate-900/20 border-t border-slate-200/60 dark:border-slate-800/60">
             <div className="container mx-auto px-4 py-4 lg:py-6 space-y-4 max-w-5xl">
 
                 {/* Intro Section */}
@@ -16,7 +16,7 @@ export const SEOContent: React.FC = () => {
                 </section>
 
                 {/* How-to Guide */}
-                <section className="bg-slate-50 dark:bg-slate-900/50 rounded-2xl p-8 md:p-12">
+                <section className="bg-white dark:bg-slate-900/40 rounded-3xl p-8 md:p-12 border border-slate-200/50 dark:border-slate-800/50 shadow-sm">
                     <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-8">How to Build a Professional Resume in 5 Minutes</h3>
                     <div className="space-y-6">
                         <Step
@@ -88,13 +88,13 @@ export const SEOContent: React.FC = () => {
 
 
 const Step = ({ number, title, text }: { number: string, title: string, text: string }) => (
-    <div className="flex gap-4 items-start">
-        <div className="flex-shrink-0 w-8 h-8 rounded-full bg-teal-500 text-white flex items-center justify-center font-bold">
+    <div className="flex gap-5 items-start">
+        <div className="flex-shrink-0 w-10 h-10 rounded-2xl bg-gradient-to-br from-teal-400 to-teal-600 text-white flex items-center justify-center font-bold shadow-lg shadow-teal-900/20">
             {number}
         </div>
         <div>
-            <h4 className="text-lg font-semibold text-slate-900 dark:text-white mb-1">{title}</h4>
-            <p className="text-slate-600 dark:text-slate-400">{text}</p>
+            <h4 className="text-xl font-bold text-slate-900 dark:text-white mb-2">{title}</h4>
+            <p className="text-slate-600 dark:text-slate-400 leading-relaxed">{text}</p>
         </div>
     </div>
 );
@@ -102,9 +102,9 @@ const Step = ({ number, title, text }: { number: string, title: string, text: st
 const Accordion = ({ question, answer }: { question: string, answer: string }) => {
     const [isOpen, setIsOpen] = React.useState(false);
     return (
-        <div className="border border-slate-200 dark:border-slate-800 rounded-lg overflow-hidden">
+        <div className="border border-slate-200/60 dark:border-slate-800/60 rounded-2xl overflow-hidden bg-white dark:bg-slate-900/40 transition-all hover:border-slate-300 dark:hover:border-slate-700">
             <button
-                className="w-full flex justify-between items-center p-4 bg-white dark:bg-slate-900 text-left hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
+                className="w-full flex justify-between items-center p-5 text-left transition-colors"
                 onClick={() => setIsOpen(!isOpen)}
             >
                 <span className="font-medium text-slate-900 dark:text-white">{question}</span>

@@ -6,7 +6,11 @@ import { ArrowRight, Sparkles, FileText, Download, Shield, Zap, CheckCircle } fr
 
 export const LandingPage: React.FC = () => {
     return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-800">
+        <div className="min-h-screen bg-[#fafafa] dark:bg-[#0a0a0b] relative overflow-hidden">
+            {/* Background decorative elements */}
+            <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-teal-500/10 dark:bg-teal-500/5 rounded-full blur-[120px] -z-10 animate-pulse" />
+            <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-blue-500/10 dark:bg-blue-500/5 rounded-full blur-[120px] -z-10" />
+
             <SEOHead
                 title={SEO_CONFIG.landing.title}
                 description={SEO_CONFIG.landing.description}
@@ -133,10 +137,12 @@ export const LandingPage: React.FC = () => {
 };
 
 const FeatureCard = ({ icon, title, description }: { icon: React.ReactNode, title: string, description: string }) => (
-    <div className="p-6 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700 text-center">
-        <div className="inline-flex items-center justify-center mb-4">{icon}</div>
-        <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">{title}</h3>
-        <p className="text-sm text-slate-600 dark:text-slate-400">{description}</p>
+    <div className="p-6 rounded-2xl bg-white dark:bg-slate-900/50 border border-slate-200/60 dark:border-slate-800/60 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group">
+        <div className="inline-flex items-center justify-center mb-4 p-3 rounded-xl bg-slate-50 dark:bg-slate-800 group-hover:bg-teal-50 dark:group-hover:bg-teal-900/30 transition-colors">
+            {icon}
+        </div>
+        <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2">{title}</h3>
+        <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">{description}</p>
     </div>
 );
 
