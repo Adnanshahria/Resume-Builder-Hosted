@@ -48,8 +48,7 @@ export const EditorPage: React.FC<EditorPageProps> = ({ lockedTemplate }) => {
 
     // Wrap setData to mark as edited
     const handleDataChange = (newData: typeof data) => {
-        markAsEdited();
-        setData(newData);
+        setData({ ...newData, hasUserEdited: true });
     };
 
     // Get data for preview (placeholder or real)

@@ -2,6 +2,7 @@ import React from 'react';
 import { ResumeData, SectionVisibility, DEFAULT_ENABLED_SECTIONS } from '../types';
 import { TemplateType } from '../lib/templates';
 import { formatDate } from '../utils/dateFormatter';
+import { Mail, Phone, MapPin, Linkedin, Globe } from 'lucide-react';
 
 interface ResumeTemplateProps {
     data: ResumeData;
@@ -18,66 +19,111 @@ interface TemplateProps {
 // Professional Template - Clean and Classic (ATS-Friendly, no photos)
 const ProfessionalTemplate: React.FC<TemplateProps> = ({ data }) => (
     <div className="resume-template resume-template--professional">
-        <header className="rt-header rt-header--professional">
-            <div className="rt-header-content">
-                <div className="rt-header-text">
-                    <h1 className="rt-name">{data.personalInfo.fullName || 'Your Name'}</h1>
-                    <p className="rt-title">{data.personalInfo.title || 'Professional Title'}</p>
-                    <div className="rt-contact">
-                        {data.personalInfo.email && <span>{data.personalInfo.email}</span>}
-                        {data.personalInfo.phone && <span>{data.personalInfo.phone}</span>}
-                        {data.personalInfo.location && <span>{data.personalInfo.location}</span>}
+        {/* Left Sidebar */}
+        <div className="rt-sidebar--professional">
+            {/* Contact Info */}
+            <div className="rt-contact--professional">
+                {data.personalInfo.email && (
+                    <div className="rt-contact-item--professional">
+                        <Mail size={14} className="flex-shrink-0" />
+                        <span>{data.personalInfo.email}</span>
                     </div>
-                </div>
+                )}
+                {data.personalInfo.phone && (
+                    <div className="rt-contact-item--professional">
+                        <Phone size={14} className="flex-shrink-0" />
+                        <span>{data.personalInfo.phone}</span>
+                    </div>
+                )}
+                {data.personalInfo.location && (
+                    <div className="rt-contact-item--professional">
+                        <MapPin size={14} className="flex-shrink-0" />
+                        <span>{data.personalInfo.location}</span>
+                    </div>
+                )}
+                {data.personalInfo.linkedin && (
+                    <div className="rt-contact-item--professional">
+                        <Linkedin size={14} className="flex-shrink-0" />
+                        <span>{data.personalInfo.linkedin}</span>
+                    </div>
+                )}
+                {data.personalInfo.website && (
+                    <div className="rt-contact-item--professional">
+                        <Globe size={14} className="flex-shrink-0" />
+                        <span>{data.personalInfo.website}</span>
+                    </div>
+                )}
             </div>
-        </header>
 
-        {data.summary && (
-            <section className="rt-section">
-                <h2 className="rt-section-title rt-section-title--professional">Professional Summary</h2>
-                <p className="rt-summary">{data.summary}</p>
-            </section>
-        )}
-
-        {data.experience.length > 0 && (
-            <section className="rt-section">
-                <h2 className="rt-section-title rt-section-title--professional">Experience</h2>
-                {data.experience.map((exp, idx) => (
-                    <div key={idx} className="rt-experience-item">
-                        <div className="rt-exp-header">
-                            <h3 className="rt-exp-role">{exp.role}</h3>
-                            <span className="rt-exp-dates">{formatDate(exp.startDate)} - {formatDate(exp.endDate) || 'Present'}</span>
+            {/* Education (Sidebar) */}
+            {data.education.length > 0 && (
+                <div className="rt-sidebar-section">
+                    <h3 className="rt-sidebar-title">Education</h3>
+                    {data.education.map((edu, idx) => (
+                        <div key={idx} className="rt-edu-item--professional">
+                            <div className="rt-edu-degree--professional">{edu.degree}</div>
+                            <div className="rt-edu-institution--professional">{edu.institution}</div>
+                            <div className="rt-edu-year--professional">{edu.graduationYear}</div>
                         </div>
-                        <p className="rt-exp-company">{exp.company}</p>
-                        {exp.description && <p className="rt-exp-description">{exp.description}</p>}
-                    </div>
-                ))}
-            </section>
-        )}
-
-        {data.education.length > 0 && (
-            <section className="rt-section">
-                <h2 className="rt-section-title rt-section-title--professional">Education</h2>
-                {data.education.map((edu, idx) => (
-                    <div key={idx} className="rt-education-item">
-                        <h3 className="rt-edu-degree">{edu.degree}</h3>
-                        <p className="rt-edu-institution">{edu.institution}</p>
-                        <span className="rt-edu-year">{edu.graduationYear}{edu.cgpa && ` • Grade: ${edu.cgpa}`}</span>
-                    </div>
-                ))}
-            </section>
-        )}
-
-        {data.skills.length > 0 && (
-            <section className="rt-section">
-                <h2 className="rt-section-title rt-section-title--professional">Skills</h2>
-                <div className="rt-skills rt-skills--professional">
-                    {data.skills.map((skill, idx) => (
-                        <span key={idx} className="rt-skill-tag">{skill}</span>
                     ))}
                 </div>
-            </section>
-        )}
+            )}
+
+            {/* Skills (Sidebar) */}
+            {data.skills.length > 0 && (
+                <div className="rt-sidebar-section">
+                    <h3 className="rt-sidebar-title">Skills</h3>
+                    <div className="rt-skills--professional">
+                        {data.skills.map((skill, idx) => (
+                            <span key={idx} className="rt-skill-tag--professional">{skill}</span>
+                        ))}
+                    </div>
+                </div>
+            )}
+        </div>
+
+        {/* Main Content */}
+        <div className="rt-main--professional">
+            <header className="rt-header--professional">
+                <h1 className="rt-name--professional">{data.personalInfo.fullName || 'Your Name'}</h1>
+                <p className="rt-title--professional">{data.personalInfo.title || 'Professional Title'}</p>
+            </header>
+
+            {data.summary && (
+                <section className="rt-section">
+                    <h2 className="rt-section-title--professional">Professional Profile</h2>
+                    <p className="rt-summary--professional">{data.summary}</p>
+                </section>
+            )}
+
+            {data.experience.length > 0 && (
+                <section className="rt-section">
+                    <h2 className="rt-section-title--professional">Experience</h2>
+                    {data.experience.map((exp, idx) => (
+                        <div key={idx} className="rt-exp-item--professional">
+                            <div className="rt-exp-header--professional">
+                                <h3 className="rt-exp-role--professional">{exp.role}</h3>
+                                <span className="rt-exp-date--professional">{formatDate(exp.startDate)} – {formatDate(exp.endDate) || 'Present'}</span>
+                            </div>
+                            <div className="rt-exp-company--professional">{exp.company}</div>
+                            {exp.description && <p className="rt-exp-description--professional">{exp.description}</p>}
+                        </div>
+                    ))}
+                </section>
+            )}
+
+            {data.projects && data.projects.length > 0 && (
+                <section className="rt-section">
+                    <h2 className="rt-section-title--professional">Projects</h2>
+                    {data.projects.map((project, idx) => (
+                        <div key={idx} className="rt-project-item--professional">
+                            <div className="rt-project-name--professional">{project.name}</div>
+                            {project.description && <p className="rt-project-description--professional">{project.description}</p>}
+                        </div>
+                    ))}
+                </section>
+            )}
+        </div>
     </div>
 );
 

@@ -114,51 +114,204 @@
 }
 
 /* ===========================
-   Professional Template
+   Professional Template (Modern Sidebar)
    =========================== */
 
 .resume-template--professional {
-    padding: 2.5rem;
+    display: grid;
+    grid-template-columns: 32% 68%;
+    padding: 0;
+    background: white;
 }
 
+.rt-sidebar--professional {
+    background-color: #f8fafc;
+    /* Slate 50 */
+    border-right: 1px solid #e2e8f0;
+    padding: 2rem 1.5rem;
+    color: #334155;
+}
+
+.rt-main--professional {
+    padding: 2.5rem 2.5rem;
+    background-color: white;
+}
+
+/* Sidebar Contact */
+.rt-contact--professional {
+    margin-bottom: 2rem;
+    font-size: 0.85rem;
+    color: #475569;
+}
+
+.rt-contact-item--professional {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+    word-break: break-all;
+}
+
+/* Sidebar Sections (Skills, Education, Languages) */
+.rt-sidebar-section {
+    margin-bottom: 2.5rem;
+}
+
+.rt-sidebar-title {
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #0f172a;
+    border-bottom: 2px solid #cbd5e1;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+/* Skills in Sidebar */
+.rt-skills--professional {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.rt-skill-tag--professional {
+    background: white;
+    border: 1px solid #cbd5e1;
+    color: #334155;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.8rem;
+    border-radius: 4px;
+}
+
+/* Education in Sidebar */
+.rt-edu-item--professional {
+    margin-bottom: 1.25rem;
+}
+
+.rt-edu-degree--professional {
+    font-weight: 600;
+    color: #0f172a;
+    font-size: 0.9rem;
+    line-height: 1.3;
+}
+
+.rt-edu-institution--professional {
+    font-size: 0.85rem;
+    color: #64748b;
+    margin-top: 0.1rem;
+}
+
+.rt-edu-year--professional {
+    font-size: 0.8rem;
+    color: #94a3b8;
+    margin-top: 0.1rem;
+}
+
+/* Main Column Header */
 .rt-header--professional {
-    text-align: center;
-    border-bottom: 2px solid #1e3a5f;
-    padding-bottom: 1.5rem;
+    margin-bottom: 2.5rem;
+    border-bottom: none;
+    padding-bottom: 0;
+    text-align: left;
+}
+
+.rt-name--professional {
+    font-family: 'Times New Roman', Times, serif;
+    /* Classic serif */
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #0f172a;
+    line-height: 1.1;
+    margin-bottom: 0.5rem;
+}
+
+.rt-title--professional {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Main Column Sections */
+.rt-section-title--professional {
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #0f172a;
+    border-bottom: 2px solid #0f172a;
+    /* Strong divider */
+    padding-bottom: 0.5rem;
+    margin-bottom: 1.5rem;
+    margin-top: 2rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.rt-main--professional .rt-section:first-of-type .rt-section-title--professional {
+    margin-top: 0;
+}
+
+.rt-summary--professional {
+    color: #475569;
+    line-height: 1.6;
+    font-size: 0.95rem;
+}
+
+/* Experience Layout */
+.rt-exp-item--professional {
     margin-bottom: 1.5rem;
 }
 
-.resume-template--professional .rt-name {
-    font-size: 2rem;
-    color: #1e3a5f;
-    margin: 0;
-    font-weight: 700;
-}
-
-.resume-template--professional .rt-title {
-    font-size: 1.1rem;
-    color: #2d5a87;
-    margin: 0.5rem 0;
-}
-
-.resume-template--professional .rt-contact {
+.rt-exp-header--professional {
     display: flex;
-    justify-content: center;
-    gap: 1.5rem;
-    font-size: 0.85rem;
-    color: #666;
-    margin-top: 0.75rem;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 0.25rem;
 }
 
-.rt-section-title--professional {
-    color: #1e3a5f;
-    border-bottom: 1px solid #ddd;
-    padding-bottom: 0.25rem;
+.rt-exp-role--professional {
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: #1e293b;
 }
 
-.rt-skills--professional .rt-skill-tag {
-    background: #e8f0f7;
-    color: #1e3a5f;
+.rt-exp-company--professional {
+    font-weight: 500;
+    color: #0f172a;
+    font-size: 0.95rem;
+}
+
+.rt-exp-date--professional {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #64748b;
+}
+
+.rt-exp-description--professional {
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    color: #475569;
+    line-height: 1.5;
+}
+
+/* Projects */
+.rt-project-item--professional {
+    margin-bottom: 1.25rem;
+}
+
+.rt-project-name--professional {
+    font-weight: 700;
+    font-size: 1rem;
+    color: #1e293b;
+}
+
+.rt-project-description--professional {
+    font-size: 0.9rem;
+    color: #475569;
+    margin-top: 0.25rem;
 }
 
 /* ===========================
