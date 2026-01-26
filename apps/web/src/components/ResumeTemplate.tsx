@@ -17,7 +17,7 @@ interface TemplateProps {
 }
 
 // Professional Template - Clean and Classic (ATS-Friendly, no photos)
-const ProfessionalTemplate: React.FC<TemplateProps> = ({ data }) => (
+const ProfessionalTemplate: React.FC<TemplateProps> = ({ data, enabledSections }) => (
     <div className="resume-template resume-template--professional">
         {/* Left Sidebar */}
         <div className="rt-sidebar--professional">
@@ -56,7 +56,7 @@ const ProfessionalTemplate: React.FC<TemplateProps> = ({ data }) => (
             </div>
 
             {/* Education (Sidebar) */}
-            {data.education.length > 0 && (
+            {data.education.length > 0 && enabledSections.education && (
                 <div className="rt-sidebar-section">
                     <h3 className="rt-sidebar-title">Education</h3>
                     {data.education.map((edu, idx) => (
@@ -70,7 +70,7 @@ const ProfessionalTemplate: React.FC<TemplateProps> = ({ data }) => (
             )}
 
             {/* Skills (Sidebar) */}
-            {data.skills.length > 0 && (
+            {data.skills.length > 0 && enabledSections.skills && (
                 <div className="rt-sidebar-section">
                     <h3 className="rt-sidebar-title">Skills</h3>
                     <div className="rt-skills--professional">
@@ -89,14 +89,14 @@ const ProfessionalTemplate: React.FC<TemplateProps> = ({ data }) => (
                 <p className="rt-title--professional">{data.personalInfo.title || 'Professional Title'}</p>
             </header>
 
-            {data.summary && (
+            {data.summary && enabledSections.summary && (
                 <section className="rt-section">
                     <h2 className="rt-section-title--professional">Professional Profile</h2>
                     <p className="rt-summary--professional">{data.summary}</p>
                 </section>
             )}
 
-            {data.experience.length > 0 && (
+            {data.experience.length > 0 && enabledSections.experience && (
                 <section className="rt-section">
                     <h2 className="rt-section-title--professional">Experience</h2>
                     {data.experience.map((exp, idx) => (
@@ -112,7 +112,7 @@ const ProfessionalTemplate: React.FC<TemplateProps> = ({ data }) => (
                 </section>
             )}
 
-            {data.projects && data.projects.length > 0 && (
+            {data.projects && data.projects.length > 0 && enabledSections.projects && (
                 <section className="rt-section">
                     <h2 className="rt-section-title--professional">Projects</h2>
                     {data.projects.map((project, idx) => (
@@ -129,7 +129,7 @@ const ProfessionalTemplate: React.FC<TemplateProps> = ({ data }) => (
 
 // Tech Template - ATS-Friendly Format (Jake Gutierrez Style)
 // Note: This template intentionally doesn't use photos for maximum ATS compatibility
-const TechTemplate: React.FC<TemplateProps> = ({ data }) => {
+const TechTemplate: React.FC<TemplateProps> = ({ data, enabledSections }) => {
     // Extract username from URL
     const extractUsername = (url: string | undefined): string => {
         if (!url) return '';
@@ -212,7 +212,7 @@ const TechTemplate: React.FC<TemplateProps> = ({ data }) => {
             </header>
 
             {/* 1. Summary Section (Position 2 - after Header) */}
-            {data.summary && (
+            {data.summary && enabledSections.summary && (
                 <section className="rt-section rt-section--tech">
                     <h2 className="rt-section-title rt-section-title--tech">Summary</h2>
                     <p className="rt-summary--tech">{data.summary}</p>
@@ -220,7 +220,7 @@ const TechTemplate: React.FC<TemplateProps> = ({ data }) => {
             )}
 
             {/* 2. Education Section */}
-            {data.education.length > 0 && (
+            {data.education.length > 0 && enabledSections.education && (
                 <section className="rt-section rt-section--tech">
                     <h2 className="rt-section-title rt-section-title--tech">Education</h2>
                     <div className="rt-section-content">
@@ -241,7 +241,7 @@ const TechTemplate: React.FC<TemplateProps> = ({ data }) => {
             )}
 
             {/* 3. Vocational Certifications Section */}
-            {data.vocationalCertifications && data.vocationalCertifications.length > 0 && (
+            {data.vocationalCertifications && data.vocationalCertifications.length > 0 && enabledSections.vocationalCertifications && (
                 <section className="rt-section rt-section--tech">
                     <h2 className="rt-section-title rt-section-title--tech">Vocational Certifications</h2>
                     <div className="rt-section-content">
@@ -271,7 +271,7 @@ const TechTemplate: React.FC<TemplateProps> = ({ data }) => {
             )}
 
             {/* 4. Skills Section - Structured Categories */}
-            {(data.skillsData || data.skills.length > 0) && (
+            {(data.skillsData || data.skills.length > 0) && enabledSections.skills && (
                 <section className="rt-section rt-section--tech">
                     <h2 className="rt-section-title rt-section-title--tech">Skills</h2>
                     <div className="rt-skills--tech">
@@ -307,7 +307,7 @@ const TechTemplate: React.FC<TemplateProps> = ({ data }) => {
             )}
 
             {/* 5. Experience Section - Sorted by date (most recent first) */}
-            {data.experience.length > 0 && (
+            {data.experience.length > 0 && enabledSections.experience && (
                 <section className="rt-section rt-section--tech">
                     <h2 className="rt-section-title rt-section-title--tech">Experience</h2>
                     <div className="rt-section-content">
@@ -359,7 +359,7 @@ const TechTemplate: React.FC<TemplateProps> = ({ data }) => {
             )}
 
             {/* 6. Projects Section */}
-            {data.projects && data.projects.length > 0 && (
+            {data.projects && data.projects.length > 0 && enabledSections.projects && (
                 <section className="rt-section rt-section--tech">
                     <h2 className="rt-section-title rt-section-title--tech">Projects</h2>
                     <div className="rt-section-content">
@@ -396,7 +396,7 @@ const TechTemplate: React.FC<TemplateProps> = ({ data }) => {
             )}
 
             {/* 7. Achievements Section */}
-            {data.achievements && data.achievements.length > 0 && (
+            {data.achievements && data.achievements.length > 0 && enabledSections.achievements && (
                 <section className="rt-section rt-section--tech">
                     <h2 className="rt-section-title rt-section-title--tech">Achievements</h2>
                     <div className="rt-section-content">
@@ -426,7 +426,7 @@ const TechTemplate: React.FC<TemplateProps> = ({ data }) => {
             )}
 
             {/* 8. Extracurricular Section */}
-            {data.extracurricular && data.extracurricular.length > 0 && (
+            {data.extracurricular && data.extracurricular.length > 0 && enabledSections.extracurricular && (
                 <section className="rt-section rt-section--tech">
                     <h2 className="rt-section-title rt-section-title--tech">Extracurricular Activities</h2>
                     <div className="rt-section-content">
@@ -458,7 +458,7 @@ const TechTemplate: React.FC<TemplateProps> = ({ data }) => {
             )}
 
             {/* 9. Declaration Section */}
-            {data.showDeclaration && (
+            {data.showDeclaration && enabledSections.declaration && (
                 <section className="rt-section rt-section--tech">
                     <h2 className="rt-section-title rt-section-title--tech">Declaration</h2>
                     <p className="rt-summary--tech">
@@ -471,7 +471,7 @@ const TechTemplate: React.FC<TemplateProps> = ({ data }) => {
 };
 
 // Medical Template - Healthcare Professional (ATS-Friendly, no photos)
-const MedicalTemplate: React.FC<TemplateProps> = ({ data }) => (
+const MedicalTemplate: React.FC<TemplateProps> = ({ data, enabledSections }) => (
     <div className="resume-template resume-template--medical">
         <header className="rt-header rt-header--medical">
             <div className="rt-header-text">
@@ -485,7 +485,7 @@ const MedicalTemplate: React.FC<TemplateProps> = ({ data }) => (
             </div>
         </header>
 
-        {data.summary && (
+        {data.summary && enabledSections.summary && (
             <section className="rt-section rt-section--medical-highlight">
                 <h2 className="rt-section-title rt-section-title--medical">Professional Profile</h2>
                 <p className="rt-summary">{data.summary}</p>
@@ -494,7 +494,7 @@ const MedicalTemplate: React.FC<TemplateProps> = ({ data }) => (
 
         <div className="rt-medical-columns">
             <div className="rt-medical-main">
-                {data.experience.length > 0 && (
+                {data.experience.length > 0 && enabledSections.experience && (
                     <section className="rt-section">
                         <h2 className="rt-section-title rt-section-title--medical">Clinical Experience</h2>
                         {data.experience.map((exp, idx) => (
@@ -513,7 +513,7 @@ const MedicalTemplate: React.FC<TemplateProps> = ({ data }) => (
             </div>
 
             <div className="rt-medical-side">
-                {data.education.length > 0 && (
+                {data.education.length > 0 && enabledSections.education && (
                     <section className="rt-section">
                         <h2 className="rt-section-title rt-section-title--medical">Education & Training</h2>
                         {data.education.map((edu, idx) => (
@@ -526,7 +526,7 @@ const MedicalTemplate: React.FC<TemplateProps> = ({ data }) => (
                     </section>
                 )}
 
-                {data.skills.length > 0 && (
+                {data.skills.length > 0 && enabledSections.skills && (
                     <section className="rt-section">
                         <h2 className="rt-section-title rt-section-title--medical">Specializations</h2>
                         <div className="rt-skills rt-skills--medical">
@@ -537,7 +537,7 @@ const MedicalTemplate: React.FC<TemplateProps> = ({ data }) => (
                     </section>
                 )}
 
-                {data.personalInfo.medicalLicenses && data.personalInfo.medicalLicenses.length > 0 && (
+                {data.personalInfo.medicalLicenses && data.personalInfo.medicalLicenses.length > 0 && enabledSections.vocationalCertifications && (
                     <section className="rt-section">
                         <h2 className="rt-section-title rt-section-title--medical">Licenses & Registration</h2>
                         <div className="rt-licenses">
@@ -560,7 +560,7 @@ const MedicalTemplate: React.FC<TemplateProps> = ({ data }) => (
 );
 
 // Creative Template - Bold and Expressive (ATS-Friendly, no photos)
-const CreativeTemplate: React.FC<TemplateProps> = ({ data }) => (
+const CreativeTemplate: React.FC<TemplateProps> = ({ data, enabledSections }) => (
     <div className="resume-template resume-template--creative">
         <div className="rt-creative-hero">
             <div className="rt-creative-bg-shapes">
@@ -579,14 +579,14 @@ const CreativeTemplate: React.FC<TemplateProps> = ({ data }) => (
             {data.personalInfo.location && <span className="rt-contact-pill">{data.personalInfo.location}</span>}
         </div>
 
-        {data.summary && (
+        {data.summary && enabledSections.summary && (
             <section className="rt-section rt-section--creative">
                 <h2 className="rt-section-title rt-section-title--creative">About Me</h2>
                 <p className="rt-summary rt-summary--creative">{data.summary}</p>
             </section>
         )}
 
-        {data.skills.length > 0 && (
+        {data.skills.length > 0 && enabledSections.skills && (
             <section className="rt-section rt-section--creative">
                 <h2 className="rt-section-title rt-section-title--creative">Skills</h2>
                 <div className="rt-skills rt-skills--creative">
@@ -597,7 +597,7 @@ const CreativeTemplate: React.FC<TemplateProps> = ({ data }) => (
             </section>
         )}
 
-        {data.experience.length > 0 && (
+        {data.experience.length > 0 && enabledSections.experience && (
             <section className="rt-section rt-section--creative">
                 <h2 className="rt-section-title rt-section-title--creative">Experience</h2>
                 <div className="rt-creative-timeline">
@@ -615,7 +615,7 @@ const CreativeTemplate: React.FC<TemplateProps> = ({ data }) => (
             </section>
         )}
 
-        {data.education.length > 0 && (
+        {data.education.length > 0 && enabledSections.education && (
             <section className="rt-section rt-section--creative">
                 <h2 className="rt-section-title rt-section-title--creative">Education</h2>
                 {data.education.map((edu, idx) => (
@@ -628,7 +628,7 @@ const CreativeTemplate: React.FC<TemplateProps> = ({ data }) => (
         )}
 
         {/* Projects Section for Creative */}
-        {data.projects && data.projects.length > 0 && (
+        {data.projects && data.projects.length > 0 && enabledSections.projects && (
             <section className="rt-section rt-section--creative">
                 <h2 className="rt-section-title rt-section-title--creative">Projects</h2>
                 {data.projects.map((project, idx) => (

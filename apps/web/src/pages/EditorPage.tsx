@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { ResumeForm } from '../components/ResumeForm';
 import { ResumeTemplate } from '../components/ResumeTemplate';
 import { TemplateSelector } from '../components/TemplateSelector';
-import { Pencil, Eye, Download, AlertTriangle, X } from 'lucide-react';
+import { AlertTriangle, X } from 'lucide-react';
 import { Button } from '../components/ui/Button';
 import { SEOHead, SEO_CONFIG } from '../components/SEOHead';
 import { useEditor } from '../contexts/EditorContext';
@@ -20,11 +20,8 @@ export const EditorPage: React.FC<EditorPageProps> = ({ lockedTemplate }) => {
         setSelectedTemplate,
         showTemplates,
         setShowTemplates,
-        handleDownloadPDF,
-        exportingPDF,
         previewScale,
         mobileView,
-        setMobileView,
         containerRef,
         showPdfWarning,
         setShowPdfWarning,
@@ -32,7 +29,6 @@ export const EditorPage: React.FC<EditorPageProps> = ({ lockedTemplate }) => {
         confirmPdfDownload,
         getPreviewData,
         hasUserEdited,
-        markAsEdited,
         enabledSections,
     } = useEditor();
 
@@ -137,43 +133,7 @@ export const EditorPage: React.FC<EditorPageProps> = ({ lockedTemplate }) => {
 
             {/* Main Content */}
             <main className="flex-1 container mx-auto px-0 sm:px-4 md:p-6 lg:p-8 no-print">
-                {/* Mobile: Edit/Preview toggle bar */}
-                <div className="lg:hidden flex items-center justify-between flex-wrap gap-2 px-3 py-2 mb-4 bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm sticky top-[76px] z-40 border-b border-slate-200 dark:border-slate-700">
-                    <div className="flex items-center">
-                        <button
-                            onClick={() => setMobileView('edit')}
-                            className={`px-3 py-1.5 text-sm font-medium rounded-l-lg transition-all border-2 ${mobileView === 'edit'
-                                ? 'bg-teal-500 text-white border-teal-500'
-                                : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-400 border-slate-300 dark:border-slate-600'
-                                }`}
-                        >
-                            <Pencil className="w-4 h-4 inline mr-1" />
-                            Editor
-                        </button>
-                        <button
-                            onClick={() => setMobileView('preview')}
-                            className={`px-3 py-1.5 text-sm font-medium rounded-r-lg transition-all border-2 border-l-0 ${mobileView === 'preview'
-                                ? 'bg-teal-500 text-white border-teal-500'
-                                : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-400 border-slate-300 dark:border-slate-600'
-                                }`}
-                        >
-                            <Eye className="w-4 h-4 inline mr-1" />
-                            Preview
-                        </button>
-                    </div>
 
-                    <div className="flex items-center gap-2">
-                        <button
-                            onClick={handleDownloadPDF}
-                            disabled={exportingPDF}
-                            className="px-2 py-1.5 rounded-lg bg-green-600 text-white hover:bg-green-700 transition-all flex items-center gap-1 text-sm font-medium disabled:opacity-50"
-                            title="Download PDF with clickable links"
-                        >
-                            <Download className={`w-4 h-4 ${exportingPDF ? 'animate-pulse' : ''}`} />
-                            PDF
-                        </button>
-                    </div>
-                </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-8 h-full">
 

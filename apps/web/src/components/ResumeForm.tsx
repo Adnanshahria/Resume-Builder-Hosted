@@ -34,12 +34,6 @@ export const ResumeForm: React.FC<ResumeFormProps> = ({ data, onChange, template
 
   // Check if a section should be shown based on templateConfig or enabledSections
   const isSectionEnabled = (sectionKey: keyof typeof enabledSections): boolean => {
-    // If we have templateConfig, use its section settings
-    if (templateConfig?.sections) {
-      const sectionConfig = templateConfig.sections[sectionKey as keyof typeof templateConfig.sections];
-      return sectionConfig?.enabled ?? true;
-    }
-    // Otherwise fall back to enabledSections from context
     return enabledSections[sectionKey] ?? true;
   };
 
@@ -97,7 +91,8 @@ export const ResumeForm: React.FC<ResumeFormProps> = ({ data, onChange, template
       description: ''
     };
     onChange({ ...data, experience: [newExp, ...data.experience] });
-    setExpandedSection(`exp-${newExp.id}`);
+    setExpandedSection('experience');
+    setExpandedItems(prev => new Set(prev).add(`exp-${newExp.id}`));
   };
 
   const updateExperience = (id: string, field: keyof ExperienceItem, value: string) => {
@@ -757,7 +752,8 @@ export const ResumeForm: React.FC<ResumeFormProps> = ({ data, onChange, template
                       graduationYear: '',
                     };
                     onChange({ ...data, education: [...data.education, newEdu] });
-                    setExpandedSection(`edu-${newEdu.id}`);
+                    setExpandedSection('education');
+                    setExpandedItems(prev => new Set(prev).add(`edu-${newEdu.id}`));
                   }}
                   size="sm"
                   variant="outline"
@@ -1448,6 +1444,8 @@ export const ResumeForm: React.FC<ResumeFormProps> = ({ data, onChange, template
                         github: '',
                       };
                       onChange({ ...data, projects: [...(data.projects || []), newProject] });
+                      setExpandedSection('projects');
+                      setExpandedItems(prev => new Set(prev).add(`proj-${newProject.id}`));
                     }}
                     size="sm"
                     variant="outline"
@@ -1618,6 +1616,8 @@ export const ResumeForm: React.FC<ResumeFormProps> = ({ data, onChange, template
                         credentialUrl: '',
                       };
                       onChange({ ...data, vocationalCertifications: [...(data.vocationalCertifications || []), newCert] });
+                      setExpandedSection('vocational');
+                      setExpandedItems(prev => new Set(prev).add(`cert-${newCert.id}`));
                     }}
                     size="sm"
                     variant="outline"
@@ -1751,6 +1751,8 @@ export const ResumeForm: React.FC<ResumeFormProps> = ({ data, onChange, template
                       description: '',
                     };
                     onChange({ ...data, achievements: [...(data.achievements || []), newAch] });
+                    setExpandedSection('achievements');
+                    setExpandedItems(prev => new Set(prev).add(`ach-${newAch.id}`));
                   }}
                   size="sm"
                   variant="outline"
@@ -1923,6 +1925,8 @@ export const ResumeForm: React.FC<ResumeFormProps> = ({ data, onChange, template
                       description: '',
                     };
                     onChange({ ...data, extracurricular: [...(data.extracurricular || []), newExt] });
+                    setExpandedSection('extracurricular');
+                    setExpandedItems(prev => new Set(prev).add(`ext-${newExt.id}`));
                   }}
                   size="sm"
                   variant="outline"
