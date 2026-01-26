@@ -1,5 +1,5 @@
 import React from 'react';
-import { ResumeData } from '../types';
+import { ResumeData, SectionVisibility, DEFAULT_ENABLED_SECTIONS } from '../types';
 import { TemplateType } from '../lib/templates';
 import { formatDate } from '../utils/dateFormatter';
 
@@ -7,10 +7,12 @@ interface ResumeTemplateProps {
     data: ResumeData;
     template: TemplateType;
     scale?: number;
+    enabledSections?: SectionVisibility;
 }
 
 interface TemplateProps {
     data: ResumeData;
+    enabledSections: SectionVisibility;
 }
 
 // Professional Template - Clean and Classic (ATS-Friendly, no photos)
@@ -598,20 +600,20 @@ const CreativeTemplate: React.FC<TemplateProps> = ({ data }) => (
 );
 
 // Main Template Renderer - Simplified to 4 templates (all ATS-friendly, no photos)
-export const ResumeTemplate: React.FC<ResumeTemplateProps> = ({ data, template, scale = 1 }) => {
+export const ResumeTemplate: React.FC<ResumeTemplateProps> = ({ data, template, scale = 1, enabledSections = DEFAULT_ENABLED_SECTIONS }) => {
     const renderTemplate = () => {
         switch (template) {
             case 'professional':
-                return <ProfessionalTemplate data={data} />;
+                return <ProfessionalTemplate data={data} enabledSections={enabledSections} />;
             case 'tech':
-                return <TechTemplate data={data} />;
+                return <TechTemplate data={data} enabledSections={enabledSections} />;
             case 'medical':
-                return <MedicalTemplate data={data} />;
+                return <MedicalTemplate data={data} enabledSections={enabledSections} />;
             case 'creative':
-                return <CreativeTemplate data={data} />;
+                return <CreativeTemplate data={data} enabledSections={enabledSections} />;
             // Fallback for old template names (backwards compatibility)
             default:
-                return <TechTemplate data={data} />;
+                return <TechTemplate data={data} enabledSections={enabledSections} />;
         }
     };
 

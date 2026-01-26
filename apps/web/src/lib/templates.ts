@@ -28,8 +28,8 @@ export const TEMPLATES: TemplateInfo[] = [
     },
     {
         id: 'tech',
-        name: 'Tech',
-        description: 'ATS-friendly format for developers and engineers',
+        name: 'TECHNICAL',
+        description: 'ATS-friendly format for engineers, developers, and tech professionals',
         icon: '💻',
         primaryColor: '#1a202c',  // Near black
         accentColor: '#2d3748',   // Dark gray

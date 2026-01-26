@@ -23,6 +23,7 @@ export interface PersonalInfo {
     codechefUsername?: string; // Display username
     codechefRating?: string;  // CodeChef rating (optional)
     dribbble?: string;        // For creative templates
+    behance?: string;         // For creative templates
     licenseNumber?: string;   // Legacy - kept for backwards compatibility
     // Enhanced medical fields
     medicalLicenses?: MedicalLicense[];    // Multiple licenses (1 mandatory + optional)
@@ -130,6 +131,34 @@ export interface SkillsData {
     interests?: string[];            // Optional hobbies/interests
 }
 
+// Section visibility config - which sections to include in CV
+export interface SectionVisibility {
+    summary: boolean;
+    education: boolean;
+    experience: boolean;
+    projects: boolean;
+    skills: boolean;
+    achievements: boolean;
+    extracurricular: boolean;
+    vocationalCertifications: boolean;
+    coursework: boolean;
+    declaration: boolean;
+}
+
+// Default enabled sections
+export const DEFAULT_ENABLED_SECTIONS: SectionVisibility = {
+    summary: true,
+    education: true,
+    experience: true,
+    projects: true,
+    skills: true,
+    achievements: false,
+    extracurricular: false,
+    vocationalCertifications: false,
+    coursework: false,
+    declaration: false,
+};
+
 export interface ResumeData {
     personalInfo: PersonalInfo;
     summary: string;
@@ -144,8 +173,11 @@ export interface ResumeData {
     extracurricular?: ExtracurricularItem[];                   // Clubs, research, publications
     showDeclaration?: boolean;                                 // Toggle for declaration section
     certifications?: CertificationItem[];                      // Legacy - kept for backwards compatibility
+    enabledSections?: SectionVisibility;                       // Which sections are enabled
+    hasUserEdited?: boolean;                                   // Has user started editing
 }
 
 // Template type (re-exported from lib/templates for convenience)
 export type { TemplateType } from '../lib/templates';
+
 

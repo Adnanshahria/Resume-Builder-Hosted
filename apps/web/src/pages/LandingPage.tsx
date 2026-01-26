@@ -1,13 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { SEOContent } from '../components/SEOContent';
 import { SEOHead, SEO_CONFIG } from '../components/SEOHead';
-import { SettingsModal } from '../components/SettingsModal';
-import { ArrowRight, Sparkles, FileText, Download, Shield, Zap, CheckCircle, Settings } from 'lucide-react';
+import { ArrowRight, Sparkles, FileText, Download, Shield, Zap, CheckCircle } from 'lucide-react';
 
 export const LandingPage: React.FC = () => {
-    const [showSettings, setShowSettings] = useState(false);
-
     return (
         <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-800">
             <SEOHead
@@ -16,65 +13,47 @@ export const LandingPage: React.FC = () => {
                 canonicalPath={SEO_CONFIG.landing.path}
             />
 
-            {/* Header */}
-            <header className="container mx-auto px-4 py-4 flex justify-between items-center">
-                <Link to="/" className="flex items-center gap-2">
-                    <img src="/icon-512.png" alt="FreeMium Resume" className="w-8 h-8" />
-                    <span className="text-lg font-bold text-slate-900 dark:text-white">FreeMium Resume</span>
-                </Link>
-                <button
-                    onClick={() => setShowSettings(true)}
-                    className="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all"
-                    title="Settings"
-                >
-                    <Settings className="w-5 h-5" />
-                </button>
-            </header>
-
-            <SettingsModal isOpen={showSettings} onClose={() => setShowSettings(false)} />
-
             {/* Hero Section */}
-            <section className="container mx-auto px-4 py-16 lg:py-24">
-                <div className="max-w-4xl mx-auto text-center space-y-8">
-                    {/* Badge */}
-                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-teal-100 dark:bg-teal-900/30 text-teal-700 dark:text-teal-300 text-sm font-medium">
-                        <Sparkles className="w-4 h-4" />
-                        100% Free • No Credit Card Required
-                    </div>
+            <section className="container mx-auto px-4 py-4 lg:py-6">
+                <div className="max-w-4xl mx-auto text-center space-y-4 sm:space-y-6">
 
                     {/* Main Headline */}
-                    <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 dark:text-white leading-tight">
-                        Build Your Professional Resume <br />
+                    <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 dark:text-white leading-tight">
+                        Build Your Professional{' '}
+                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-rose-500 to-pink-600">
+                            Resume
+                        </span>
+                        <br />
                         <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-500 to-blue-600">
                             In Minutes, Not Hours
                         </span>
                     </h1>
 
                     {/* Subheadline */}
-                    <p className="text-xl text-slate-600 dark:text-slate-400 max-w-2xl mx-auto leading-relaxed">
+                    <p className="text-base sm:text-lg md:text-xl text-slate-600 dark:text-slate-400 max-w-2xl mx-auto leading-relaxed px-2">
                         The free AI-powered resume builder that helps you create ATS-friendly resumes.
                         Choose from professional templates designed for developers, doctors, students, and more.
                     </p>
 
                     {/* CTA Buttons */}
-                    <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
+                    <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center pt-2 sm:pt-4 px-4 sm:px-0">
                         <Link
                             to="/templates"
-                            className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl bg-gradient-to-r from-teal-500 to-blue-600 text-white font-semibold text-lg shadow-lg hover:shadow-xl hover:scale-105 transition-all"
+                            className="inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3 sm:py-4 rounded-xl bg-gradient-to-r from-teal-500 to-blue-600 text-white font-semibold text-base sm:text-lg shadow-lg hover:shadow-xl hover:scale-105 transition-all"
                         >
                             Get Started Free
-                            <ArrowRight className="w-5 h-5" />
+                            <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
                         </Link>
                         <a
                             href="#features"
-                            className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-semibold text-lg border-2 border-slate-200 dark:border-slate-700 hover:border-teal-500 dark:hover:border-teal-500 transition-all"
+                            className="inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3 sm:py-4 rounded-xl bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-semibold text-base sm:text-lg border-2 border-slate-200 dark:border-slate-700 hover:border-teal-500 dark:hover:border-teal-500 transition-all"
                         >
                             Learn More
                         </a>
                     </div>
 
                     {/* Trust Indicators */}
-                    <div className="flex flex-wrap justify-center gap-6 pt-8 text-sm text-slate-500 dark:text-slate-400">
+                    <div className="flex flex-wrap justify-center gap-6 pt-4 text-sm text-slate-500 dark:text-slate-400">
                         <div className="flex items-center gap-2">
                             <CheckCircle className="w-4 h-4 text-green-500" />
                             ATS Optimized
@@ -92,7 +71,7 @@ export const LandingPage: React.FC = () => {
             </section>
 
             {/* Features Section */}
-            <section id="features" className="bg-white dark:bg-slate-900/50 py-16 lg:py-24">
+            <section id="features" className="bg-white dark:bg-slate-900/50 py-8 lg:py-12">
                 <div className="container mx-auto px-4">
                     <h2 className="text-3xl font-bold text-center text-slate-900 dark:text-white mb-12">
                         Why Choose FreeMium Resume?
@@ -133,7 +112,7 @@ export const LandingPage: React.FC = () => {
             </section>
 
             {/* CTA Section */}
-            <section className="container mx-auto px-4 py-16 lg:py-24">
+            <section className="container mx-auto px-4 py-6 lg:py-8">
                 <div className="max-w-3xl mx-auto text-center bg-gradient-to-r from-teal-500 to-blue-600 rounded-3xl p-12 text-white">
                     <h2 className="text-3xl font-bold mb-4">Ready to Build Your Resume?</h2>
                     <p className="text-lg text-white/80 mb-8">Join thousands of job seekers who have landed interviews with our resume builder.</p>
