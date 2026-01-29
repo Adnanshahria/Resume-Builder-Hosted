@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { ResumeForm } from '../components/ResumeForm';
 import { ResumeTemplate } from '../components/ResumeTemplate';
 import { TemplateSelector } from '../components/TemplateSelector';
-import { AlertTriangle, X } from 'lucide-react';
+import { AlertTriangle, X, Loader2 } from 'lucide-react';
 import { Button } from '../components/ui/Button';
 import { SEOHead, SEO_CONFIG } from '../components/SEOHead';
 import { useEditor } from '../contexts/EditorContext';
@@ -30,6 +30,7 @@ export const EditorPage: React.FC<EditorPageProps> = ({ lockedTemplate }) => {
         getPreviewData,
         hasUserEdited,
         enabledSections,
+        exportingPDF,
     } = useEditor();
 
     // Set template when locked (from route parameter)
@@ -134,6 +135,23 @@ export const EditorPage: React.FC<EditorPageProps> = ({ lockedTemplate }) => {
                 </div>
             )}
 
+            {/* PDF Export Loading Modal */}
+            {exportingPDF && (
+                <div className="fixed inset-0 z-[60] bg-black/60 backdrop-blur-sm flex items-center justify-center no-print">
+                    <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl p-8 flex flex-col items-center max-w-sm w-full mx-4 border border-slate-200 dark:border-slate-700 animate-in fade-in zoom-in-95 duration-200">
+                        <div className="w-16 h-16 mb-4 relative flex items-center justify-center">
+                            <div className="absolute inset-0 rounded-full border-4 border-slate-100 dark:border-slate-800"></div>
+                            <div className="absolute inset-0 rounded-full border-4 border-teal-500 border-t-transparent animate-spin"></div>
+                            <Loader2 className="w-8 h-8 text-teal-600 dark:text-teal-400 animate-spin" />
+                        </div>
+                        <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2 text-center">Compiling PDF</h3>
+                        <p className="text-slate-600 dark:text-slate-400 text-center">
+                            Your Data in LaTeX code is Compiling to PDF. Please wait...
+                        </p>
+                    </div>
+                </div>
+            )}
+
             {/* Main Content */}
             <main className="flex-1 container mx-auto px-0 sm:px-4 md:p-6 lg:p-8 no-print">
 
@@ -177,7 +195,7 @@ export const EditorPage: React.FC<EditorPageProps> = ({ lockedTemplate }) => {
             <div className="hidden print-only">
                 <ResumeTemplate data={data} template={selectedTemplate} scale={1} enabledSections={enabledSections} />
             </div>
-        </div>
+        </div >
     );
 };
 

@@ -26,8 +26,23 @@ const TemplateEditorWrapper = () => {
   const template = templateMap[templateId || ''] || 'professional';
   return <EditorWithProvider template={template} />;
 };
+import { useEffect } from 'react';
+import { keepAlive } from './services/huggingfaceService';
 
 export default function App() {
+  // Keep Hugging Face Space alive
+  useEffect(() => {
+    // Initial ping
+    keepAlive();
+
+    // Ping every 23 hours
+    const interval = setInterval(() => {
+      keepAlive();
+    }, 23 * 60 * 60 * 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950">
       <Routes>

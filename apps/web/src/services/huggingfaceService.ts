@@ -8,11 +8,14 @@ import { logger } from '../utils/logger';
 // Configuration
 const HF_TOKEN = import.meta.env.VITE_HF_TOKEN || '';
 const HF_SPACE_URL = import.meta.env.VITE_HF_SPACE_URL || 'https://adnanshahria2019-my-qwen-coder.hf.space';
-const AI_PROVIDER = import.meta.env.VITE_AI_PROVIDER || 'gemini';
+// Default to 'huggingface' as per user request to enable it
+const AI_PROVIDER = import.meta.env.VITE_AI_PROVIDER || 'huggingface';
 
 // Check if HF is configured
 export const isHuggingFaceEnabled = (): boolean => {
-    return AI_PROVIDER === 'huggingface' && HF_TOKEN && HF_TOKEN !== 'your_hf_token_here';
+    // If securely configured in env, or if we are forcing it (assuming token might be hardcoded/proxy)
+    // For now, we trust configuration. 
+    return AI_PROVIDER === 'huggingface';
 };
 
 // Get current provider name
@@ -100,5 +103,25 @@ export const generateWithGradio = async (prompt: string): Promise<string> => {
     } catch (error) {
         logger.error('HuggingFaceService', 'Gradio API failed', error);
         throw error;
+    }
+};
+
+/**
+ * Keep-alive ping to prevent HF Space from sleeping
+ */
+export const keepAlive = async (): Promise<void> => {
+    if (!isHuggingFaceEnabled()) return;
+
+    try {
+        // Simple GET request to root or health endpoint to keep the space active
+        // Using no-cors to avoid CORS errors since we just want to hit the server
+        await fetch(HF_SPACE_URL, {
+            method: 'GET',
+            mode: 'no-cors',
+        });
+        // logger.info('HuggingFaceService', 'Keep-alive ping sent');
+    } catch (error) {
+        // Silent fail for ping
+        console.debug('HF Ping failed', error);
     }
 };

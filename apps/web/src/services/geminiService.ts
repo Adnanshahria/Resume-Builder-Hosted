@@ -7,8 +7,23 @@ import { isHuggingFaceEnabled, generateWithHuggingFace, getCurrentProvider } fro
 const API_KEY = import.meta.env.VITE_GEMINI_API_KEY || process.env.API_KEY || "";
 let ai: GoogleGenAI | null = null;
 
+// Debug logging for API key
+if (import.meta.env.DEV) {
+  console.log('Gemini Service Init:', {
+    hasKey: !!API_KEY,
+    keyLength: API_KEY ? API_KEY.length : 0,
+    model: "gemini-2.5-flash-lite"
+  });
+}
+
 if (API_KEY) {
-  ai = new GoogleGenAI({ apiKey: API_KEY });
+  try {
+    ai = new GoogleGenAI({ apiKey: API_KEY });
+  } catch (error) {
+    console.error("Failed to initialize GoogleGenAI:", error);
+  }
+} else {
+  console.error("Gemini API Key is missing! AI features will not work.");
 }
 
 // Using gemini-2.5-flash as requested by the user prompt for this specific task
