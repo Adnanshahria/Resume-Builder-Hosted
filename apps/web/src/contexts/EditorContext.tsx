@@ -381,6 +381,13 @@ export const EditorProvider: React.FC<EditorProviderProps> = ({ children }) => {
         await performPdfExport();
     };
 
+    const formatFilename = (type: 'Pdf' | 'Latex') => {
+        const name = (data.personalInfo.fullName || 'User').replace(/\s+/g, '_');
+        const now = new Date();
+        const dateStr = `${String(now.getDate()).padStart(2, '0')}_${String(now.getMonth() + 1).padStart(2, '0')}_${now.getFullYear()}`;
+        return `${name}_FreeMiumResume_CV_${dateStr}_${type}`;
+    };
+
     const performPdfExport = async () => {
         const resumeElement = document.querySelector('.resume-template-wrapper') as HTMLElement;
         if (!resumeElement) {
@@ -389,7 +396,8 @@ export const EditorProvider: React.FC<EditorProviderProps> = ({ children }) => {
         }
         setExportingPDF(true);
         try {
-            const result = await exportToPDF(data, resumeElement, `${data.personalInfo.fullName || 'resume'}`);
+            const filename = formatFilename('Pdf');
+            const result = await exportToPDF(data, resumeElement, filename);
             if (result.method === 'browser') {
                 console.log('Used browser print fallback');
             }
@@ -434,7 +442,13 @@ export const EditorProvider: React.FC<EditorProviderProps> = ({ children }) => {
         getPreviewData,
         hasUserEdited,
         markAsEdited,
-        handleDownloadLatex: () => downloadLatex(data, data.personalInfo.fullName || 'resume'),
+        handleDownloadLatex: () => {
+            const name = (data.personalInfo.fullName || 'User').replace(/\s+/g, '_');
+            const now = new Date();
+            const dateStr = `${String(now.getDate()).padStart(2, '0')}_${String(now.getMonth() + 1).padStart(2, '0')}_${now.getFullYear()}`;
+            const filename = `${name}_FreeMiumResume_CV_${dateStr}_Latex`;
+            downloadLatex(data, filename);
+        },
     };
 
     return (

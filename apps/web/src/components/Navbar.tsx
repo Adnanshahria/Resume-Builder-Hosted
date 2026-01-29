@@ -95,50 +95,50 @@ export const Navbar: React.FC = () => {
                         <div className="flex items-center gap-2 pr-1">
                             {/* Mobile Editor Controls (Visible only on mobile editor) */}
                             {isEditorPage && editorContext && (
-                                <div className="flex lg:hidden items-center gap-2 mr-1">
+                                <div className="flex lg:hidden items-center gap-1 mr-1">
                                     {/* Editor/Preview Toggle (Segment Control style) */}
                                     <div className="flex items-center bg-slate-100 dark:bg-slate-800 p-1 rounded-lg border border-slate-200 dark:border-slate-700">
                                         <button
                                             onClick={() => editorContext.setMobileView('edit')}
-                                            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-bold transition-all ${editorContext.mobileView === 'edit'
+                                            className={`flex items-center gap-1.5 px-2 py-1.5 rounded-md text-xs font-bold transition-all ${editorContext.mobileView === 'edit'
                                                 ? 'bg-white dark:bg-slate-700 text-teal-600 dark:text-teal-400 shadow-sm'
                                                 : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300'
                                                 }`}
                                         >
                                             <Pencil className="w-3.5 h-3.5" />
-                                            Editor
+                                            <span>Editor</span>
                                         </button>
                                         <button
                                             onClick={() => editorContext.setMobileView('preview')}
-                                            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-bold transition-all ${editorContext.mobileView === 'preview'
+                                            className={`flex items-center gap-1.5 px-2 py-1.5 rounded-md text-xs font-bold transition-all ${editorContext.mobileView === 'preview'
                                                 ? 'bg-white dark:bg-slate-700 text-teal-600 dark:text-teal-400 shadow-sm'
                                                 : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300'
                                                 }`}
                                         >
                                             <Eye className="w-3.5 h-3.5" />
-                                            Preview
+                                            <span>Preview</span>
                                         </button>
                                     </div>
 
                                     {/* LaTeX Button */}
                                     <button
                                         onClick={editorContext.handleDownloadLatex}
-                                        className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 dark:bg-slate-700 text-white hover:bg-slate-900 dark:hover:bg-slate-600 transition-all shadow-sm font-bold text-xs border border-slate-700 dark:border-slate-600"
+                                        className="flex items-center gap-1.5 px-2 py-2 rounded-lg bg-slate-800 dark:bg-slate-700 text-white hover:bg-slate-900 dark:hover:bg-slate-600 transition-all shadow-sm font-bold text-xs border border-slate-700 dark:border-slate-600"
                                         title="Download LaTeX"
                                     >
                                         <FileText className="w-3.5 h-3.5" />
-                                        LaTeX
+                                        <span className="hidden sm:inline">LaTeX</span>
                                     </button>
 
                                     {/* PDF Button */}
                                     <button
                                         onClick={editorContext.handleDownloadPDF}
                                         disabled={editorContext.exportingPDF}
-                                        className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-green-600 text-white hover:bg-green-700 transition-all disabled:opacity-50 shadow-sm font-bold text-xs"
+                                        className="flex items-center gap-1.5 px-2 py-2 rounded-lg bg-green-600 text-white hover:bg-green-700 transition-all disabled:opacity-50 shadow-sm font-bold text-xs"
                                         title="Download PDF"
                                     >
                                         <Download className={`w-3.5 h-3.5 ${editorContext.exportingPDF ? 'animate-pulse' : ''}`} />
-                                        PDF
+                                        <span className="hidden sm:inline">PDF</span>
                                     </button>
                                 </div>
                             )}
