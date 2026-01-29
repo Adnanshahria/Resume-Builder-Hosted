@@ -67,9 +67,11 @@ export interface EducationItem {
     institution: string;
     degree: string;
     field?: string;
-    startDate?: string;   // For date range display
-    graduationYear: string;
+    startDate: string;
+    endDate: string;
+    graduationYear?: string; // semantic compatibility
     cgpa?: string;
+    cgpaLabel?: string; // e.g., "CGPA", "GPA", "Grade", "Percentage"
 }
 
 // Certifications for professional templates

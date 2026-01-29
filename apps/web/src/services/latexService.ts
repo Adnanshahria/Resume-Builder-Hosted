@@ -244,9 +244,10 @@ export const generateLatexResume = (data: ResumeData): string => {
   \\resumeSubHeadingListStart
 `;
     for (const edu of education) {
-      const dateRange = edu.startDate ? `${formatLatexDate(edu.startDate)} -- ${formatLatexDate(edu.graduationYear)}` : formatLatexDate(edu.graduationYear);
+      const dateRange = [edu.startDate, edu.endDate].filter(Boolean).map(d => escapeLatex(d || '')).join(' -- ');
       const degreeField = edu.field ? `${escapeLatex(edu.degree)} in ${escapeLatex(edu.field)}` : escapeLatex(edu.degree);
-      const cgpaText = edu.cgpa ? `CGPA: ${escapeLatex(edu.cgpa)}` : '';
+      const gradeLabel = edu.cgpaLabel || 'CGPA';
+      const cgpaText = edu.cgpa ? `${escapeLatex(gradeLabel)}: ${escapeLatex(edu.cgpa)}` : '';
       latex += `    \\resumeSubheading
       {${escapeLatex(edu.institution)}}{${dateRange}}
       {${degreeField}}{${cgpaText}}

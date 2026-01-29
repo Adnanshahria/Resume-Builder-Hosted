@@ -701,35 +701,70 @@ export const ResumeForm: React.FC<ResumeFormProps> = ({ data, onChange, template
                             placeholder={isMedicalTemplate ? "Medicine, Surgery" : "Computer Science"}
                           />
                         </div>
-                        <div className="space-y-2">
-                          <label className="text-sm font-medium">Graduation Year</label>
-                          <input
-                            type="text"
-                            className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm"
-                            value={edu.graduationYear}
-                            onChange={(e) => {
-                              const updated = data.education.map(item =>
-                                item.id === edu.id ? { ...item, graduationYear: e.target.value } : item
-                              );
-                              onChange({ ...data, education: updated });
-                            }}
-                            placeholder="2024"
-                          />
+                        <div className="grid grid-cols-2 gap-4">
+                          <div className="space-y-2">
+                            <label className="text-sm font-medium">Start Date</label>
+                            <input
+                              type="text"
+                              className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm"
+                              value={edu.startDate || ''}
+                              onChange={(e) => {
+                                const updated = data.education.map(item =>
+                                  item.id === edu.id ? { ...item, startDate: e.target.value } : item
+                                );
+                                onChange({ ...data, education: updated });
+                              }}
+                              placeholder="e.g. 2020"
+                            />
+                          </div>
+                          <div className="space-y-2">
+                            <label className="text-sm font-medium">End Date</label>
+                            <input
+                              type="text"
+                              className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm" // Fixed syntax error on this line
+                              value={edu.endDate || ''}
+                              onChange={(e) => {
+                                const updated = data.education.map(item =>
+                                  item.id === edu.id ? { ...item, endDate: e.target.value } : item
+                                );
+                                onChange({ ...data, education: updated });
+                              }}
+                              placeholder="e.g. 2024"
+                            />
+                          </div>
                         </div>
-                        <div className="space-y-2">
-                          <label className="text-sm font-medium">Grade</label>
-                          <input
-                            type="text"
-                            className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm"
-                            value={edu.cgpa || ''}
-                            onChange={(e) => {
-                              const updated = data.education.map(item =>
-                                item.id === edu.id ? { ...item, cgpa: e.target.value } : item
-                              );
-                              onChange({ ...data, education: updated });
-                            }}
-                            placeholder="CGPA 3.9/4, Grade 89%"
-                          />
+
+                        <div className="grid grid-cols-2 gap-4">
+                          <div className="space-y-2">
+                            <label className="text-sm font-medium">Grade Type</label>
+                            <input
+                              type="text"
+                              className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm"
+                              value={edu.cgpaLabel || ''}
+                              onChange={(e) => {
+                                const updated = data.education.map(item =>
+                                  item.id === edu.id ? { ...item, cgpaLabel: e.target.value } : item
+                                );
+                                onChange({ ...data, education: updated });
+                              }}
+                              placeholder="Type (e.g. CGPA, GPA)"
+                            />
+                          </div>
+                          <div className="space-y-2">
+                            <label className="text-sm font-medium">Result</label>
+                            <input
+                              type="text"
+                              className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm"
+                              value={edu.cgpa || ''}
+                              onChange={(e) => {
+                                const updated = data.education.map(item =>
+                                  item.id === edu.id ? { ...item, cgpa: e.target.value } : item
+                                );
+                                onChange({ ...data, education: updated });
+                              }}
+                              placeholder="Value (e.g. 3.5/4.0)"
+                            />
+                          </div>
                         </div>
                       </div>
                     )}
@@ -749,7 +784,8 @@ export const ResumeForm: React.FC<ResumeFormProps> = ({ data, onChange, template
                       institution: '',
                       degree: '',
                       field: '',
-                      graduationYear: '',
+                      startDate: '',
+                      endDate: '',
                     };
                     onChange({ ...data, education: [...data.education, newEdu] });
                     setExpandedSection('education');

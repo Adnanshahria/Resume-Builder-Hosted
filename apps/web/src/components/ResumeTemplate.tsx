@@ -63,7 +63,7 @@ const ProfessionalTemplate: React.FC<TemplateProps> = ({ data, enabledSections }
                         <div key={idx} className="rt-edu-item--professional">
                             <div className="rt-edu-degree--professional">{edu.degree}</div>
                             <div className="rt-edu-institution--professional">{edu.institution}</div>
-                            <div className="rt-edu-year--professional">{edu.graduationYear}</div>
+                            <div className="rt-edu-year--professional">{[edu.startDate, edu.endDate].filter(Boolean).join(' – ')}</div>
                         </div>
                     ))}
                 </div>
@@ -228,11 +228,11 @@ const TechTemplate: React.FC<TemplateProps> = ({ data, enabledSections }) => {
                             <div key={idx} className="rt-edu-item rt-edu-item--tech">
                                 <div className="rt-two-col">
                                     <span className="rt-bold">{edu.institution}</span>
-                                    <span className="rt-bold">{edu.startDate ? `${formatDate(edu.startDate)} – ` : ''}{formatDate(edu.graduationYear)}</span>
+                                    <span className="rt-bold">{[edu.startDate, edu.endDate].filter(Boolean).join(' – ')}</span>
                                 </div>
                                 <div className="rt-two-col">
                                     <span className="rt-italic">{edu.degree}{edu.field ? ` in ${edu.field}` : ''}</span>
-                                    <span className="rt-italic">{edu.cgpa ? `CGPA: ${edu.cgpa}` : ''}</span>
+                                    <span className="rt-italic">{edu.cgpa ? `${edu.cgpaLabel || 'CGPA'}: ${edu.cgpa}` : ''}</span>
                                 </div>
                             </div>
                         ))}
@@ -520,7 +520,7 @@ const MedicalTemplate: React.FC<TemplateProps> = ({ data, enabledSections }) => 
                             <div key={idx} className="rt-education-item rt-education-item--medical">
                                 <h3 className="rt-edu-degree">{edu.degree}</h3>
                                 <p className="rt-edu-institution">{edu.institution}</p>
-                                <span className="rt-edu-year">{edu.graduationYear}{edu.cgpa && ` • Grade: ${edu.cgpa}`}</span>
+                                <span className="rt-edu-year">{[edu.startDate, edu.endDate].filter(Boolean).join(' – ')}{edu.cgpa && ` • ${edu.cgpaLabel || 'Grade'}: ${edu.cgpa}`}</span>
                             </div>
                         ))}
                     </section>
@@ -621,7 +621,7 @@ const CreativeTemplate: React.FC<TemplateProps> = ({ data, enabledSections }) =>
                 {data.education.map((edu, idx) => (
                     <div key={idx} className="rt-education-item rt-education-item--creative">
                         <h3 className="rt-edu-degree">{edu.degree}</h3>
-                        <p className="rt-edu-institution">{edu.institution} • {edu.graduationYear}{edu.cgpa && ` • Grade: ${edu.cgpa}`}</p>
+                        <p className="rt-edu-institution">{edu.institution} • {[edu.startDate, edu.endDate].filter(Boolean).join(' – ')}{edu.cgpa && ` • ${edu.cgpaLabel || 'Grade'}: ${edu.cgpa}`}</p>
                     </div>
                 ))}
             </section>

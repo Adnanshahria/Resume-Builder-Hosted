@@ -53,7 +53,7 @@ const PLACEHOLDER_DATA: ResumeData = {
             degree: 'Master of Science',
             field: 'Computer Science',
             startDate: '2018-09',
-            graduationYear: '2020',
+            endDate: '2020',
             cgpa: '3.9/4.0',
         },
         {
@@ -62,7 +62,7 @@ const PLACEHOLDER_DATA: ResumeData = {
             degree: 'Bachelor of Science',
             field: 'Computer Science',
             startDate: '2014-09',
-            graduationYear: '2018',
+            endDate: '2018',
             cgpa: '3.7/4.0',
         }
     ],
