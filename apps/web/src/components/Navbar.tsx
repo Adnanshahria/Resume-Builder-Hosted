@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { SettingsModal } from './SettingsModal';
-import { Sparkles, Settings, Menu, X, ArrowRight, Sun, Moon, RotateCcw, Download, Pencil, Eye } from 'lucide-react';
+import { Sparkles, Settings, Menu, X, ArrowRight, Sun, Moon, RotateCcw, Download, Pencil, Eye, FileText } from 'lucide-react';
 import { useEditorOptional } from '../contexts/EditorContext';
 import { TEMPLATES } from '../lib/templates';
 
@@ -120,6 +120,16 @@ export const Navbar: React.FC = () => {
                                         </button>
                                     </div>
 
+                                    {/* LaTeX Button */}
+                                    <button
+                                        onClick={editorContext.handleDownloadLatex}
+                                        className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 dark:bg-slate-700 text-white hover:bg-slate-900 dark:hover:bg-slate-600 transition-all shadow-sm font-bold text-xs border border-slate-700 dark:border-slate-600"
+                                        title="Download LaTeX"
+                                    >
+                                        <FileText className="w-3.5 h-3.5" />
+                                        LaTeX
+                                    </button>
+
                                     {/* PDF Button */}
                                     <button
                                         onClick={editorContext.handleDownloadPDF}
@@ -186,16 +196,27 @@ export const Navbar: React.FC = () => {
                                 </button>
                             </div>
 
-                            {/* Download Button (Editor only) */}
+                            {/* Download Buttons (Editor only) */}
                             {isEditorPage && editorContext && (
-                                <button
-                                    onClick={editorContext.handleDownloadPDF}
-                                    disabled={editorContext.exportingPDF}
-                                    className="hidden sm:flex p-2.5 rounded-xl bg-green-600 text-white hover:bg-green-700 transition-all disabled:opacity-50 shadow-sm"
-                                    title="Download PDF"
-                                >
-                                    <Download className={`w-5 h-5 ${editorContext.exportingPDF ? 'animate-pulse' : ''}`} />
-                                </button>
+                                <div className="hidden sm:flex items-center gap-2">
+                                    <button
+                                        onClick={editorContext.handleDownloadLatex}
+                                        className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-800 dark:bg-slate-700 text-white hover:bg-slate-900 dark:hover:bg-slate-600 transition-all shadow-sm font-medium border border-slate-700 dark:border-slate-600"
+                                        title="Download LaTeX Source"
+                                    >
+                                        <FileText className="w-5 h-5" />
+                                        <span>LaTeX</span>
+                                    </button>
+                                    <button
+                                        onClick={editorContext.handleDownloadPDF}
+                                        disabled={editorContext.exportingPDF}
+                                        className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-green-600 text-white hover:bg-green-700 transition-all disabled:opacity-50 shadow-sm font-medium"
+                                        title="Download PDF"
+                                    >
+                                        <Download className={`w-5 h-5 ${editorContext.exportingPDF ? 'animate-pulse' : ''}`} />
+                                        <span>PDF</span>
+                                    </button>
+                                </div>
                             )}
 
                             {/* 100% Free badge (hide on editor) */}

@@ -3,6 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import { ResumeData, SectionVisibility, DEFAULT_ENABLED_SECTIONS } from '../types';
 import { TemplateType, TEMPLATES } from '../lib/templates';
 import { exportToPDF } from '../utils/pdfExport';
+import { downloadLatex } from '../services/latexService';
 
 const INITIAL_DATA: ResumeData = {
     personalInfo: {
@@ -197,6 +198,7 @@ interface EditorContextType {
     // Actions
     handleReset: () => void;
     handleDownloadPDF: () => Promise<void>;
+    handleDownloadLatex: () => void;
     exportingPDF: boolean;
 
     // Preview
@@ -432,6 +434,7 @@ export const EditorProvider: React.FC<EditorProviderProps> = ({ children }) => {
         getPreviewData,
         hasUserEdited,
         markAsEdited,
+        handleDownloadLatex: () => downloadLatex(data, data.personalInfo.fullName || 'resume'),
     };
 
     return (
