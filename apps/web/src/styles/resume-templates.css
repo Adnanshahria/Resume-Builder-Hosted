@@ -493,8 +493,7 @@
 
 /* Item separators - subtle lines between items */
 .rt-edu-item--tech+.rt-edu-item--tech,
-.rt-exp-item--tech+.rt-exp-item--tech,
-.rt-project-item--tech+.rt-project-item--tech {
+.rt-exp-item--tech+.rt-exp-item--tech {
     margin-top: 6pt;
     padding-top: 6pt;
     border-top: 0.5px solid #ddd;
