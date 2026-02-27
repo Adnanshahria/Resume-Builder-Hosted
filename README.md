@@ -1,20 +1,57 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# Resume Builder
 
-# Run and deploy your AI Studio app
+A modern AI-powered resume builder with template-aware editing, LaTeX export, and ATS-friendly formatting.
 
-This contains everything you need to run your app locally.
+## Tech Stack
 
-View your app in AI Studio: https://ai.studio/apps/drive/11MOCada-OTCmvaThXJbTiD867XIiyZEq
+- **Frontend**: React + TypeScript + Vite + Tailwind CSS
+- **AI**: Google Gemini API
+- **Export**: LaTeX (.tex), PDF, Print
+- **Deployment**: Vercel
 
-## Run Locally
+## Project Structure
 
-**Prerequisites:**  Node.js
+```
+resume-builder/
+├── src/
+│   ├── components/    (common, editor, layout, resume, seo)
+│   ├── config/        (template configs)
+│   ├── contexts/      (editor context)
+│   ├── pages/         (Landing, Templates, Editor)
+│   ├── services/      (Gemini AI, LaTeX)
+│   ├── styles/        (CSS modules)
+│   ├── types/         (TypeScript types)
+│   └── utils/         (logger, date, pdf)
+├── public/            (favicons, manifest, SEO assets)
+├── Docs/              (feature documentation)
+├── index.html
+├── vite.config.ts
+└── package.json
+```
 
+## Getting Started
+
+### Prerequisites
+
+- Node.js 18+
+
+### Setup
 
 1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
+   ```bash
+   npm install
+   ```
+
+2. Create `.env` at root with your API key:
+   ```
+   GEMINI_API_KEY=your_key_here
+   ```
+
 3. Run the app:
-   `npm run dev`
+   ```bash
+   npm run dev
+   ```
+
+## Documentation
+
+See [Docs/FEATURES.md](Docs/FEATURES.md) for complete feature documentation.

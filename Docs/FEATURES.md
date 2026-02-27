@@ -124,12 +124,10 @@ The resume sections are displayed in the following order:
 - **GitHub | Visit**: Blue clickable link for project repositories
 - **Formatted display**: Project name with tech stack on same line
 
-### 19. Multi-Provider AI System (NEW)
-- **Hugging Face Space Integration**: Connect your own HF Space with Ollama
-- **Gemini Fallback**: Automatically falls back to Gemini if HF fails
+### 19. AI Enhancement System
+- **Google Gemini**: Powered by Gemini 2.5 Flash Lite
 - **Processing Popup**: Shows status while AI is working
 - **Provider Display**: Shows which AI provider is being used
-- **Configuration**: Set `VITE_AI_PROVIDER=huggingface` in `.env`
 
 ---
 
@@ -161,7 +159,7 @@ Located at: `apps/web/src/resume-formats/`
 ## Tech Stack
 - **Frontend**: React + TypeScript + Vite
 - **Styling**: Tailwind CSS + Custom CSS
-- **AI**: Google Gemini API + Hugging Face Spaces (Ollama)
+- **AI**: Google Gemini API
 - **Storage**: LocalStorage (client-side), Turso (cloud DB)
 - **Export**: LaTeX (.tex) for ATS-friendly PDFs
 
