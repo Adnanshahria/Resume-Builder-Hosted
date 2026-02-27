@@ -56,7 +56,6 @@ const TEMPLATE_ACCENTS: Record<TemplateType, {
 ════════════════════════════════════════════════ */
 export const TemplatesPage: React.FC = () => {
     const [showSettings, setShowSettings] = useState(false);
-    const [hovered, setHovered] = useState<TemplateType | null>(null);
 
     return (
         <div className="min-h-screen bg-[#f8fafc] dark:bg-[#07080f] relative overflow-x-hidden">
@@ -123,9 +122,6 @@ export const TemplatesPage: React.FC = () => {
                             tags={TEMPLATE_TAGS[template.id]}
                             accent={TEMPLATE_ACCENTS[template.id]}
                             locked={LOCKED_TEMPLATES.has(template.id)}
-                            isHovered={hovered === template.id}
-                            onHover={() => setHovered(template.id)}
-                            onLeave={() => setHovered(null)}
                         />
                     ))}
                 </div>
@@ -169,9 +165,6 @@ interface TemplatePreviewCardProps {
     tags: string[];
     accent: { badge: string; glow: string; tag: string; border: string };
     locked: boolean;
-    isHovered: boolean;
-    onHover: () => void;
-    onLeave: () => void;
 }
 
 const RESUME_W = 816;
@@ -179,7 +172,7 @@ const RESUME_H = 1056;
 
 const TemplatePreviewCard: React.FC<TemplatePreviewCardProps> = ({
     templateId, templateName, templateDescription, templateIcon,
-    tags, accent, locked, isHovered, onHover, onLeave
+    tags, accent, locked
 }) => {
     const routeMap: Record<string, string> = {
         tech: 'technical', professional: 'professional',
@@ -306,8 +299,6 @@ const TemplatePreviewCard: React.FC<TemplatePreviewCardProps> = ({
         return (
             <div
                 className="group flex flex-col rounded-3xl border border-slate-200/70 dark:border-slate-700/70 bg-white dark:bg-slate-900/60 backdrop-blur-sm overflow-hidden cursor-not-allowed"
-                onMouseEnter={onHover}
-                onMouseLeave={onLeave}
             >
                 {cardContent}
             </div>
@@ -318,8 +309,6 @@ const TemplatePreviewCard: React.FC<TemplatePreviewCardProps> = ({
         <Link
             to={`/editor/${routePath}`}
             className={`group flex flex-col rounded-3xl border border-slate-200/70 dark:border-slate-700/70 bg-white dark:bg-slate-900/60 backdrop-blur-sm overflow-hidden transition-all duration-300 ${accent.border} hover:shadow-2xl hover:-translate-y-1.5`}
-            onMouseEnter={onHover}
-            onMouseLeave={onLeave}
         >
             {cardContent}
         </Link>
